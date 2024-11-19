@@ -4,26 +4,22 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User, AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 
-type AuthContextType = {
+interface AuthContextType {
   user: User | null;
   loading: boolean;
-  signUp: (email: string, password: string, metadata: any) => Promise<{
-    error: AuthError | null;
-    data: any;
-  }>;
-  signIn: (email: string, password: string) => Promise<{
-    error: AuthError | null;
-    data: any;
-  }>;
+  signUp: (email: string, password: string, metadata: any) => Promise<{ data: any; error: AuthError | null; }>;
+  signIn: (email: string, password: string) => Promise<{ data: any; error: AuthError | null; }>;
   signOut: () => Promise<void>;
-};
+}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     // Check active sessions and sets the user
@@ -33,9 +29,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     // Listen for changes on auth state (logged in, signed out, etc.)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setUser(session?.user ?? null);
       setLoading(false);
+      
+      if (session) {
+        // Ensure the session cookie is set
+        await fetch('/api/auth/session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ session }),
+        });
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -115,6 +122,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         };
       }
 
+      // Ensure the session cookie is set after successful login
+      if (data.session) {
+        await fetch('/api/auth/session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ session: data.session }),
+        });
+      }
+
       return { data, error: null };
     } catch (error) {
       console.error('Unexpected error during login:', error);
@@ -130,8 +148,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     try {
+      // First clear the session on the client side
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
+
+      // Then clear session cookies via API
+      await fetch('/api/auth/logout', { 
+        method: 'POST',
+        credentials: 'same-origin' // Important for cookie handling
+      });
+
+      // Force clear user state
+      setUser(null);
+      
+      // Redirect to login
+      router.push('/login');
     } catch (error) {
       console.error('Error signing out:', error);
       throw error;

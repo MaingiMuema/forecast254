@@ -9,8 +9,11 @@ import {
   TrophyIcon,
   Cog6ToothIcon,
   QuestionMarkCircleIcon,
+  ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/24/outline";
+import { FaChartLine } from "react-icons/fa";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const sidebarLinks = [
   { name: "Markets", href: "/dashboard", icon: HomeIcon },
@@ -29,6 +32,15 @@ export const sidebarLinks = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const { signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   return (
     <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 px-6">
@@ -71,6 +83,16 @@ export default function Sidebar() {
             </ul>
           </li>
           <li className="mt-auto">
+            <button
+              onClick={handleSignOut}
+              className="w-full group flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
+            >
+              <ArrowLeftOnRectangleIcon
+                className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                aria-hidden="true"
+              />
+              Sign Out
+            </button>
             <div className="flex flex-col gap-4 py-4 text-sm">
               <p className="text-gray-500 dark:text-gray-400">
                 &copy; 2024 Forecast254. All rights reserved.

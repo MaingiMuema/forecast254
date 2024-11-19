@@ -27,6 +27,43 @@ Forecast254 aims to be Kenya's first prediction market platform, similar to Poly
 - Market categories (Politics, Sports, Economics, etc.)
 - Market status tracking
 
+#### AI-Powered Market Creation System
+The system will utilize Groq LLM API and Jina AI for automated market creation and management:
+
+1. **Data Collection Pipeline**
+   - Integrate Jina AI Reader API to scrape and process Kenyan news sources
+   - Configure data filters for relevant topics (Politics, Sports, Economics)
+   - Set up periodic data fetching (every 6 hours)
+   - Store raw data in a structured format
+
+2. **Market Generation with Groq LLM**
+   - Set up Groq API integration with llama model
+   - Design prompt templates for market creation:
+     - Question formulation
+     - Resolution criteria
+     - Market categories
+     - Time bounds
+   - Implement validation rules for generated markets
+
+3. **Market Management Automation**
+   - Automated market status updates
+   - Resolution criteria tracking
+   - Market closure triggers
+   - Performance monitoring
+
+4. **Implementation Requirements**
+   - Groq API key configuration
+   - Jina AI Reader API setup
+   - Rate limiting and error handling
+   - Logging and monitoring system
+   - Backup manual review system
+
+5. **Security Considerations**
+   - API key management
+   - Request rate limiting
+   - Data validation and sanitization
+   - Error handling and logging
+
 ### 3. Trading System
 - Order book management
 - Price discovery mechanism

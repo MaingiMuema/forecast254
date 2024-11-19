@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id            String         @id @default(cuid())
+  userId        String         @unique
+  username      String         @unique
+  email         String         @unique
+  avatarUrl     String?
+  balance       Float          @default(1000)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  positions     Position[]
+  transactions  Transaction[]
+  comments      MarketComment[]
+  stats         LeaderboardStats?
+}
+
+model Market {
+  id            String         @id @default(cuid())
+  question      String
+  description   String
+  category      String
+  creatorId     String
+  resolvedValue Float?
+  startDate     DateTime       @default(now())
+  endDate       DateTime
+  status        String        @default("open")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  positions     Position[]
+  comments      MarketComment[]
+}
+
+model Position {
+  id            String      @id @default(cuid())
+  userId        String
+  marketId      String
+  shares        Float
+  avgPrice      Float
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  user          Profile     @relation(fields: [userId], references: [userId])
+  market        Market      @relation(fields: [marketId], references: [id])
+}
+
+model Transaction {
+  id            String      @id @default(cuid())
+  userId        String
+  marketId      String
+  type          String
+  shares        Float
+  price         Float
+  total         Float
+  createdAt     DateTime    @default(now())
+  user          Profile     @relation(fields: [userId], references: [userId])
+}
+
+model MarketComment {
+  id            String      @id @default(cuid())
+  userId        String
+  marketId      String
+  content       String
+  createdAt     DateTime    @default(now())
+  user          Profile     @relation(fields: [userId], references: [userId])
+  market        Market      @relation(fields: [marketId], references: [id])
+}
+
+model LeaderboardStats {
+  id            String      @id @default(cuid())
+  userId        String      @unique
+  totalProfit   Float       @default(0)
+  winRate       Float       @default(0)
+  rank          Int         @default(0)
+  updatedAt     DateTime    @updatedAt
+  user          Profile     @relation(fields: [userId], references: [userId])
+}
+
+model NewsArticle {
+  id          String   @id @default(cuid())
+  title       String
+  content     String   @db.Text
+  url         String   @unique
+  category    String
+  publishedAt DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

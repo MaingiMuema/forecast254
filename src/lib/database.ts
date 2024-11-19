@@ -8,13 +8,19 @@ export type Position = Tables['positions']['Row'];
 export type Transaction = Tables['transactions']['Row'];
 export type MarketComment = Tables['market_comments']['Row'];
 export type LeaderboardStats = Tables['leaderboard_stats']['Row'];
+export type NewsArticle = Tables['news_articles']['Row'];
 
 // Profile operations
 export async function getProfile(userId: string) {
   const { data, error } = await supabase
     .from('profiles')
-    .select('*')
-    .eq('id', userId)
+    .select(`
+      *,
+      positions (*),
+      transactions (*),
+      leaderboard_stats (*)
+    `)
+    .eq('user_id', userId)
     .single();
   
   if (error) throw error;
@@ -25,7 +31,7 @@ export async function updateProfile(userId: string, updates: Partial<Profile>) {
   const { data, error } = await supabase
     .from('profiles')
     .update(updates)
-    .eq('id', userId)
+    .eq('user_id', userId)
     .select()
     .single();
   
@@ -35,8 +41,24 @@ export async function updateProfile(userId: string, updates: Partial<Profile>) {
 
 // Market operations
 export async function getMarkets(filters?: Partial<Market>) {
-  let query = supabase.from('markets').select('*');
-  
+  let query = supabase
+    .from('markets')
+    .select(`
+      *,
+      positions (
+        shares,
+        avg_price
+      ),
+      market_comments (
+        content,
+        created_at,
+        profiles (
+          username,
+          avatar_url
+        )
+      )
+    `);
+
   if (filters) {
     Object.entries(filters).forEach(([key, value]) => {
       if (value !== undefined) {
@@ -44,8 +66,9 @@ export async function getMarkets(filters?: Partial<Market>) {
       }
     });
   }
+
+  const { data, error } = await query.order('created_at', { ascending: false });
   
-  const { data, error } = await query;
   if (error) throw error;
   return data;
 }
@@ -53,7 +76,25 @@ export async function getMarkets(filters?: Partial<Market>) {
 export async function getMarket(marketId: string) {
   const { data, error } = await supabase
     .from('markets')
-    .select('*')
+    .select(`
+      *,
+      positions (
+        shares,
+        avg_price,
+        profiles (
+          username,
+          avatar_url
+        )
+      ),
+      market_comments (
+        content,
+        created_at,
+        profiles (
+          username,
+          avatar_url
+        )
+      )
+    `)
     .eq('id', marketId)
     .single();
   
@@ -88,7 +129,14 @@ export async function updateMarket(marketId: string, updates: Partial<Market>) {
 export async function getUserPositions(userId: string) {
   const { data, error } = await supabase
     .from('positions')
-    .select('*')
+    .select(`
+      *,
+      markets (
+        question,
+        status,
+        resolved_value
+      )
+    `)
     .eq('user_id', userId);
   
   if (error) throw error;
@@ -100,7 +148,8 @@ export async function getMarketPosition(userId: string, marketId: string) {
     .from('positions')
     .select('*')
     .eq('user_id', userId)
-    .eq('market_id', marketId);
+    .eq('market_id', marketId)
+    .single();
   
   if (error) throw error;
   return data;
@@ -149,7 +198,12 @@ export async function createTransaction(transaction: Tables['transactions']['Ins
 export async function getUserTransactions(userId: string) {
   const { data, error } = await supabase
     .from('transactions')
-    .select('*')
+    .select(`
+      *,
+      markets (
+        question
+      )
+    `)
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
   
@@ -161,9 +215,15 @@ export async function getUserTransactions(userId: string) {
 export async function getMarketComments(marketId: string) {
   const { data, error } = await supabase
     .from('market_comments')
-    .select('*, profiles(first_name, last_name, avatar_url)')
+    .select(`
+      *,
+      profiles (
+        username,
+        avatar_url
+      )
+    `)
     .eq('market_id', marketId)
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: true });
   
   if (error) throw error;
   return data;
@@ -184,8 +244,14 @@ export async function createComment(comment: Tables['market_comments']['Insert']
 export async function getLeaderboard() {
   const { data, error } = await supabase
     .from('leaderboard_stats')
-    .select('*, profiles(first_name, last_name, avatar_url)')
-    .order('profit_loss', { ascending: false })
+    .select(`
+      *,
+      profiles (
+        username,
+        avatar_url
+      )
+    `)
+    .order('total_profit', { ascending: false })
     .limit(100);
   
   if (error) throw error;
@@ -200,6 +266,35 @@ export async function updateLeaderboardStats(
     .from('leaderboard_stats')
     .update(updates)
     .eq('user_id', userId)
+    .select()
+    .single();
+  
+  if (error) throw error;
+  return data;
+}
+
+// News Article operations
+export async function getNewsArticles(category?: string) {
+  let query = supabase
+    .from('news_articles')
+    .select('*');
+
+  if (category) {
+    query = query.eq('category', category);
+  }
+
+  const { data, error } = await query
+    .order('published_at', { ascending: false })
+    .limit(50);
+
+  if (error) throw error;
+  return data;
+}
+
+export async function createNewsArticle(article: Tables['news_articles']['Insert']) {
+  const { data, error } = await supabase
+    .from('news_articles')
+    .insert(article)
     .select()
     .single();
   

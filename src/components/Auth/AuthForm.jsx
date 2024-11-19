@@ -45,8 +45,12 @@ export default function AuthForm({ mode = 'login' }) {
         return;
       }
 
+      // Get the redirect URL from query parameters or default to dashboard
+      const params = new URLSearchParams(window.location.search);
+      const redirectTo = params.get('redirectTo') || '/dashboard';
+      
       // Successful login
-      router.push('/dashboard');
+      router.push(redirectTo);
     } catch (err) {
       setError('An unexpected error occurred. Please try again.');
     } finally {

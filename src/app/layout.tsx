@@ -5,6 +5,9 @@ import "./globals.css";
 import { ThemeProvider } from '@/hooks/useTheme'
 import { AuthProvider } from '@/contexts/AuthContext'
 import MainLayout from "@/components/Layout/MainLayout";
+import DataCollectionService from '@/services/DataCollectionService';
+import DataCollectionScheduler from "@/components/DataCollectionScheduler";
+import MarketGenerationScheduler from "@/components/MarketGenerationScheduler";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -19,6 +22,11 @@ const geistMono = localFont({
 });
 
 const inter = Inter({ subsets: ['latin'] })
+
+// Initialize data collection service
+if (process.env.NODE_ENV === 'production') {
+  DataCollectionService.getInstance();
+}
 
 export const metadata: Metadata = {
   title: "Forecast254 - Kenya's First Prediction Market Platform",
@@ -39,6 +47,8 @@ export default function RootLayout({
           <AuthProvider>
             <MainLayout>
               {children}
+              <DataCollectionScheduler />
+              <MarketGenerationScheduler />
             </MainLayout>
           </AuthProvider>
         </ThemeProvider>

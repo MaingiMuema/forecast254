@@ -41,6 +41,38 @@ export type Database = {
           updated_at?: string
         }
       }
+      news_articles: {
+        Row: {
+          id: string
+          title: string
+          content: string
+          url: string
+          category: string
+          published_at: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          content: string
+          url: string
+          category: string
+          published_at: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          content?: string
+          url?: string
+          category?: string
+          published_at?: string
+          created_at?: string
+          updated_at?: string
+        }
+      }
       markets: {
         Row: {
           id: string
@@ -49,12 +81,10 @@ export type Database = {
           description: string | null
           category: string
           resolution_source: string | null
-          closing_date: string
-          resolution_date: string
-          status: 'open' | 'closed' | 'resolved' | 'cancelled'
-          outcome: string | null
-          total_volume: number
-          liquidity_pool: number
+          resolved_value: number | null
+          start_date: string
+          end_date: string
+          status: string
           created_at: string
           updated_at: string
         }
@@ -65,12 +95,10 @@ export type Database = {
           description?: string | null
           category: string
           resolution_source?: string | null
-          closing_date: string
-          resolution_date: string
-          status?: 'open' | 'closed' | 'resolved' | 'cancelled'
-          outcome?: string | null
-          total_volume?: number
-          liquidity_pool?: number
+          resolved_value?: number | null
+          start_date: string
+          end_date: string
+          status?: string
           created_at?: string
           updated_at?: string
         }
@@ -81,12 +109,10 @@ export type Database = {
           description?: string | null
           category?: string
           resolution_source?: string | null
-          closing_date?: string
-          resolution_date?: string
-          status?: 'open' | 'closed' | 'resolved' | 'cancelled'
-          outcome?: string | null
-          total_volume?: number
-          liquidity_pool?: number
+          resolved_value?: number | null
+          start_date?: string
+          end_date?: string
+          status?: string
           created_at?: string
           updated_at?: string
         }
@@ -96,10 +122,8 @@ export type Database = {
           id: string
           user_id: string
           market_id: string
-          position_type: 'yes' | 'no'
           shares: number
-          average_price: number
-          realized_pnl: number
+          avg_price: number
           created_at: string
           updated_at: string
         }
@@ -107,10 +131,8 @@ export type Database = {
           id?: string
           user_id: string
           market_id: string
-          position_type: 'yes' | 'no'
-          shares?: number
-          average_price: number
-          realized_pnl?: number
+          shares: number
+          avg_price: number
           created_at?: string
           updated_at?: string
         }
@@ -118,10 +140,8 @@ export type Database = {
           id?: string
           user_id?: string
           market_id?: string
-          position_type?: 'yes' | 'no'
           shares?: number
-          average_price?: number
-          realized_pnl?: number
+          avg_price?: number
           created_at?: string
           updated_at?: string
         }
@@ -129,102 +149,90 @@ export type Database = {
       transactions: {
         Row: {
           id: string
-          user_id: string | null
-          market_id: string | null
-          transaction_type: 'deposit' | 'withdrawal' | 'trade' | 'settlement'
-          amount: number
-          shares: number | null
-          price: number | null
-          position_type: 'yes' | 'no' | null
-          mpesa_reference: string | null
-          status: 'pending' | 'completed' | 'failed'
+          user_id: string
+          market_id: string
+          type: string
+          shares: number
+          price: number
+          total: number
           created_at: string
         }
         Insert: {
           id?: string
-          user_id?: string | null
-          market_id?: string | null
-          transaction_type: 'deposit' | 'withdrawal' | 'trade' | 'settlement'
-          amount: number
-          shares?: number | null
-          price?: number | null
-          position_type?: 'yes' | 'no' | null
-          mpesa_reference?: string | null
-          status?: 'pending' | 'completed' | 'failed'
+          user_id: string
+          market_id: string
+          type: string
+          shares: number
+          price: number
+          total: number
           created_at?: string
         }
         Update: {
           id?: string
-          user_id?: string | null
-          market_id?: string | null
-          transaction_type?: 'deposit' | 'withdrawal' | 'trade' | 'settlement'
-          amount?: number
-          shares?: number | null
-          price?: number | null
-          position_type?: 'yes' | 'no' | null
-          mpesa_reference?: string | null
-          status?: 'pending' | 'completed' | 'failed'
+          user_id?: string
+          market_id?: string
+          type?: string
+          shares?: number
+          price?: number
+          total?: number
           created_at?: string
         }
       }
       market_comments: {
         Row: {
           id: string
+          user_id: string
           market_id: string
-          user_id: string | null
           content: string
           created_at: string
-          updated_at: string
         }
         Insert: {
           id?: string
+          user_id: string
           market_id: string
-          user_id?: string | null
           content: string
           created_at?: string
-          updated_at?: string
         }
         Update: {
           id?: string
+          user_id?: string
           market_id?: string
-          user_id?: string | null
           content?: string
           created_at?: string
-          updated_at?: string
         }
       }
       leaderboard_stats: {
         Row: {
           id: string
           user_id: string
+          total_profit: number
           total_trades: number
-          successful_predictions: number
           total_volume: number
           profit_loss: number
           win_rate: number
-          created_at: string
+          rank: number
           updated_at: string
         }
         Insert: {
           id?: string
           user_id: string
+          total_profit?: number
           total_trades?: number
-          successful_predictions?: number
           total_volume?: number
           profit_loss?: number
           win_rate?: number
-          created_at?: string
+          rank?: number
           updated_at?: string
         }
         Update: {
           id?: string
           user_id?: string
+          total_profit?: number
           total_trades?: number
-          successful_predictions?: number
           total_volume?: number
           profit_loss?: number
           win_rate?: number
-          created_at?: string
+          rank?: number
           updated_at?: string
         }
       }
