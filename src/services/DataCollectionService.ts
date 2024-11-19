@@ -101,6 +101,9 @@ class DataCollectionService {
     console.log(`Found ${articles.length} articles from ${source}`);
     const validArticles = articles.map(article => {
       const category = this.categorizeArticle(article);
+      const publishedAt = new Date(article.publishedAt || new Date()).toISOString();
+      console.log(`Processing article: ${article.title}, Published at: ${publishedAt}`);
+      
       return {
         title: article.title,
         url: article.url,
@@ -108,7 +111,7 @@ class DataCollectionService {
         author: article.author || 'Unknown',
         description: article.description || '',
         content: article.content || '',
-        published_at: article.publishedAt,
+        published_at: publishedAt,
         image_url: article.urlToImage || null,
         category: category
       };

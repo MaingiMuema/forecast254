@@ -21,6 +21,22 @@ create table if not exists public.profiles (
     updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
+-- Create news_articles table
+create table if not exists public.news_articles (
+    id uuid default uuid_generate_v4() primary key,
+    title text not null,
+    content text not null,
+    url text unique not null,
+    category text not null,
+    published_at timestamp with time zone not null,
+    source text not null,
+    author text,
+    description text,
+    image_url text,
+    created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+    updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
 -- Create markets table
 create table if not exists public.markets (
     id uuid default uuid_generate_v4() primary key,
@@ -32,9 +48,17 @@ create table if not exists public.markets (
     start_date timestamp with time zone default timezone('utc'::text, now()) not null,
     end_date timestamp with time zone not null,
     status text default 'open',
+    source_article_id uuid references public.news_articles(id),
     created_at timestamp with time zone default timezone('utc'::text, now()) not null,
     updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
+
+-- Add foreign key relationship
+alter table public.markets
+    add constraint markets_source_article_id_fkey
+    foreign key (source_article_id)
+    references public.news_articles(id)
+    on delete set null;
 
 -- Create positions table
 create table if not exists public.positions (
@@ -76,18 +100,6 @@ create table if not exists public.leaderboard_stats (
     total_profit double precision default 0.0,
     win_rate double precision default 0.0,
     rank integer default 0,
-    updated_at timestamp with time zone default timezone('utc'::text, now()) not null
-);
-
--- Create news_articles table
-create table if not exists public.news_articles (
-    id uuid default uuid_generate_v4() primary key,
-    title text not null,
-    content text not null,
-    url text unique not null,
-    category text not null,
-    published_at timestamp with time zone not null,
-    created_at timestamp with time zone default timezone('utc'::text, now()) not null,
     updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
@@ -150,13 +162,13 @@ using (auth.uid() = id);
 
 create policy "Markets are viewable by everyone"
 on public.markets for select
-to authenticated
+to authenticated, anon
 using (true);
 
-create policy "Authenticated users can create markets"
+create policy "Enable insert for authenticated users only"
 on public.markets for insert
 to authenticated
-with check (auth.uid() = creator_id);
+with check (true);
 
 create policy "Users can view their own positions"
 on public.positions for select
@@ -198,7 +210,12 @@ on public.leaderboard_stats for select
 to authenticated
 using (true);
 
-create policy "News articles are viewable by everyone"
+create policy "Enable read access for all users"
 on public.news_articles for select
-to authenticated
+to authenticated, anon
 using (true);
+
+create policy "Enable insert for authenticated users only"
+on public.news_articles for insert
+to authenticated
+with check (true);

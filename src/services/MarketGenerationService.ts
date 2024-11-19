@@ -37,8 +37,10 @@ export class MarketGenerationService {
 
   private async generateMarketFromArticle(article: any): Promise<MarketTemplate | null> {
     try {
+      console.log(`Generating market for article: ${article.title}`);
+      
       const prompt = `
-        Given this news article, create a prediction market question. The market should be:
+        Given this news article, create a prediction market question. Return ONLY a JSON object with no additional text or markdown formatting. The market should be:
         1. Binary (yes/no) question
         2. Clear and unambiguous
         3. Have a specific end date
@@ -48,38 +50,56 @@ export class MarketGenerationService {
         Article Content: ${article.content}
         Category: ${article.category}
 
-        Output Format (JSON):
+        Required JSON format:
         {
           "question": "Will X happen by Y date?",
           "description": "Detailed context and background",
-          "category": "One of: politics, sports, entertainment, business, tech, education",
+          "category": "One of: politics, sports, entertainment, business, tech, education (lowercase only)",
           "endDate": "YYYY-MM-DD",
           "resolutionCriteria": "Specific criteria for resolving this market"
         }
+
+        Important: Return ONLY the JSON object, with no additional text, explanations or markdown formatting.
       `;
 
+      console.log('Sending request to LLM...');
       const completion = await this.groq.chat.completions.create({
         messages: [
           {
             role: 'system',
-            content: 'You are a market generation assistant. Create clear, unambiguous prediction market questions from news articles.'
+            content: 'You are a market generation assistant. Create clear, unambiguous prediction market questions from news articles. Return ONLY JSON objects with no additional text or formatting.'
           },
           {
             role: 'user',
             content: prompt
           }
         ],
-        model: 'mixtral-8x7b-32768',
+        model: 'llama-3.2-90b-vision-preview',
         temperature: 0.7,
         max_tokens: 5000,
       });
 
       const response = completion.choices[0]?.message?.content;
-      if (!response) return null;
+      console.log('LLM Response:', response);
+
+      if (!response) {
+        console.log('No response from LLM');
+        return null;
+      }
 
       try {
-        const market = JSON.parse(response);
-        return this.validateMarket(market) ? market : null;
+        // Clean the response - remove any markdown formatting or extra text
+        const cleanedResponse = response.replace(/```json\n|\n```|```/g, '').trim();
+        console.log('Cleaned response:', cleanedResponse);
+        
+        const market = JSON.parse(cleanedResponse);
+        
+        // Convert category to lowercase
+        market.category = market.category.toLowerCase();
+        
+        const isValid = this.validateMarket(market);
+        console.log('Market validation result:', isValid);
+        return isValid ? market : null;
       } catch (error) {
         console.error('Error parsing market JSON:', error);
         return null;
@@ -91,8 +111,11 @@ export class MarketGenerationService {
   }
 
   private validateMarket(market: MarketTemplate): boolean {
+    console.log('Validating market:', market);
+    
     // Basic validation rules
     if (!market.question || !market.description || !market.category || !market.endDate || !market.resolutionCriteria) {
+      console.log('Market missing required fields');
       return false;
     }
 
@@ -100,38 +123,64 @@ export class MarketGenerationService {
     const endDate = new Date(market.endDate);
     const now = new Date();
     if (isNaN(endDate.getTime()) || endDate <= now) {
+      console.log('Invalid end date:', market.endDate);
       return false;
     }
 
-    // Validate category
+    // Validate category (case-insensitive)
     const validCategories = ['politics', 'sports', 'entertainment', 'business', 'tech', 'education'];
     if (!validCategories.includes(market.category.toLowerCase())) {
+      console.log('Invalid category:', market.category);
       return false;
     }
 
+    console.log('Market validation passed');
     return true;
   }
 
   private async createMarketInDatabase(market: MarketTemplate & { source_article_id: string }): Promise<boolean> {
     try {
+      console.log('Creating market in database:', market);
+      
+      const endDate = new Date(market.endDate);
+      
+      // Create the market data object first for debugging
+      const marketData = {
+        creator_id: process.env.SYSTEM_USER_ID!,
+        title: market.question,
+        question: market.question,
+        description: market.description,
+        category: market.category,
+        end_date: endDate.toISOString(),
+        closing_date: endDate.toISOString(), // Set closing_date to match end_date
+        resolution_date: endDate.toISOString(), // Set resolution_date to match end_date
+        resolution_criteria: market.resolutionCriteria,
+        status: 'open',
+        resolved_value: null,
+        source_article_id: market.source_article_id,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        probability_yes: 0.5, // Default starting probability
+        probability_no: 0.5 // Default starting probability
+      };
+
+      console.log('Market data to insert:', marketData);
+
       const { error } = await supabase
         .from('markets')
-        .insert({
-          creator_id: process.env.SYSTEM_USER_ID!,
-          question: market.question,
-          description: market.description,
-          category: market.category,
-          end_date: new Date(market.endDate).toISOString(),
-          status: 'open',
-          resolved_value: null,
-          source_article_id: market.source_article_id
-        });
+        .insert([marketData]);
 
       if (error) {
         console.error('Error creating market:', error);
+        console.error('Error details:', {
+          code: error.code,
+          message: error.message,
+          details: error.details
+        });
         return false;
       }
 
+      console.log('Successfully created market:', market.question);
       return true;
     } catch (error) {
       console.error('Error creating market:', error);
@@ -149,39 +198,46 @@ export class MarketGenerationService {
     let marketsCreated = 0;
 
     try {
-      // Get articles from the last 48 hours that don't have markets yet
-      const fortyEightHoursAgo = new Date();
-      fortyEightHoursAgo.setHours(fortyEightHoursAgo.getHours() - 48);
-      
-      console.log('Fetching articles for market generation...');
-      const { data: articles, error } = await supabase
+      // Get recent articles
+      console.log('Fetching recent articles...');
+      const { data: articles, error: articlesError } = await supabase
         .from('news_articles')
-        .select(`
-          *,
-          markets!left (
-            id
-          )
-        `)
-        .gt('published_at', fortyEightHoursAgo.toISOString())
-        .is('markets.id', null)  // Only get articles that don't have markets
-        .order('published_at', { ascending: false });
+        .select('*')
+        .order('published_at', { ascending: false })
+        .limit(100); // Limit to most recent 100 articles for efficiency
 
-      if (error) {
-        console.error('Error fetching articles:', error);
+      if (articlesError) {
+        console.error('Error fetching articles:', articlesError);
         return marketsCreated;
       }
 
       if (!articles || articles.length === 0) {
-        console.log('No new articles found for market generation');
+        console.log('No articles found in database');
         return marketsCreated;
       }
 
-      console.log(`Found ${articles.length} articles without markets`);
-
-      // Generate markets for each article
+      console.log(`Found ${articles.length} total articles in database`);
+      
+      // Process each article
       for (const article of articles) {
         try {
-          console.log(`Generating market for article: ${article.title}`);
+          // Check if market already exists for this article
+          const { data: existingMarkets, error: marketError } = await supabase
+            .from('markets')
+            .select('id')
+            .eq('source_article_id', article.id);
+
+          if (marketError) {
+            console.error('Error checking existing market:', marketError);
+            continue;
+          }
+
+          if (existingMarkets && existingMarkets.length > 0) {
+            console.log(`Market already exists for article: ${article.title}`);
+            continue;
+          }
+
+          console.log(`Attempting to generate market for article: ${article.title}`);
           const market = await this.generateMarketFromArticle(article);
           
           if (market) {
@@ -191,13 +247,13 @@ export class MarketGenerationService {
             });
             
             if (created) {
-              console.log(`Created market from article: ${article.title}`);
+              console.log(`Successfully created market for article: ${article.title}`);
               marketsCreated++;
             } else {
               console.log(`Failed to create market for article: ${article.title}`);
             }
           } else {
-            console.log(`Could not generate market for article: ${article.title}`);
+            console.log(`Could not generate valid market for article: ${article.title}`);
           }
         } catch (error) {
           console.error(`Error processing article ${article.id}:`, error);
