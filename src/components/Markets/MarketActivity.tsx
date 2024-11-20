@@ -40,13 +40,13 @@ export default function MarketActivity({ marketId }: { marketId: string }) {
 
   if (loading) {
     return (
-      <div className="bg-gray-900 rounded-xl p-6">
-        <div className="flex items-center justify-between mb-6">
+      <div className="bg-gray-900 rounded-xl p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 mb-6">
           <div className="flex items-center space-x-2">
             <FaHistory className="w-5 h-5 text-primary" />
             <h2 className="text-lg font-semibold text-white">Recent Activity</h2>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             {(['24h', '7d', '30d', 'all'] as TimelineFilter[]).map((timeline) => (
               <div key={timeline} className="h-8 w-12 bg-gray-800 animate-pulse rounded-full" />
             ))}
@@ -62,18 +62,18 @@ export default function MarketActivity({ marketId }: { marketId: string }) {
   }
 
   return (
-    <div className="bg-gray-900 rounded-xl p-6">
-      <div className="flex items-center justify-between mb-6">
+    <div className="bg-gray-900 rounded-xl p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 mb-6">
         <div className="flex items-center space-x-2">
           <FaHistory className="w-5 h-5 text-primary" />
           <h2 className="text-lg font-semibold text-white">Recent Activity</h2>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           {(['24h', '7d', '30d', 'all'] as TimelineFilter[]).map((timeline) => (
             <button
               key={timeline}
               onClick={() => setSelectedTimeline(timeline)}
-              className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+              className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors flex-1 sm:flex-none ${
                 selectedTimeline === timeline
                   ? 'bg-primary text-white'
                   : 'bg-gray-800 text-gray-400 hover:text-white'
@@ -96,9 +96,9 @@ export default function MarketActivity({ marketId }: { marketId: string }) {
               key={trade.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-gray-800/50 rounded-lg p-4 flex items-center justify-between"
+              className="bg-gray-800/50 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0"
             >
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 w-full sm:w-auto">
                 <div className={`p-2 rounded-full ${
                   trade.type === 'buy' ? 'bg-emerald-500/10' : 'bg-rose-500/10'
                 }`}>
@@ -117,7 +117,7 @@ export default function MarketActivity({ marketId }: { marketId: string }) {
                   </p>
                 </div>
               </div>
-              <div className="text-right">
+              <div className="text-left sm:text-right w-full sm:w-auto pl-11 sm:pl-0">
                 <p className="text-sm font-medium text-white">
                   KES {trade.amount.toLocaleString()}
                 </p>
