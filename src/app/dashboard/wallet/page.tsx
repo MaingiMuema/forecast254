@@ -109,9 +109,9 @@ function TransactionItem({
       <div className="flex items-center space-x-4">
         <div className={`p-2 rounded-full ${type === 'deposit' ? 'bg-emerald-500/10' : 'bg-red-500/10'}`}>
           {type === 'deposit' ? (
-            <FaPlus className={`h-4 w-4 ${type === 'deposit' ? 'text-emerald-500' : 'text-red-500'}`} />
+            <FaPlus className="h-4 w-4 text-emerald-500" />
           ) : (
-            <FaMinus className={`h-4 w-4 ${type === 'deposit' ? 'text-emerald-500' : 'text-red-500'}`} />
+            <FaMinus className="h-4 w-4 text-red-500" />
           )}
         </div>
         <div>
