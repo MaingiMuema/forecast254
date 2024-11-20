@@ -1,15 +1,21 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { usePathname, useSearchParams } from 'next/navigation';
+import { FaSearch, FaTimes } from "react-icons/fa";
 
 const CategoriesNav = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState("all");
   const [categoryCounts, setCategoryCounts] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const searchRef = useRef(null);
 
   const categories = [
     { id: "all", label: "All Markets", href: "/markets" },
@@ -45,10 +51,48 @@ const CategoriesNav = () => {
     fetchCategoryCounts();
   }, [searchParams]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowResults(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      if (searchQuery.trim()) {
+        setIsSearching(true);
+        try {
+          const response = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
+          const data = await response.json();
+          
+          if (response.ok) {
+            setSearchResults(data.markets);
+            setShowResults(true);
+          } else {
+            console.error('Search error:', data.error);
+          }
+        } catch (error) {
+          console.error('Failed to fetch search results:', error);
+        }
+        setIsSearching(false);
+      } else {
+        setSearchResults([]);
+        setShowResults(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   const showCounts = pathname === '/markets';
 
   return (
-    <div className="bg-gradient-to-b from-background via-background/95 to-background/90 backdrop-blur-xl border-b border-white/5">
+    <div className="sticky top-[64px] z-40 bg-gradient-to-b from-background via-background/95 to-background/90 backdrop-blur-xl border-b border-white/5">
       <div className="max-w-screen-2xl mx-auto">
         {/* Live Markets Indicator */}
         <div className="px-4 py-2 sm:py-3">
@@ -83,12 +127,55 @@ const CategoriesNav = () => {
 
         {/* Search Bar */}
         <div className="px-4 py-2">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search markets..."
-              className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
-            />
+          <div className="relative" ref={searchRef}>
+            <div className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search markets..."
+                className="w-full px-4 py-2 pl-10 bg-white/5 border border-white/10 rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
+              />
+              <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                <FaSearch className="text-muted-foreground text-sm" />
+              </div>
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute inset-y-0 right-3 flex items-center"
+                >
+                  <FaTimes className="text-muted-foreground hover:text-foreground" />
+                </button>
+              )}
+            </div>
+
+            {/* Search Results */}
+            {showResults && (searchResults.length > 0 || isSearching) && (
+              <div className="absolute z-50 w-full mt-2 bg-background/95 backdrop-blur-xl border border-border rounded-lg shadow-lg">
+                {isSearching ? (
+                  <div className="p-4 text-center">
+                    <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-primary border-r-transparent"></div>
+                  </div>
+                ) : (
+                  <div className="py-2">
+                    {searchResults.map((market) => (
+                      <Link
+                        key={market.id}
+                        href={`/market/${market.id}`}
+                        className="block px-4 py-2 hover:bg-white/5 transition-colors"
+                        onClick={() => {
+                          setShowResults(false);
+                          setSearchQuery("");
+                        }}
+                      >
+                        <div className="text-sm font-medium">{market.title}</div>
+                        <div className="text-xs text-muted-foreground">{market.category}</div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
