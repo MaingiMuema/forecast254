@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useTheme } from '@/hooks/useTheme';
 import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 import {
   FaSearch,
   FaChartLine,
@@ -21,7 +22,8 @@ import Spinner from '@/components/ui/Spinner';
 
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
-  const { user, signOut } = useAuth();
+  const { user, loading, signOut } = useAuth();
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -71,11 +73,37 @@ const Header = () => {
 
   const handleSignOut = async () => {
     try {
+      setIsMenuOpen(false); // Close mobile menu if open
+      
+      // Disable the signout button to prevent double-clicks
+      const button = document.activeElement;
+      if (button) button.disabled = true;
+      
       await signOut();
+      
+      // Force a re-render of the header
+      router.refresh();
     } catch (error) {
       console.error('Error signing out:', error);
+      // Re-enable the button in case of error
+      const button = document.activeElement;
+      if (button) button.disabled = false;
     }
   };
+
+  // Effect to handle auth state changes
+  useEffect(() => {
+    console.log('Auth state in header:', { user, loading });
+  }, [user, loading]);
+
+  // Effect to close mobile menu on navigation
+  useEffect(() => {
+    if (isMenuOpen) {
+      const handleScroll = () => setIsMenuOpen(false);
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
+  }, [isMenuOpen]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -200,7 +228,9 @@ const Header = () => {
 
             {/* Auth Buttons */}
             <div className="hidden md:flex items-center space-x-4">
-              {user ? (
+              {loading ? (
+                <Spinner className="w-4 h-4" />
+              ) : user ? (
                 <>
                   <Link
                     href="/dashboard"
@@ -281,7 +311,9 @@ const Header = () => {
               </div>
 
               <div className="pt-4 border-t border-border/40">
-                {user ? (
+                {loading ? (
+                  <Spinner className="w-4 h-4" />
+                ) : user ? (
                   <>
                     <Link
                       href="/dashboard"

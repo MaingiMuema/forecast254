@@ -34,7 +34,7 @@ export default function MarketGenerationScheduler() {
         });
       }
     } catch (error) {
-      console.error(`Error triggering market generation at ${new Date().toISOString()}:`, error);
+      console.log(`Error triggering market generation at ${new Date().toISOString()}:`, error);
     }
   };
 

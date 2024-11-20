@@ -19,7 +19,7 @@ export default function DataCollectionScheduler() {
         console.warn('Data collection failed:', data.message);
       }
     } catch (error) {
-      console.error('Error triggering data collection:', error);
+      console.log('Error triggering data collection:', error);
     }
   };
 

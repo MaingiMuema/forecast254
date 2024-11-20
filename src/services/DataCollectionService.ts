@@ -111,6 +111,13 @@ export class DataCollectionService {
 
   private async fetchWithRetry(url: string, options: RequestInit, source: NewsSource, retryCount = 0): Promise<Response> {
     try {
+      // Check if source is in cooldown
+      if (source.lastFetched && Date.now() - source.lastFetched.getTime() < this.rateLimitCooldown) {
+        const remainingCooldown = Math.ceil((this.rateLimitCooldown - (Date.now() - source.lastFetched.getTime())) / 1000);
+        console.log(`${source.name} is in cooldown. ${remainingCooldown}s remaining.`);
+        throw new Error(`Rate limit cooldown for ${source.name}. Try again in ${remainingCooldown}s`);
+      }
+
       // Add delay between requests
       const delay = retryCount > 0 
         ? Math.min(2 ** retryCount * 2000 + Math.random() * 1000, 30000) 
@@ -126,6 +133,8 @@ export class DataCollectionService {
         if (retryCount >= this.maxRetries) {
           source.consecutiveFailures = (source.consecutiveFailures || 0) + 1;
           source.lastFetched = new Date();
+          this.retryDelays[source.name] = Date.now() + this.rateLimitCooldown;
+          console.log(`Rate limit exceeded for ${source.name}. Cooling down for ${this.rateLimitCooldown / 1000}s`);
           throw new Error(`Rate limit exceeded for ${source.name}`);
         }
 
@@ -137,8 +146,9 @@ export class DataCollectionService {
         return this.fetchWithRetry(url, options, source, retryCount + 1);
       }
 
-      // Reset consecutive failures on successful request
+      // Reset consecutive failures and retry delay on successful request
       source.consecutiveFailures = 0;
+      delete this.retryDelays[source.name];
       return response;
     } catch (error) {
       source.consecutiveFailures = (source.consecutiveFailures || 0) + 1;
