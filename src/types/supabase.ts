@@ -125,6 +125,9 @@ export type Database = {
           market_id: string
           shares: number
           avg_price: number
+          average_price: number
+          position_type: string
+          realized_pnl: number | null
           created_at: string
           updated_at: string
           market?: {

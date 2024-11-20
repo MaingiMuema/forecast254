@@ -80,7 +80,7 @@ export default function Portfolio() {
             KES{' '}
             {positions
               .reduce(
-                (sum, p) => sum + calculateTotalValue(p.shares, p.average_price),
+                (sum, p) => sum + calculateTotalValue(p.shares, p.avg_price),
                 0
               )
               .toLocaleString()}
@@ -134,13 +134,13 @@ export default function Portfolio() {
                   </TableCell>
                   <TableCell>{position.shares.toLocaleString()}</TableCell>
                   <TableCell>
-                    KES {position.average_price.toLocaleString()}
+                    KES {position.avg_price.toLocaleString()}
                   </TableCell>
                   <TableCell>
                     KES{' '}
                     {calculateTotalValue(
                       position.shares,
-                      position.average_price
+                      position.avg_price
                     ).toLocaleString()}
                   </TableCell>
                   <TableCell className="capitalize">
