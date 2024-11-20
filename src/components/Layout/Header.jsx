@@ -11,6 +11,8 @@ import {
   FaBook,
   FaQuestionCircle,
   FaUser,
+  FaBars,
+  FaTimes,
   FaSun,
   FaMoon,
   FaChartPie
