@@ -1,16 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient } from '@supabase/supabase-js';
+import { NextRequest } from 'next/server';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+type PageProps = {
+  params: { id: string };
+};
+
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-): Promise<Response> {
+  req: NextRequest,
+  { params }: PageProps
+) {
   try {
     // Await the params before accessing
     const { id } = await Promise.resolve(params);
