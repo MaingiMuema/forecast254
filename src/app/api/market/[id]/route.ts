@@ -7,15 +7,18 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-type Props = {
+type RouteContext = {
   params: {
     id: string;
   };
 };
 
-export async function GET(request: NextRequest, { params }: Props) {
+export async function GET(
+  request: NextRequest,
+  context: RouteContext
+) {
   try {
-    const id = params?.id;
+    const id = context.params?.id;
     
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
