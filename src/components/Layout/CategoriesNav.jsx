@@ -81,7 +81,7 @@ const CategoriesNav = () => {
 
         {/* Categories List */}
         <div className="px-4 pb-3">
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+          <div className="flex items-center gap-2 p-2 overflow-x-auto scrollbar-hide">
             {categories.map((category) => (
               <motion.div
                 key={category.id}
@@ -91,8 +91,8 @@ const CategoriesNav = () => {
                 <Link
                   href={category.href}
                   className={`
-                    relative flex items-center gap-2 px-4 py-2 rounded-full
-                    text-sm font-medium transition-all duration-200
+                    relative flex items-center gap-1.5 px-3 py-1.5 rounded-full
+                    text-xs font-medium transition-all duration-200
                     ${activeCategory === category.id
                       ? 'text-primary dark:text-white'
                       : 'text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-white'
@@ -103,7 +103,7 @@ const CategoriesNav = () => {
                   
                   {showCounts && categoryCounts[category.id] && (
                     <span className={`
-                      relative z-10 text-xs px-2 py-0.5 rounded-full
+                      relative z-10 text-[10px] px-1.5 py-0.5 rounded-full
                       ${activeCategory === category.id
                         ? 'bg-primary/20 text-primary dark:bg-white/10 dark:text-white'
                         : 'bg-muted text-muted-foreground dark:bg-white/5 dark:text-gray-400'
