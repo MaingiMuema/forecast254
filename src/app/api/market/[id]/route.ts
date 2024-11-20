@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient } from '@supabase/supabase-js';
-import { NextRequest } from 'next/server';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -9,13 +8,13 @@ const supabase = createClient(
 );
 
 export async function GET(
-  req: NextRequest,
-  context: { params: { id: string } }
+  request: Request,
+  context: { params: { id: string | string[] } }
 ): Promise<Response> {
   try {
-    // Await params before using them
-    const resolvedParams = await Promise.resolve(context.params);
-    const marketId = resolvedParams.id;
+    // Await the params before using them
+    const { id } = await context.params;
+    const marketId = Array.isArray(id) ? id[0] : id;
     
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
