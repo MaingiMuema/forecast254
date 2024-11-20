@@ -1,31 +1,31 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient } from '@supabase/supabase-js';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-type PageProps = {
-  params: { id: string };
-};
-
-export async function GET(
-  req: NextRequest,
-  { params }: PageProps
-) {
+export async function GET(request: NextRequest) {
   try {
-    // Await the params before accessing
-    const { id } = await Promise.resolve(params);
-    const marketId = id;
+    // Get marketId from URL pattern
+    const pathname = request.nextUrl.pathname;
+    const marketId = pathname.split('/').pop();
+
+    if (!marketId) {
+      return NextResponse.json(
+        { error: 'Market ID is required' },
+        { status: 400 }
+      );
+    }
 
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    if (!marketId || !uuidRegex.test(marketId)) {
-      return new Response(
-        JSON.stringify({ error: 'Invalid market ID format' }),
+    if (!uuidRegex.test(marketId)) {
+      return NextResponse.json(
+        { error: 'Invalid market ID format' },
         { status: 400 }
       );
     }
@@ -49,8 +49,8 @@ export async function GET(
 
     if (marketError) throw marketError;
     if (!market) {
-      return new Response(
-        JSON.stringify({ error: 'Market not found' }),
+      return NextResponse.json(
+        { error: 'Market not found' },
         { status: 404 }
       );
     }
@@ -78,11 +78,11 @@ export async function GET(
       }
     };
 
-    return new Response(JSON.stringify(marketData));
+    return NextResponse.json(marketData);
   } catch (error: any) {
     console.error('API Error:', error);
-    return new Response(
-      JSON.stringify({ error: error.message || 'Failed to fetch market details' }),
+    return NextResponse.json(
+      { error: error.message || 'Failed to fetch market details' },
       { status: 500 }
     );
   }
