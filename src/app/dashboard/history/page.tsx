@@ -82,7 +82,7 @@ export default function History() {
           <p className="text-2xl font-bold">
             KES{' '}
             {transactions
-              .reduce((sum, t) => sum + Math.abs(t.amount), 0)
+              .reduce((sum, t) => sum + Math.abs(t.total), 0)
               .toLocaleString()}
           </p>
         </Card>
@@ -149,7 +149,7 @@ export default function History() {
                     {transaction.market?.title || '-'}
                   </TableCell>
                   <TableCell>
-                    KES {Math.abs(transaction.amount).toLocaleString()}
+                    KES {Math.abs(transaction.total).toLocaleString()}
                   </TableCell>
                   <TableCell>
                     {transaction.shares?.toLocaleString() || '-'}
