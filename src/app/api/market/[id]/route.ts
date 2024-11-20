@@ -10,11 +10,11 @@ const supabase = createClient(
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ): Promise<Response> {
   try {
     // Await params before using them
-    const resolvedParams = await Promise.resolve(params);
+    const resolvedParams = await Promise.resolve(context.params);
     const marketId = resolvedParams.id;
     
     // Validate UUID format
