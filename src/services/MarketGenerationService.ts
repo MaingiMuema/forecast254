@@ -214,6 +214,7 @@ export class MarketGenerationService {
         question: market.question,
         description: market.description,
         category: market.category,
+        start_date: new Date().toISOString(),
         end_date: endDate.toISOString(),
         closing_date: endDate.toISOString(), // Set closing_date to match end_date
         resolution_date: endDate.toISOString(), // Set resolution_date to match end_date
