@@ -4,11 +4,13 @@ import { Database } from '@/types/supabase';
 export type Tables = Database['public']['Tables'];
 export type Profile = Tables['profiles']['Row'];
 export type Market = Tables['markets']['Row'];
-export type Position = Tables['positions']['Row'];
+export type Position = Tables['positions']['Row'] & {
+  market?: Market;
+};
 export type Transaction = Tables['transactions']['Row'];
 export type MarketComment = Tables['market_comments']['Row'];
 export type LeaderboardStats = Tables['leaderboard_stats']['Row'];
-export type NewsArticle = Tables['news_articles']['Row'];
+export type NewsArticle = Tables['news_articles']['Row']
 
 // Profile operations
 export async function getProfile(userId: string) {

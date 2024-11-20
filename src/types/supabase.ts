@@ -127,6 +127,10 @@ export type Database = {
           avg_price: number
           created_at: string
           updated_at: string
+          market?: {
+            title: string
+            status: string
+          }
         }
         Insert: {
           id?: string
