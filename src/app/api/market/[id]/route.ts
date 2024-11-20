@@ -18,7 +18,9 @@ export async function GET(
   props: Props
 ): Promise<NextResponse> {
   try {
-    const marketId = props.params.id;
+    // Await the params before using them
+    const { id } = await Promise.resolve(props.params);
+    const marketId = id;
     
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
