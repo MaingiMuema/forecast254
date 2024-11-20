@@ -6,14 +6,14 @@ import MarketTradingPanel from '@/components/Markets/MarketTradingPanel';
 import MarketStats from '@/components/Markets/MarketStats';
 import MarketSkeleton from '@/components/Markets/MarketSkeleton';
 
-type Props = {
-  params: {
+interface PageProps {
+  params: Promise<{
     id: string;
-  };
-};
+  }>;
+}
 
-export default async function MarketPage({ params }: Props) {
-  const resolvedParams = await Promise.resolve(params);
+export default async function MarketPage({ params }: PageProps) {
+  const resolvedParams = await params;
   const marketId = resolvedParams.id;
 
   return (
