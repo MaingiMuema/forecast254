@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type Json =
   | string
   | number
@@ -148,6 +149,10 @@ export type Database = {
       }
       transactions: {
         Row: {
+          transaction_type: string
+          market: any
+          mpesa_reference: string
+          status: string
           id: string
           user_id: string
           market_id: string
