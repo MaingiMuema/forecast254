@@ -6,31 +6,31 @@ import type { Database } from '@/types/supabase';
 
 export async function POST() {
   try {
+    // Get cookie store (no need to await)
+    const cookieStore = cookies();
+    
+    // Create Supabase client with cookie store
     const supabase = createRouteHandlerClient<Database>({
-      cookies: () => cookies()
+      cookies: () => cookieStore
     });
 
+    // Sign out from Supabase
     await supabase.auth.signOut();
     
+    // Create response
     const response = NextResponse.json(
       { message: 'Logged out successfully' },
       { status: 200 }
     );
 
-    // Clear all auth-related cookies
-    const cookieStore = cookies();
-    const cookiesToClear = (await cookieStore).getAll();
-    cookiesToClear.forEach(cookie => {
-      if (cookie.name.includes('supabase') || cookie.name.includes('sb-')) {
-        response.cookies.delete(cookie.name);
-      }
-    });
-    
+    // Clear the auth cookie if it exists
+    response.cookies.delete('sb-wupwpxcyolbttlbaiayk-auth-token');
+
     return response;
   } catch (error) {
     console.error('Error during logout:', error);
     return NextResponse.json(
-      { error: 'Internal server error during logout' },
+      { error: 'Failed to logout' },
       { status: 500 }
     );
   }

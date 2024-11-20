@@ -1,16 +1,26 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, AuthError } from '@supabase/supabase-js';
+import { User, AuthError, Session, WeakPassword } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+
+type AuthResponse = {
+  data: {
+    user: User | null;
+    session: Session | null;
+    weakPassword?: WeakPassword;
+  } | null;
+  error: AuthError | null;
+};
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  signUp: (email: string, password: string, metadata: any) => Promise<{ data: any; error: AuthError | null; }>;
-  signIn: (email: string, password: string) => Promise<{ data: any; error: AuthError | null; }>;
+  signUp: (email: string, password: string, metadata: any) => Promise<AuthResponse>;
+  signIn: (email: string, password: string) => Promise<AuthResponse>;
   signOut: () => Promise<void>;
 }
 
@@ -61,30 +71,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (error) {
         console.error('Signup error:', error);
-        return { error, data: null };
+        return { data: null, error } as AuthResponse;
       }
 
       // If signup is successful but needs email confirmation
       if (data?.user && !data?.session) {
         return {
           data,
-          error: {
-            name: 'EmailConfirmationRequired',
-            message: 'Please check your email for a confirmation link to complete your registration.',
-          } as AuthError,
-        };
+          error: null,
+        } as AuthResponse;
       }
 
-      return { data, error: null };
+      return { data, error: null } as AuthResponse;
     } catch (error) {
       console.error('Unexpected error during signup:', error);
       return {
         data: null,
-        error: {
-          name: 'UnexpectedError',
-          message: 'An unexpected error occurred. Please try again.',
-        } as AuthError,
-      };
+        error: new AuthError('An unexpected error occurred. Please try again.'),
+      } as AuthResponse;
     }
   };
 
@@ -114,12 +118,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
 
         return {
-          error: {
-            ...error,
-            message: errorMessage,
-          },
           data: null,
-        };
+          error,
+        } as AuthResponse;
       }
 
       // Ensure the session cookie is set after successful login
@@ -133,16 +134,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
       }
 
-      return { data, error: null };
+      return { data, error: null } as AuthResponse;
     } catch (error) {
       console.error('Unexpected error during login:', error);
       return {
         data: null,
-        error: {
-          name: 'UnexpectedError',
-          message: 'An unexpected error occurred. Please try again.',
-        } as AuthError,
-      };
+        error: new AuthError('An unexpected error occurred. Please try again.'),
+      } as AuthResponse;
     }
   };
 
