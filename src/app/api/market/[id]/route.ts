@@ -1,32 +1,26 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient } from '@supabase/supabase-js';
-import { NextResponse } from 'next/server';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-interface Props {
-  params: { id: string }
-  searchParams: { [key: string]: string | string[] | undefined }
-}
-
 export async function GET(
   request: Request,
-  props: Props
-): Promise<NextResponse> {
+  { params }: { params: { id: string } }
+): Promise<Response> {
   try {
-    // Await the params before using them
-    const { id } = await Promise.resolve(props.params);
+    // Await the params before accessing
+    const { id } = await Promise.resolve(params);
     const marketId = id;
-    
+
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     if (!marketId || !uuidRegex.test(marketId)) {
-      return NextResponse.json(
-        { error: 'Invalid market ID format' },
+      return new Response(
+        JSON.stringify({ error: 'Invalid market ID format' }),
         { status: 400 }
       );
     }
@@ -50,8 +44,8 @@ export async function GET(
 
     if (marketError) throw marketError;
     if (!market) {
-      return NextResponse.json(
-        { error: 'Market not found' },
+      return new Response(
+        JSON.stringify({ error: 'Market not found' }),
         { status: 404 }
       );
     }
@@ -79,11 +73,11 @@ export async function GET(
       }
     };
 
-    return NextResponse.json(marketData);
+    return new Response(JSON.stringify(marketData));
   } catch (error: any) {
     console.error('API Error:', error);
-    return NextResponse.json(
-      { error: error.message || 'Failed to fetch market details' },
+    return new Response(
+      JSON.stringify({ error: error.message || 'Failed to fetch market details' }),
       { status: 500 }
     );
   }
