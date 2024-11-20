@@ -6,6 +6,10 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+interface CategoryCounts {
+  [key: string]: number;
+}
+
 export async function GET() {
   try {
     // Get category counts from the view we created
@@ -18,10 +22,10 @@ export async function GET() {
     }
 
     // Transform into an object with category as key
-    const counts = categoryCounts.reduce((acc, { category, active_count }) => {
+    const counts: CategoryCounts = categoryCounts.reduce((acc, { category, active_count }) => {
       acc[category] = active_count;
       return acc;
-    }, {} as Record<string, number>);
+    }, {});
 
     // Add trending count (markets with high trending_score)
     const { count: trendingCount } = await supabase
