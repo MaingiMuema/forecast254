@@ -4,6 +4,7 @@ import Sidebar from "@/components/Layout/Sidebar";
 import MobileNav from "@/components/Layout/MobileNav";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import CategoriesNav from "@/components/Layout/CategoriesNav";
 
 export default function DashboardLayout({
   children,
@@ -35,6 +36,8 @@ export default function DashboardLayout({
         </div>
 
         <main className="py-10">
+          <CategoriesNav />
+          <br/>
           <div className="px-4 sm:px-6 lg:px-8">{children}</div>
         </main>
       </div>

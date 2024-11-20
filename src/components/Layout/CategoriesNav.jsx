@@ -1,86 +1,144 @@
-"use client";
-import React, { useState } from "react";
+'use client';
+
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { usePathname, useSearchParams } from 'next/navigation';
 
 const CategoriesNav = () => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState("all");
+  const [categoryCounts, setCategoryCounts] = useState({});
 
   const categories = [
-    { id: "all", label: "All Markets", href: "/markets/all" },
-    { id: "trending", label: "Trending", href: "/markets/trending" },
-    { id: "sports", label: "Sports", href: "/markets/sports", hot: true },
-    { id: "politics", label: "Politics", href: "/markets/politics" },
+    { id: "all", label: "All Markets", href: "/markets" },
+    { id: "trending", label: "Trending", href: "/markets?category=trending" },
+    { id: "sports", label: "Sports", href: "/markets?category=sports" },
+    { id: "politics", label: "Politics", href: "/markets?category=politics", hot: true },
     {
       id: "entertainment",
       label: "Entertainment",
-      href: "/markets/entertainment",
+      href: "/markets?category=entertainment",
     },
-    { id: "business", label: "Business", href: "/markets/business" },
-    { id: "tech", label: "Technology", href: "/markets/tech" },
-    { id: "education", label: "Education", href: "/markets/education" },
+    { id: "business", label: "Business", href: "/markets?category=business" },
+    { id: "tech", label: "Technology", href: "/markets?category=tech" },
+    { id: "education", label: "Education", href: "/markets?category=education" },
   ];
 
-  return (
-    <nav className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 border-b border-gray-700/50 sticky top-0 z-50 backdrop-blur-sm bg-opacity-80">
-      <div className="container mx-auto px-4">
-        <ul className="flex items-center space-x-1 md:space-x-2 overflow-x-auto py-2 scrollbar-hide">
-          {/* Live indicator */}
-          <li className="flex-shrink-0 pl-1">
-            <div className="flex items-center space-x-3">
-              <div className="flex items-center space-x-1">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                <span className="text-emerald-500 text-xs font-medium">
-                  LIVE
-                </span>
-              </div>
-              <div className="h-4 w-px bg-gray-700/50"></div>
-            </div>
-          </li>
+  useEffect(() => {
+    const category = searchParams.get('category') || 'all';
+    setActiveCategory(category);
 
-          {/* Category links */}
-          {categories.map((category) => (
-            <li key={category.id} className="flex-shrink-0">
-              <Link
-                href={category.href}
-                onClick={() => setActiveCategory(category.id)}
-                className="relative group"
+    const fetchCategoryCounts = async () => {
+      try {
+        const response = await fetch('/api/markets/categories');
+        if (response.ok) {
+          const data = await response.json();
+          setCategoryCounts(data);
+        }
+      } catch (error) {
+        console.error('Error fetching category counts:', error);
+      }
+    };
+
+    fetchCategoryCounts();
+  }, [searchParams]);
+
+  const showCounts = pathname === '/markets';
+
+  return (
+    <div className="bg-gradient-to-b from-background via-background/95 to-background/90 backdrop-blur-xl border-b border-white/5">
+      <div className="container mx-auto">
+        <div className="flex items-center justify-between px-4 py-3">
+          {/* Live Markets Indicator */}
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2 bg-emerald-500/5 px-3 py-1.5 rounded-full">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-emerald-500 text-xs font-medium tracking-wide">
+                LIVE MARKETS
+              </span>
+            </div>
+            <div className="hidden md:block h-6 w-px bg-white/5"></div>
+          </div>
+
+          {/* Market Stats - Can be added later */}
+          <div className="hidden md:flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-400">24h Volume:</span>
+              <span className="text-sm font-medium text-white">KES 1.2M</span>
+            </div>
+            <div className="h-6 w-px bg-white/5"></div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-400">Active Markets:</span>
+              <span className="text-sm font-medium text-white">{categoryCounts.all || 0}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Categories List */}
+        <div className="px-4 pb-3">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+            {categories.map((category) => (
+              <motion.div
+                key={category.id}
+                className="flex-shrink-0"
+                whileTap={{ scale: 0.95 }}
               >
-                <div className="px-3 py-2 rounded-full text-sm transition-all duration-200 whitespace-nowrap flex items-center space-x-1.5">
-                  <span
-                    className={`
-                    ${
-                      activeCategory === category.id
-                        ? "text-white font-medium"
-                        : "text-gray-400 group-hover:text-gray-200"
+                <Link
+                  href={category.href}
+                  className={`
+                    relative flex items-center gap-2 px-4 py-2 rounded-full
+                    text-sm font-medium transition-all duration-200
+                    ${activeCategory === category.id
+                      ? 'text-white'
+                      : 'text-gray-400 hover:text-white'
                     }
                   `}
-                  >
-                    {category.label}
-                  </span>
-                  {category.hot && (
-                    <span className="bg-red-500/10 text-red-500 text-[10px] font-medium px-1.5 py-0.5 rounded-full">
-                      HOT
+                >
+                  <span className="relative z-10">{category.label}</span>
+                  
+                  {showCounts && categoryCounts[category.id] && (
+                    <span className={`
+                      relative z-10 text-xs px-2 py-0.5 rounded-full
+                      ${activeCategory === category.id
+                        ? 'bg-white/10 text-white'
+                        : 'bg-white/5 text-gray-400'
+                      }
+                    `}>
+                      {categoryCounts[category.id]}
                     </span>
                   )}
-                </div>
-                {activeCategory === category.id && (
-                  <motion.div
-                    layoutId="activeCategory"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500"
-                    initial={false}
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </Link>
-            </li>
-          ))}
-        </ul>
+                  
+                  {category.hot && (
+                    <span className="relative z-10 flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                    </span>
+                  )}
+
+                  {activeCategory === category.id && (
+                    <motion.div
+                      layoutId="activeCategory"
+                      className="absolute inset-0 bg-white/5 rounded-full ring-1 ring-white/10"
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 30,
+                        duration: 0.2
+                      }}
+                    />
+                  )}
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
-    </nav>
+    </div>
   );
 };
 

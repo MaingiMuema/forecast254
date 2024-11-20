@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useTheme } from '@/hooks/useTheme';
 import { useAuth } from '@/contexts/AuthContext';
@@ -17,12 +17,57 @@ import {
   FaUser,
   FaChartPie
 } from "react-icons/fa";
+import Spinner from '@/components/ui/Spinner';
 
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
   const { user, signOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const searchRef = useRef(null);
+
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowResults(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Debounced search function
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      if (searchQuery.trim()) {
+        setIsSearching(true);
+        try {
+          const response = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
+          const data = await response.json();
+          
+          if (response.ok) {
+            setSearchResults(data.markets);
+            setShowResults(true);
+          } else {
+            console.error('Search error:', data.error);
+          }
+        } catch (error) {
+          console.error('Failed to fetch search results:', error);
+        }
+        setIsSearching(false);
+      } else {
+        setSearchResults([]);
+        setShowResults(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   const handleSignOut = async () => {
     try {
@@ -65,16 +110,77 @@ const Header = () => {
           </div>
 
           {/* Search Bar */}
-          <div className="hidden md:flex items-center flex-1 mx-8">
+          <div className="hidden md:flex items-center flex-1 mx-8" ref={searchRef}>
             <div className="relative w-full max-w-xl">
-              <input
-                type="text"
-                placeholder="Search markets..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg bg-secondary/80 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <FaSearch className="absolute right-3 top-3 text-muted-foreground" />
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search markets..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full px-4 py-2 pr-10 rounded-lg bg-secondary/80 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  {isSearching ? (
+                    <Spinner className="text-muted-foreground" />
+                  ) : (
+                    <FaSearch className="text-muted-foreground" />
+                  )}
+                </div>
+              </div>
+              
+              {/* Search Results Dropdown */}
+              {showResults && searchResults.length > 0 && (
+                <div 
+                  className="absolute w-full mt-2 bg-background border border-border/40 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto"
+                  style={{
+                    scrollbarWidth: 'thin',
+                    scrollbarColor: 'hsl(var(--muted-foreground) / 0.2) transparent',
+                    msOverflowStyle: 'thin',
+                  }}
+                >
+                  <style jsx>{`
+                    div::-webkit-scrollbar {
+                      width: 4px;
+                    }
+                    div::-webkit-scrollbar-track {
+                      background: transparent;
+                    }
+                    div::-webkit-scrollbar-thumb {
+                      background: hsl(var(--muted-foreground) / 0.2);
+                      border-radius: 20px;
+                    }
+                    div::-webkit-scrollbar-thumb:hover {
+                      background: hsl(var(--muted-foreground) / 0.3);
+                    }
+                  `}</style>
+                  {searchResults.map((market) => (
+                    <Link
+                      key={market.id}
+                      href={`/markets/${market.id}`}
+                      className="block p-4 hover:bg-accent border-b border-border/40 last:border-0"
+                      onClick={() => setShowResults(false)}
+                    >
+                      <h3 className="font-medium text-foreground">{market.title}</h3>
+                      <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                        {market.description}
+                      </p>
+                      <div className="flex items-center space-x-2 mt-2">
+                        <span className="text-xs px-2 py-1 rounded-full bg-secondary text-muted-foreground">
+                          {market.category}
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+
+              {/* No Results Message */}
+              {showResults && searchQuery && searchResults.length === 0 && !isSearching && (
+                <div className="absolute w-full mt-2 bg-background border border-border/40 rounded-lg shadow-lg z-50 p-4">
+                  <p className="text-muted-foreground text-center">No markets found</p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -141,35 +247,27 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 space-y-4">
-            <div className="relative mb-4">
-              <input
-                type="text"
-                placeholder="Search markets..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg bg-secondary/80 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <FaSearch className="absolute right-3 top-3 text-muted-foreground" />
-            </div>
+          <div className={`md:hidden fixed inset-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 ${isMenuOpen ? 'block' : 'hidden'}`}>
+            <div className="container mx-auto px-4 py-8">
+              <div className="space-y-4">
+                <Link href="/markets" className="mobile-nav-link" onClick={() => setIsMenuOpen(false)}>
+                  <FaChartLine className="text-lg" />
+                  <span>Markets</span>
+                </Link>
+                <Link href="/leaderboard" className="mobile-nav-link" onClick={() => setIsMenuOpen(false)}>
+                  <FaTrophy className="text-lg" />
+                  <span>Leaderboard</span>
+                </Link>
+                <Link href="/learn" className="mobile-nav-link" onClick={() => setIsMenuOpen(false)}>
+                  <FaBook className="text-lg" />
+                  <span>Learn</span>
+                </Link>
+                <Link href="/help" className="mobile-nav-link" onClick={() => setIsMenuOpen(false)}>
+                  <FaQuestionCircle className="text-lg" />
+                  <span>Help</span>
+                </Link>
+              </div>
 
-            <div className="flex flex-col space-y-4">
-              <Link href="/markets" className="mobile-nav-link">
-                <FaChartLine />
-                <span>Markets</span>
-              </Link>
-              <Link href="/leaderboard" className="mobile-nav-link">
-                <FaTrophy />
-                <span>Leaderboard</span>
-              </Link>
-              <Link href="/learn" className="mobile-nav-link">
-                <FaBook />
-                <span>Learn</span>
-              </Link>
-              <Link href="/help" className="mobile-nav-link">
-                <FaQuestionCircle />
-                <span>Help</span>
-              </Link>
               <div className="pt-4 border-t border-border/40">
                 {user ? (
                   <>

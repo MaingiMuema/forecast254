@@ -17,9 +17,20 @@ interface MarketTemplate {
   resolutionCriteria: string;
 }
 
+class RateLimitError extends Error {
+  retryAfter: number;
+  constructor(message: string, retryAfter: number) {
+    super(message);
+    this.name = 'RateLimitError';
+    this.retryAfter = retryAfter;
+  }
+}
+
 export class MarketGenerationService {
   private static instance: MarketGenerationService;
   private groq: Groq;
+  private retryQueue: { article: any; retryAfter: number }[] = [];
+  private isProcessingQueue = false;
   private isGenerating: boolean = false;
 
   private constructor() {
@@ -33,6 +44,55 @@ export class MarketGenerationService {
       MarketGenerationService.instance = new MarketGenerationService();
     }
     return MarketGenerationService.instance;
+  }
+
+  private parseRetryAfter(error: any): number {
+    try {
+      const errorObj = JSON.parse(error.message);
+      const message = errorObj.error.message;
+      const match = message.match(/Please try again in (\d+)m([\d.]+)s/);
+      if (match) {
+        const minutes = parseInt(match[1]);
+        const seconds = parseFloat(match[2]);
+        return (minutes * 60 + seconds) * 1000; // Convert to milliseconds
+      }
+    } catch (e) {
+      console.error('Error parsing retry after time:', e);
+    }
+    return 120000; // Default to 2 minutes if parsing fails
+  }
+
+  private async processRetryQueue() {
+    if (this.isProcessingQueue) return;
+    this.isProcessingQueue = true;
+
+    while (this.retryQueue.length > 0) {
+      const now = Date.now();
+      const nextItem = this.retryQueue[0];
+
+      if (now < nextItem.retryAfter) {
+        const waitTime = nextItem.retryAfter - now;
+        console.log(`Waiting ${Math.round(waitTime / 1000)}s before next retry...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+      }
+
+      const item = this.retryQueue.shift()!;
+      try {
+        await this.generateMarketFromArticle(item.article);
+      } catch (error: any) {
+        if (error instanceof RateLimitError) {
+          this.retryQueue.push({
+            article: item.article,
+            retryAfter: Date.now() + error.retryAfter
+          });
+          console.log(`Rate limit hit, queued for retry in ${Math.round(error.retryAfter / 1000)}s`);
+        } else {
+          console.error(`Failed to generate market for article after retry:`, error);
+        }
+      }
+    }
+
+    this.isProcessingQueue = false;
   }
 
   private async generateMarketFromArticle(article: any): Promise<MarketTemplate | null> {
@@ -104,9 +164,12 @@ export class MarketGenerationService {
         console.error('Error parsing market JSON:', error);
         return null;
       }
-    } catch (error) {
-      console.error('Error generating market:', error);
-      return null;
+    } catch (error: any) {
+      if (error.status === 429) {
+        const retryAfter = this.parseRetryAfter(error);
+        throw new RateLimitError('Rate limit exceeded', retryAfter);
+      }
+      throw error;
     }
   }
 
@@ -255,10 +318,23 @@ export class MarketGenerationService {
           } else {
             console.log(`Could not generate valid market for article: ${article.title}`);
           }
-        } catch (error) {
-          console.error(`Error processing article ${article.id}:`, error);
-          continue;
+        } catch (error: any) {
+          if (error instanceof RateLimitError) {
+            console.log(`Rate limit hit, queuing article for retry in ${Math.round(error.retryAfter / 1000)}s`);
+            this.retryQueue.push({
+              article,
+              retryAfter: Date.now() + error.retryAfter
+            });
+          } else {
+            console.error(`Error processing article ${article.id}:`, error);
+            continue;
+          }
         }
+      }
+
+      // Start processing retry queue if not already processing
+      if (this.retryQueue.length > 0 && !this.isProcessingQueue) {
+        this.processRetryQueue();
       }
 
       console.log(`Market generation completed. Created ${marketsCreated} new markets`);

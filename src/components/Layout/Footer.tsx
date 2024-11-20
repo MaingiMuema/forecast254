@@ -152,7 +152,7 @@ const Footer = () => {
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
               <span>Built in Nairobi 🇰🇪</span>
               <span className="text-primary">•</span>
-              <span>Powered by Codeium</span>
+              <span>Powered by Smatica</span>
             </div>
           </div>
         </div>
