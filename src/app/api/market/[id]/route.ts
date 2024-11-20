@@ -9,16 +9,15 @@ const supabase = createClient(
 );
 
 export async function GET(
-  request: NextRequest,
-  context: { params: { id: string } }
-): Promise<Response> {
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
-    const params = await Promise.resolve(context.params);
-    const { id } = params;
+    const marketId = params.id;
     
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    if (!id || !uuidRegex.test(id)) {
+    if (!marketId || !uuidRegex.test(marketId)) {
       return NextResponse.json(
         { error: 'Invalid market ID format' },
         { status: 400 }
@@ -39,7 +38,7 @@ export async function GET(
         creator_id,
         resolved_value
       `)
-      .eq('id', id)
+      .eq('id', marketId)
       .single();
 
     if (marketError) throw marketError;
@@ -54,7 +53,7 @@ export async function GET(
     const { data: stats, error: statsError } = await supabase
       .from('transactions')
       .select('*')
-      .eq('market_id', id);
+      .eq('market_id', marketId);
 
     if (statsError) throw statsError;
 
