@@ -30,7 +30,8 @@ export default function Portfolio() {
             *,
             market:markets(title, status)
           `)
-          .eq('user_id', user.id);
+          .eq('user_id', user.id)
+          .returns<Position[]>();
 
         if (error) throw error;
         setPositions(data || []);

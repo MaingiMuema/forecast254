@@ -5,7 +5,7 @@ export type Tables = Database['public']['Tables'];
 export type Profile = Tables['profiles']['Row'];
 export type Market = Tables['markets']['Row'];
 export type Position = Tables['positions']['Row'] & {
-  market?: Market;
+  market?: Partial<Market>;
 };
 export type Transaction = Tables['transactions']['Row'];
 export type MarketComment = Tables['market_comments']['Row'];
