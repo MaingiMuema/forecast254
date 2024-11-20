@@ -5,7 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from '@/hooks/useTheme'
 import { AuthProvider } from '@/contexts/AuthContext'
 import MainLayout from "@/components/Layout/MainLayout";
-import DataCollectionService from '@/services/DataCollectionService';
+import { DataCollectionService } from '@/services/DataCollectionService';
 import DataCollectionScheduler from "@/components/DataCollectionScheduler";
 import MarketGenerationScheduler from "@/components/MarketGenerationScheduler";
 
