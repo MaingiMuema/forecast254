@@ -64,6 +64,15 @@ export default function Settings() {
     setSaving(true);
     setMessage({ type: '', text: '' });
 
+    if (!user?.id) {
+      setMessage({
+        type: 'error',
+        text: 'You must be logged in to update your profile',
+      });
+      setSaving(false);
+      return;
+    }
+
     try {
       const { error } = await supabase
         .from('profiles')
@@ -74,7 +83,7 @@ export default function Settings() {
           avatar_url: formData.avatarUrl,
           updated_at: new Date().toISOString(),
         })
-        .eq('id', user?.id);
+        .eq('id', user.id);
 
       if (error) throw error;
       setMessage({
