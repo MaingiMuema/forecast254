@@ -1,51 +1,81 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-import { Database } from '@/types/supabase';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import type { Database } from '@/types/supabase';
+
+interface Session {
+  access_token: string;
+  refresh_token: string;
+}
+
+interface SessionRequest {
+  session: Session;
+}
 
 export async function POST(request: Request) {
   try {
-    const { session } = await request.json();
+    const { session }: SessionRequest = await request.json();
     
     if (!session) {
-      return NextResponse.json({ error: 'No session provided' }, { status: 400 });
+      return new NextResponse(JSON.stringify({ error: 'No session provided' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
-    const cookieStore = cookies();
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    const supabase = createRouteHandlerClient<Database>({ cookies });
+
+    await supabase.auth.setSession(session);
+
+    return NextResponse.json({ message: 'Session synced successfully' });
+  } catch (error) {
+    console.error('Session sync error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    const supabase = createRouteHandlerClient<Database>({ cookies });
+
+    const { data: { session }, error } = await supabase.auth.getSession();
+
+    if (error) {
+      throw error;
+    }
+
+    return NextResponse.json({ session });
+  } catch (error) {
+    console.error('Get session error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const cookieStore = await cookies();
     
-    const supabase = createClient<Database>(supabaseUrl, supabaseKey, {
-      auth: {
-        persistSession: false,
-        autoRefreshToken: false,
+    // Clear auth cookie manually first
+    const cookieName = `sb-${process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID}-auth-token`;
+    cookieStore.delete(cookieName);
+    
+    const supabase = createRouteHandlerClient<Database>({ cookies });
+    
+    const { error } = await supabase.auth.signOut();
+    
+    if (error) {
+      console.error('Supabase signOut error:', error);
+    }
+
+    return new NextResponse(null, { 
+      status: 204,
+      headers: {
+        'Set-Cookie': `${cookieName}=; Path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=Lax`
       }
     });
-
-    // Set session cookie
-    const response = NextResponse.json({ status: 'success' });
-    
-    // Set auth cookie
-    response.cookies.set('sb-access-token', session.access_token, {
-      path: '/',
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7 // 1 week
-    });
-
-    response.cookies.set('sb-refresh-token', session.refresh_token, {
-      path: '/',
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7 // 1 week
-    });
-
-    return response;
   } catch (error) {
-    console.error('Session error:', error);
+    console.error('Sign out error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

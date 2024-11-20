@@ -25,23 +25,29 @@ export default function AuthForm({ mode = 'login' }) {
     try {
       if (!formData.email || !formData.password) {
         setError('Please fill in all fields');
+        setLoading(false);
         return;
       }
 
       if (!formData.email.includes('@')) {
         setError('Please enter a valid email address');
+        setLoading(false);
         return;
       }
 
       if (formData.password.length < 6) {
         setError('Password must be at least 6 characters long');
+        setLoading(false);
         return;
       }
 
-      const { error: authError } = await signIn(formData.email, formData.password);
+      console.log('Submitting login form:', { email: formData.email });
+      const response = await signIn(formData.email, formData.password);
+      console.log('Login response:', response);
 
-      if (authError) {
-        setError(authError.message);
+      if (response.error) {
+        console.error('Login error:', response.error);
+        setError(response.error.message);
         return;
       }
 
@@ -49,10 +55,11 @@ export default function AuthForm({ mode = 'login' }) {
       const params = new URLSearchParams(window.location.search);
       const redirectTo = params.get('redirectTo') || '/dashboard';
       
-      // Successful login
+      console.log('Login successful, redirecting to:', redirectTo);
       router.push(redirectTo);
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
+      console.error('Login error:', err);
+      setError(err.message || 'An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -102,65 +109,46 @@ export default function AuthForm({ mode = 'login' }) {
             </div>
           )}
 
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-foreground">
-                Email address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={formData.email}
-                onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 bg-background border border-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                placeholder="Enter your email"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-foreground">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-                required
-                value={formData.password}
-                onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 bg-background border border-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                placeholder="Enter your password"
-              />
-            </div>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-foreground">
+              Email address
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              className="mt-1 block w-full px-3 py-2 bg-background border border-input rounded-md shadow-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm"
+              value={formData.email}
+              onChange={handleInputChange}
+              disabled={loading}
+            />
           </div>
 
-          {mode === 'login' && (
-            <div className="flex items-center justify-end">
-              <Link
-                href="/forgot-password"
-                className="text-sm font-medium text-primary hover:text-primary/90"
-              >
-                Forgot your password?
-              </Link>
-            </div>
-          )}
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-foreground">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              className="mt-1 block w-full px-3 py-2 bg-background border border-input rounded-md shadow-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm"
+              value={formData.password}
+              onChange={handleInputChange}
+              disabled={loading}
+            />
+          </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? (
-              'Loading...'
-            ) : mode === 'login' ? (
-              'Sign in'
-            ) : (
-              'Create account'
-            )}
+            {loading ? 'Loading...' : mode === 'login' ? 'Sign in' : 'Sign up'}
           </button>
         </form>
       </div>

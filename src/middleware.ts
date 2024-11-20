@@ -3,24 +3,27 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // List of public routes that don't require authentication
-const publicRoutes = ['/', '/login', '/register'];
+const publicRoutes = ['/', '/login', '/register', '/api/auth/session'];
 
 export async function middleware(request: NextRequest) {
-  // Create a response object that we'll modify and return
-  const res = NextResponse.next();
-
   try {
-    // Create Supabase client specific to this request
-    const supabase = createMiddlewareClient({ req: request, res });
+    // Create a response object that we'll modify and return
+    const response = NextResponse.next();
 
-    // Refresh session if expired - required for Server Components
+    // Create Supabase client specific to this request
+    const supabase = createMiddlewareClient({ 
+      req: request,
+      res: response,
+    });
+
+    // Refresh session if expired
     const {
       data: { session },
+      error: sessionError,
     } = await supabase.auth.getSession();
 
-    // Add session token to response headers
-    if (session) {
-      res.headers.set('x-session-user', session.user.email || '');
+    if (sessionError) {
+      console.error('Session error:', sessionError);
     }
 
     const pathname = request.nextUrl.pathname;
@@ -28,46 +31,40 @@ export async function middleware(request: NextRequest) {
     console.log('Middleware - Session:', session ? 'Exists' : 'None');
 
     // Check if the route is public
-    const isPublicRoute = publicRoutes.some(route => pathname === route);
+    const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
 
     // If logged in and trying to access login/register pages, redirect to dashboard
     if (session && (pathname === '/login' || pathname === '/register')) {
       console.log('Middleware - Redirecting to dashboard (logged in user on auth page)');
-      const response = NextResponse.redirect(new URL('/dashboard', request.url));
-      // Copy over the session cookie
-      const sessionCookie = request.cookies.get('sb-auth-token');
-      if (sessionCookie) {
-        response.cookies.set('sb-auth-token', sessionCookie.value, {
-          path: '/',
-          sameSite: 'lax',
-          secure: process.env.NODE_ENV === 'production'
-        });
-      }
-      return response;
+      const redirectUrl = new URL('/dashboard', request.url);
+      return NextResponse.redirect(redirectUrl);
     }
 
     // If not logged in and trying to access protected route, redirect to login
-    if (!session && !isPublicRoute && pathname.startsWith('/dashboard')) {
+    if (!session && !isPublicRoute) {
       console.log('Middleware - Redirecting to login (no session on protected route)');
       const redirectUrl = new URL('/login', request.url);
       redirectUrl.searchParams.set('redirectTo', pathname);
       return NextResponse.redirect(redirectUrl);
     }
 
-    // Add auth cookie to response
-    const authCookie = request.cookies.get('sb-auth-token');
-    if (authCookie) {
-      res.cookies.set('sb-auth-token', authCookie.value, {
+    // Set cookie for session
+    if (session) {
+      response.cookies.set('sb:session', session.token, {
+        maxAge: session.expires_in,
         path: '/',
         sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production'
+        secure: true,
       });
     }
 
-    return res;
+    return response;
   } catch (error) {
     console.error('Middleware error:', error);
-    return res;
+    // In case of error, redirect to login with error parameter
+    const redirectUrl = new URL('/login', request.url);
+    redirectUrl.searchParams.set('error', 'auth_error');
+    return NextResponse.redirect(redirectUrl);
   }
 }
 
@@ -75,12 +72,12 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match all request paths except:
+     * Match all request paths except for the ones starting with:
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * - public folder
+     * - public (public files)
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|public).*)',
   ],
 };

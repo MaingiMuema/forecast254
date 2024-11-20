@@ -3,7 +3,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, AuthError, Session, WeakPassword } from '@supabase/supabase-js';
+import { User, AuthError, Session, AuthChangeEvent } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 
@@ -11,7 +11,6 @@ type AuthResponse = {
   data: {
     user: User | null;
     session: Session | null;
-    weakPassword?: WeakPassword;
   } | null;
   error: AuthError | null;
 };
@@ -19,7 +18,7 @@ type AuthResponse = {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  signUp: (email: string, password: string, metadata: any) => Promise<AuthResponse>;
+  signUp: (email: string, password: string, metadata: Record<string, any>) => Promise<AuthResponse>;
   signIn: (email: string, password: string) => Promise<AuthResponse>;
   signOut: () => Promise<void>;
 }
@@ -32,35 +31,77 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    // Check active sessions and sets the user
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+    let mounted = true;
 
-    // Listen for changes on auth state (logged in, signed out, etc.)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-      
-      if (session) {
-        // Ensure the session cookie is set
-        await fetch('/api/auth/session', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ session }),
-        });
+    // Initialize auth state
+    const initializeAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (mounted) {
+          setUser(session?.user ?? null);
+          setLoading(false);
+        }
+
+        // Set up auth state listener
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+          async (event: AuthChangeEvent, session: Session | null) => {
+            console.log('Auth state changed:', event, session?.user?.email);
+            
+            if (mounted) {
+              setUser(session?.user ?? null);
+            }
+
+            if (session) {
+              // Sync session with our API
+              try {
+                const response = await fetch('/api/auth/session', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ session }),
+                });
+
+                if (!response.ok) {
+                  throw new Error('Failed to sync session');
+                }
+
+                if (event === 'SIGNED_IN') {
+                  router.refresh();
+                }
+              } catch (error) {
+                console.error('Session sync error:', error);
+              }
+            } else if (event === 'SIGNED_OUT') {
+              // Clear session in API
+              try {
+                await fetch('/api/auth/session', {
+                  method: 'DELETE',
+                });
+                router.refresh();
+              } catch (error) {
+                console.error('Session clear error:', error);
+              }
+            }
+          }
+        );
+
+        return () => {
+          mounted = false;
+          subscription.unsubscribe();
+        };
+      } catch (error) {
+        console.error('Auth initialization error:', error);
+        if (mounted) {
+          setLoading(false);
+        }
       }
-    });
+    };
 
-    return () => subscription.unsubscribe();
-  }, []);
+    initializeAuth();
+  }, [router]);
 
-  const signUp = async (email: string, password: string, metadata: any) => {
+  const signUp = async (email: string, password: string, metadata: Record<string, any>) => {
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const response = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -69,101 +110,85 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         },
       });
 
-      if (error) {
-        console.error('Signup error:', error);
-        return { data: null, error } as AuthResponse;
+      if (response.error) {
+        throw response.error;
       }
 
-      // If signup is successful but needs email confirmation
-      if (data?.user && !data?.session) {
-        return {
-          data,
-          error: null,
-        } as AuthResponse;
+      if (response.data.session) {
+        await fetch('/api/auth/session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session: response.data.session }),
+        });
       }
 
-      return { data, error: null } as AuthResponse;
+      return response;
     } catch (error) {
-      console.error('Unexpected error during signup:', error);
-      return {
-        data: null,
-        error: new AuthError('An unexpected error occurred. Please try again.'),
-      } as AuthResponse;
+      console.error('Signup error:', error);
+      throw error;
     }
   };
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      console.log('Attempting sign in for:', email);
+      const response = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (error) {
-        console.error('Login error:', error);
-        let errorMessage = 'Invalid login credentials.';
-        
-        switch (error.message) {
-          case 'Invalid login credentials':
-            errorMessage = 'The email or password you entered is incorrect.';
-            break;
-          case 'Email not confirmed':
-            errorMessage = 'Please confirm your email address before logging in.';
-            break;
-          case 'Too many requests':
-            errorMessage = 'Too many login attempts. Please try again later.';
-            break;
-          default:
-            errorMessage = error.message;
-        }
+      console.log('Sign in response:', response);
 
-        return {
-          data: null,
-          error,
-        } as AuthResponse;
+      if (response.error) {
+        console.error('Sign in error:', response.error);
+        throw response.error;
       }
 
-      // Ensure the session cookie is set after successful login
-      if (data.session) {
+      if (response.data.session) {
         await fetch('/api/auth/session', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ session: data.session }),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session: response.data.session }),
         });
       }
 
-      return { data, error: null } as AuthResponse;
+      return response;
     } catch (error) {
-      console.error('Unexpected error during login:', error);
-      return {
-        data: null,
-        error: new AuthError('An unexpected error occurred. Please try again.'),
-      } as AuthResponse;
+      console.error('Sign in error:', error);
+      throw error;
     }
   };
 
   const signOut = async () => {
     try {
-      // First clear the session on the client side
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-
-      // Then clear session cookies via API
-      await fetch('/api/auth/logout', { 
-        method: 'POST',
-        credentials: 'same-origin' // Important for cookie handling
+      // First clear the session in our API
+      const response = await fetch('/api/auth/session', {
+        method: 'DELETE',
       });
 
-      // Force clear user state
+      if (!response.ok) {
+        const error = await response.json();
+        console.error('API signout error:', error);
+      }
+
+      // Clear local state regardless of API response
       setUser(null);
+
+      // Clear any local storage
+      if (typeof window !== 'undefined') {
+        const storageKey = `sb-${process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID}-auth-token`;
+        window.localStorage.removeItem(storageKey);
+      }
       
-      // Redirect to login
+      // Finally redirect
+      router.refresh();
       router.push('/login');
     } catch (error) {
-      console.error('Error signing out:', error);
-      throw error;
+      console.error('Sign out error:', error);
+      // Still clear state and redirect even if there's an error
+      setUser(null);
+      router.refresh();
+      router.push('/login');
     }
   };
 
@@ -175,11 +200,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signOut,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
