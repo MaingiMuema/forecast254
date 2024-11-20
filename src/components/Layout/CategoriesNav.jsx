@@ -19,7 +19,7 @@ const CategoriesNav = () => {
 
   const categories = [
     { id: "all", label: "All Markets", href: "/markets" },
-    { id: "trending", label: "Trending", href: "/markets?category=trending" },
+    //{ id: "trending", label: "Trending", href: "/markets?category=trending" },
     { id: "sports", label: "Sports", href: "/markets?category=sports" },
     { id: "politics", label: "Politics", href: "/markets?category=politics", hot: true },
     {
