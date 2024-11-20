@@ -5,18 +5,17 @@ import Link from "next/link";
 import { useTheme } from '@/hooks/useTheme';
 import { useAuth } from '@/contexts/AuthContext';
 import {
-  FaBars,
-  FaTimes,
-  FaChartLine,
   FaSearch,
-  FaBook,
+  FaChartLine,
   FaTrophy,
+  FaBook,
   FaQuestionCircle,
+  FaUser,
   FaSun,
   FaMoon,
-  FaUser,
   FaChartPie
 } from "react-icons/fa";
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import Spinner from '@/components/ui/Spinner';
 
 const Header = () => {
@@ -128,7 +127,7 @@ const Header = () => {
                   )}
                 </div>
               </div>
-　　 　 　 　 {/* Search Results Dropdown */}
+              {/* Search Results Dropdown */}
               {showResults && searchResults.length > 0 && (
                 <div 
                   className="absolute w-full mt-2 bg-background border border-border/40 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto"
@@ -252,8 +251,16 @@ const Header = () => {
             dark:bg-gray-900/80
             ${isMenuOpen ? 'block' : 'hidden'}
           `}>
-            <div className="container mx-auto px-4 py-8 bg-background dark:bg-gray-900 min-h-screen">
-              <div className="space-y-4">
+            <div className="container mx-auto px-4 py-8 bg-background dark:bg-gray-900 min-h-screen relative">
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                className="absolute top-4 right-4 p-2 rounded-full hover:bg-muted/80 transition-colors"
+                aria-label="Close menu"
+              >
+                <XMarkIcon className="w-6 h-6 text-foreground" />
+              </button>
+
+              <div className="space-y-4 mt-8">
                 <Link href="/markets" className="mobile-nav-link" onClick={() => setIsMenuOpen(false)}>
                   <FaChartLine className="text-lg" />
                   <span>Markets</span>
