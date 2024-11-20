@@ -50,8 +50,8 @@ export async function middleware(request: NextRequest) {
 
     // Set cookie for session
     if (session) {
-      response.cookies.set('sb:session', session.token, {
-        maxAge: session.expires_in,
+      response.cookies.set('sb:session', session.access_token, {
+        maxAge: 3600,
         path: '/',
         sameSite: 'lax',
         secure: true,
