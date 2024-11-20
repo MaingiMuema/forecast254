@@ -10,7 +10,6 @@ import {
   FaTrophy,
   FaBook,
   FaQuestionCircle,
-  FaUser,
   FaBars,
   FaTimes,
   FaSun,
@@ -285,11 +284,12 @@ const Header = () => {
                 {user ? (
                   <>
                     <Link
-                      href="/profile"
+                      href="/dashboard"
                       className="flex items-center space-x-2 py-2 text-foreground hover:text-primary transition-colors"
                     >
-                      <FaUser className="w-4 h-4" />
-                      <span>Profile</span>
+                      <FaChartPie className="w-4 h-4" />
+                      <span>Dashboard</span>
+                     
                     </Link>
                     <button
                       onClick={handleSignOut}

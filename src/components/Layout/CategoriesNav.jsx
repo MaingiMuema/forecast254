@@ -49,39 +49,41 @@ const CategoriesNav = () => {
 
   return (
     <div className="bg-gradient-to-b from-background via-background/95 to-background/90 backdrop-blur-xl border-b border-white/5">
-      <div className="container mx-auto">
-        <div className="flex items-center justify-between px-4 py-3">
-          {/* Live Markets Indicator */}
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2 bg-emerald-500/5 px-3 py-1.5 rounded-full">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-emerald-500 text-xs font-medium tracking-wide">
-                LIVE MARKETS
-              </span>
+      <div className="max-w-screen-2xl mx-auto">
+        {/* Live Markets Indicator */}
+        <div className="px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2 bg-emerald-500/5 px-3 py-1.5 rounded-full">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span className="text-emerald-500 text-xs font-medium tracking-wide">
+                  LIVE MARKETS
+                </span>
+              </div>
+              <div className="hidden md:block h-6 w-px bg-white/5"></div>
             </div>
-            <div className="hidden md:block h-6 w-px bg-white/5"></div>
-          </div>
 
-          {/* Market Stats - Can be added later */}
-          <div className="hidden md:flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-400">24h Volume:</span>
-              <span className="text-sm font-medium text-white">KES 1.2M</span>
-            </div>
-            <div className="h-6 w-px bg-white/5"></div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-400">Active Markets:</span>
-              <span className="text-sm font-medium text-white">{categoryCounts.all || 0}</span>
+            {/* Market Stats - Can be added later */}
+            <div className="hidden md:flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-400">24h Volume:</span>
+                <span className="text-sm font-medium text-white">KES 1.2M</span>
+              </div>
+              <div className="h-6 w-px bg-white/5"></div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-400">Active Markets:</span>
+                <span className="text-sm font-medium text-white">{categoryCounts.all || 0}</span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Categories List */}
-        <div className="px-4 pb-3">
-          <div className="flex items-center gap-2 p-2 overflow-x-auto scrollbar-hide">
+        <div className="-mx-3 sm:mx-2">
+          <div className="flex items-center gap-2 p-2 mx-2 overflow-x-auto scrollbar-hide">
             {categories.map((category) => (
               <motion.div
                 key={category.id}
