@@ -94,8 +94,8 @@ const CategoriesNav = () => {
                     relative flex items-center gap-2 px-4 py-2 rounded-full
                     text-sm font-medium transition-all duration-200
                     ${activeCategory === category.id
-                      ? 'text-white'
-                      : 'text-gray-400 hover:text-white'
+                      ? 'text-primary-foreground dark:text-white'
+                      : 'text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-white'
                     }
                   `}
                 >
@@ -105,8 +105,8 @@ const CategoriesNav = () => {
                     <span className={`
                       relative z-10 text-xs px-2 py-0.5 rounded-full
                       ${activeCategory === category.id
-                        ? 'bg-white/10 text-white'
-                        : 'bg-white/5 text-gray-400'
+                        ? 'bg-primary/10 text-primary-foreground dark:bg-white/10 dark:text-white'
+                        : 'bg-muted text-muted-foreground dark:bg-white/5 dark:text-gray-400'
                       }
                     `}>
                       {categoryCounts[category.id]}
@@ -123,7 +123,7 @@ const CategoriesNav = () => {
                   {activeCategory === category.id && (
                     <motion.div
                       layoutId="activeCategory"
-                      className="absolute inset-0 bg-white/5 rounded-full ring-1 ring-white/10"
+                      className="absolute inset-0 bg-primary/10 dark:bg-white/5 rounded-full ring-1 ring-primary/20 dark:ring-white/10"
                       transition={{
                         type: "spring",
                         stiffness: 380,

@@ -128,8 +128,7 @@ const Header = () => {
                   )}
                 </div>
               </div>
-              
-              {/* Search Results Dropdown */}
+　　 　 　 　 {/* Search Results Dropdown */}
               {showResults && searchResults.length > 0 && (
                 <div 
                   className="absolute w-full mt-2 bg-background border border-border/40 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto"
@@ -247,8 +246,13 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className={`md:hidden fixed inset-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 ${isMenuOpen ? 'block' : 'hidden'}`}>
-            <div className="container mx-auto px-4 py-8">
+          <div className={`
+            md:hidden fixed inset-0 z-50
+            bg-background/80 backdrop-blur-sm
+            dark:bg-gray-900/80
+            ${isMenuOpen ? 'block' : 'hidden'}
+          `}>
+            <div className="container mx-auto px-4 py-8 bg-background dark:bg-gray-900 min-h-screen">
               <div className="space-y-4">
                 <Link href="/markets" className="mobile-nav-link" onClick={() => setIsMenuOpen(false)}>
                   <FaChartLine className="text-lg" />
