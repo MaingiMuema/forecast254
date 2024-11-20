@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { Database } from '@/types/supabase';
-import DataCollectionService from '@/services/DataCollectionService';
+import { DataCollectionService } from '@/services/DataCollectionService';
 
 // Initialize Supabase client
 const supabase = createClient<Database>(
@@ -13,20 +13,10 @@ const supabase = createClient<Database>(
 export async function GET() {
   try {
     const service = DataCollectionService.getInstance();
+    console.log('Starting data collection...');
     
-    // Check if collection is already running
-    if (service.isCollectionRunning()) {
-      return NextResponse.json({ 
-        success: false, 
-        message: 'Data collection is already in progress' 
-      });
-    }
-
-    // Get last run time
-    const lastRunTime = service.getLastRunTime();
-    
-    // Trigger data collection
-    await service.triggerDataCollection();
+    const results = await service.triggerDataCollection();
+    console.log('Data collection results:', results);
 
     // Get total articles count
     const { count } = await supabase
@@ -38,8 +28,7 @@ export async function GET() {
       message: 'Data collection completed successfully',
       data: {
         totalArticles: count,
-        lastRunTime,
-        nextRunTime: new Date(Date.now() + 6 * 60 * 60 * 1000) // 6 hours from now
+        results
       }
     });
   } catch (error) {
@@ -49,7 +38,7 @@ export async function GET() {
         success: false, 
         error: 'Failed to collect market data',
         details: error instanceof Error ? error.message : 'Unknown error'
-      },
+      }, 
       { status: 500 }
     );
   }

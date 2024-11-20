@@ -10,6 +10,53 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      blog_posts: {
+        Row: {
+          id: string
+          title: string
+          content: string
+          summary: string | null
+          image_url: string | null
+          status: 'draft' | 'published' | 'archived'
+          ai_generated: boolean
+          created_at: string
+          updated_at: string
+          author_id: string | null
+          category: string | null
+          tags: string[] | null
+          slug: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          content: string
+          summary?: string | null
+          image_url?: string | null
+          status?: 'draft' | 'published' | 'archived'
+          ai_generated?: boolean
+          created_at?: string
+          updated_at?: string
+          author_id?: string | null
+          category?: string | null
+          tags?: string[] | null
+          slug?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          content?: string
+          summary?: string | null
+          image_url?: string | null
+          status?: 'draft' | 'published' | 'archived'
+          ai_generated?: boolean
+          created_at?: string
+          updated_at?: string
+          author_id?: string | null
+          category?: string | null
+          tags?: string[] | null
+          slug?: string
+        }
+      }
       profiles: {
         Row: {
           id: string
@@ -52,6 +99,8 @@ export type Database = {
           published_at: string
           created_at: string
           updated_at: string
+          has_market: boolean
+          status: string
         }
         Insert: {
           id?: string
@@ -62,6 +111,8 @@ export type Database = {
           published_at: string
           created_at?: string
           updated_at?: string
+          has_market?: boolean
+          status?: string
         }
         Update: {
           id?: string
@@ -72,6 +123,8 @@ export type Database = {
           published_at?: string
           created_at?: string
           updated_at?: string
+          has_market?: boolean
+          status?: string
         }
       }
       markets: {
@@ -88,6 +141,7 @@ export type Database = {
           status: string
           created_at: string
           updated_at: string
+          source_article_id: string | null
         }
         Insert: {
           id?: string
@@ -102,6 +156,7 @@ export type Database = {
           status?: string
           created_at?: string
           updated_at?: string
+          source_article_id?: string | null
         }
         Update: {
           id?: string
@@ -116,6 +171,7 @@ export type Database = {
           status?: string
           created_at?: string
           updated_at?: string
+          source_article_id?: string | null
         }
       }
       positions: {

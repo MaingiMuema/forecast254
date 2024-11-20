@@ -27,7 +27,11 @@ export default function MarketGenerationScheduler() {
         console.log(`Successfully generated ${data.marketsCreated || 0} new markets`);
         lastRunRef.current = Date.now();
       } else {
-        console.warn(`Market generation failed at ${new Date().toISOString()}:`, data.error);
+        console.error(`Market generation failed at ${new Date().toISOString()}:`, {
+          status: response.status,
+          statusText: response.statusText,
+          error: data.error
+        });
       }
     } catch (error) {
       console.error(`Error triggering market generation at ${new Date().toISOString()}:`, error);

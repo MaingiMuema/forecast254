@@ -1,73 +1,45 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import cron from 'node-cron';
 import { createClient } from '@supabase/supabase-js';
 import { Database } from '@/types/supabase';
 
-// Initialize Supabase client with service role key for admin operations
+// Initialize Supabase admin client
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false
-    }
-  }
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
-
-// Initialize admin client for database operations
-const adminClient = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false
-    }
-  }
-);
-
-// Define news sources
-const KENYAN_NEWS_SOURCES = [
-  'nation.africa',
-  'standardmedia.co.ke',
-  'the-star.co.ke',
-  'capitalfm.co.ke'
-];
-
-// Define categories and their keywords
-const CATEGORIES = {
-  sports: ['sports', 'football', 'rugby', 'athletics', 'cricket', 'basketball'],
-  politics: ['politics', 'government', 'election', 'parliament', 'president', 'democracy'],
-  entertainment: ['entertainment', 'music', 'movie', 'celebrity', 'arts', 'culture'],
-  business: ['business', 'economy', 'market', 'finance', 'trade', 'investment'],
-  tech: ['technology', 'tech', 'innovation', 'digital', 'software', 'startup'],
-  education: ['education', 'school', 'university', 'student', 'learning', 'academic']
-};
 
 interface NewsArticle {
   title: string;
   content: string;
   url: string;
   category: string;
-  published_at: Date;
-  source: string;
-  author: string;
-  description: string;
-  image_url: string | null;
+  published_at: string;
 }
 
-class DataCollectionService {
+interface NewsSource {
+  name: string;
+  url: string;
+  apiUrl: string;
+  category: string;
+  lastFetched?: Date;
+  consecutiveFailures?: number;
+}
+
+export class DataCollectionService {
   private static instance: DataCollectionService;
-  private isRunning: boolean = false;
-  private lastRunTime: Date | null = null;
+  private isCollecting: boolean = false;
+  private retryDelays: { [key: string]: number } = {};
+  private maxRetries = 3;
+  private requestDelay = 2000; // 2 seconds between requests
+  private sourceDelay = 5000;  // 5 seconds between sources
+  private maxConsecutiveFailures = 3;
+  private rateLimitCooldown = 60 * 60 * 1000; // 1 hour cooldown
+  private sources: NewsSource[] = [];
+  private lastSourceUpdate: Date = new Date(0);
+  private sourceUpdateInterval = 30 * 60 * 1000; // 30 minutes
 
   private constructor() {
-    // Initialize the cron job to run every 6 hours
-    cron.schedule('0 */6 * * *', async () => {
-      await this.collectData();
-    });
+    this.initializeSources();
   }
 
   public static getInstance(): DataCollectionService {
@@ -77,11 +49,120 @@ class DataCollectionService {
     return DataCollectionService.instance;
   }
 
-  private async fetchArticlesForSource(source: string): Promise<any[]> {
+  private initializeSources(): void {
+    this.sources = [
+      {
+        name: 'nation.africa',
+        url: 'https://nation.africa',
+        apiUrl: 'https://newsapi.org/v2/everything?domains=nation.africa&language=en&pageSize=5&sortBy=publishedAt',
+        category: 'news',
+        consecutiveFailures: 0
+      },
+      {
+        name: 'standardmedia.co.ke',
+        url: 'https://www.standardmedia.co.ke',
+        apiUrl: 'https://newsapi.org/v2/everything?domains=standardmedia.co.ke&language=en&pageSize=5&sortBy=publishedAt',
+        category: 'news',
+        consecutiveFailures: 0
+      },
+      {
+        name: 'the-star.co.ke',
+        url: 'https://www.the-star.co.ke',
+        apiUrl: 'https://newsapi.org/v2/everything?domains=the-star.co.ke&language=en&pageSize=5&sortBy=publishedAt',
+        category: 'news',
+        consecutiveFailures: 0
+      },
+      {
+        name: 'capitalfm.co.ke',
+        url: 'https://www.capitalfm.co.ke',
+        apiUrl: 'https://newsapi.org/v2/everything?domains=capitalfm.co.ke&language=en&pageSize=5&sortBy=publishedAt',
+        category: 'news',
+        consecutiveFailures: 0
+      }
+    ];
+  }
+
+  private shouldUpdateSources(): boolean {
+    return Date.now() - this.lastSourceUpdate.getTime() > this.sourceUpdateInterval;
+  }
+
+  private async updateSourceStatus(): Promise<void> {
+    this.lastSourceUpdate = new Date();
+    
+    // Reset sources that have been in cooldown for long enough
+    for (const source of this.sources) {
+      if (source.lastFetched && Date.now() - source.lastFetched.getTime() > this.rateLimitCooldown) {
+        source.consecutiveFailures = 0;
+        delete source.lastFetched;
+      }
+    }
+  }
+
+  private getAvailableSources(): NewsSource[] {
+    return this.sources.filter(source => 
+      !source.lastFetched || 
+      Date.now() - source.lastFetched.getTime() > this.rateLimitCooldown
+    );
+  }
+
+  private async wait(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  private async fetchWithRetry(url: string, options: RequestInit, source: NewsSource, retryCount = 0): Promise<Response> {
     try {
-      console.log(`Fetching articles from ${source}`);
-      const response = await fetch(
-        `https://newsapi.org/v2/everything?domains=${source}&apiKey=${process.env.NEWS_API_KEY}&pageSize=100&language=en`
+      // Add delay between requests
+      const delay = retryCount > 0 
+        ? Math.min(2 ** retryCount * 2000 + Math.random() * 1000, 30000) 
+        : this.requestDelay;
+      
+      console.log(`Waiting ${Math.round(delay / 1000)}s before ${retryCount > 0 ? 'retry ' + retryCount : 'request'}...`);
+      await this.wait(delay);
+
+      const response = await fetch(url, options);
+      
+      if (response.status === 429) {
+        // Rate limit hit
+        if (retryCount >= this.maxRetries) {
+          source.consecutiveFailures = (source.consecutiveFailures || 0) + 1;
+          source.lastFetched = new Date();
+          throw new Error(`Rate limit exceeded for ${source.name}`);
+        }
+
+        const retryAfter = response.headers.get('retry-after');
+        const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : Math.min(2 ** retryCount * 2000 + Math.random() * 1000, 30000);
+        
+        console.log(`Rate limit hit for ${source.name}. Retrying in ${Math.round(waitTime / 1000)}s...`);
+        await this.wait(waitTime);
+        return this.fetchWithRetry(url, options, source, retryCount + 1);
+      }
+
+      // Reset consecutive failures on successful request
+      source.consecutiveFailures = 0;
+      return response;
+    } catch (error) {
+      source.consecutiveFailures = (source.consecutiveFailures || 0) + 1;
+      throw error;
+    }
+  }
+
+  private async fetchArticlesForSource(source: NewsSource): Promise<NewsArticle[]> {
+    try {
+      console.log(`Fetching articles from ${source.name}`);
+
+      if (source.consecutiveFailures && source.consecutiveFailures >= this.maxConsecutiveFailures) {
+        console.log(`Skipping ${source.name} due to too many consecutive failures`);
+        return [];
+      }
+
+      const response = await this.fetchWithRetry(
+        source.apiUrl,
+        {
+          headers: {
+            'X-Api-Key': process.env.NEWS_API_KEY!
+          }
+        },
+        source
       );
 
       if (!response.ok) {
@@ -89,166 +170,119 @@ class DataCollectionService {
       }
 
       const data = await response.json();
-      console.log(`Successfully fetched ${data.articles?.length || 0} articles from ${source}`);
-      return data.articles || [];
+      source.lastFetched = new Date();
+
+      if (!data.articles || !Array.isArray(data.articles)) {
+        console.log(`No valid articles found for ${source.name}`);
+        return [];
+      }
+
+      console.log(`Found ${data.articles.length} articles from ${source.name}`);
+
+      return data.articles
+        .filter((article: any) => article.title && article.content && article.url)
+        .map((article: any) => ({
+          title: article.title,
+          content: article.content || article.description,
+          url: article.url,
+          category: source.category,
+          published_at: article.publishedAt
+        }));
     } catch (error) {
-      console.error(`Error fetching articles from ${source}:`, error);
+      console.error(`Error fetching articles from ${source.name}:`, error);
       return [];
     }
   }
 
-  private async processArticles(articles: any[], source: string): Promise<any[]> {
-    console.log(`Found ${articles.length} articles from ${source}`);
-    const validArticles = articles.map(article => {
-      const category = this.categorizeArticle(article);
-      const publishedAt = new Date(article.publishedAt || new Date()).toISOString();
-      console.log(`Processing article: ${article.title}, Published at: ${publishedAt}`);
-      
-      return {
-        title: article.title,
-        url: article.url,
-        source: source,
-        author: article.author || 'Unknown',
-        description: article.description || '',
-        content: article.content || '',
-        published_at: publishedAt,
-        image_url: article.urlToImage || null,
-        category: category
-      };
-    });
-    console.log(`Processed ${validArticles.length} valid articles from ${source}`);
-    return validArticles;
-  }
-
-  private categorizeArticle(article: any): string {
-    const text = `${article.title} ${article.description}`.toLowerCase();
-    
-    for (const [category, keywords] of Object.entries(CATEGORIES)) {
-      for (const keyword of keywords) {
-        if (text.includes(keyword.toLowerCase())) {
-          return category;
-        }
-      }
-    }
-    
-    return 'general'; // Default category if no match found
-  }
-
-  private async collectData(): Promise<void> {
-    if (this.isRunning) {
-      console.log('Data collection already in progress');
-      return;
-    }
-
-    this.isRunning = true;
-    const startTime = new Date();
-    console.log(`Starting data collection at ${startTime.toISOString()}`);
-
+  private async insertArticle(article: NewsArticle): Promise<boolean> {
     try {
-      const articles: NewsArticle[] = [];
+      const { error } = await supabase
+        .from('news_articles')
+        .insert({
+          title: article.title,
+          content: article.content,
+          url: article.url,
+          category: article.category,
+          published_at: article.published_at,
+          has_market: false,
+          status: 'published',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        });
 
-      // Fetch articles from each source
-      for (const source of KENYAN_NEWS_SOURCES) {
-        console.log(`Processing source: ${source}`);
-        try {
-          const fetchedArticles = await this.fetchArticlesForSource(source);
-          const processedArticles = await this.processArticles(fetchedArticles, source);
-          articles.push(...processedArticles);
-        } catch (error) {
-          console.error(`Error processing source ${source}:`, error);
-          continue;
+      if (error) {
+        if (error.code === '23505') { // Unique violation
+          return false; // Article already exists
         }
+        console.error('Error inserting article:', error);
+        throw error;
       }
 
-      console.log(`Total articles collected: ${articles.length}`);
-
-      // Store articles in Supabase
-      let insertedCount = 0;
-      let skippedCount = 0;
-      let updatedCount = 0;
-      for (const article of articles) {
-        try {
-          // Check for existing article with same URL
-          const { data: existing, error: queryError } = await adminClient
-            .from('news_articles')
-            .select('id, published_at')
-            .eq('url', article.url)
-            .single();
-
-          if (queryError && queryError.code !== 'PGRST116') { // PGRST116 is "not found" error
-            console.error('Error checking for existing article:', queryError);
-            continue;
-          }
-
-          if (!existing) {
-            // Insert new article
-            const { error: insertError } = await adminClient
-              .from('news_articles')
-              .insert([{
-                ...article,
-                published_at: new Date(article.published_at).toISOString()
-              }]);
-
-            if (insertError) {
-              console.error('Error inserting article:', insertError);
-              continue;
-            }
-            insertedCount++;
-          } else {
-            // If article exists but is older than the new one, update it
-            const existingDate = new Date(existing.published_at);
-            const articleDate = new Date(article.published_at);
-            
-            if (articleDate > existingDate) {
-              // Update the existing article
-              const { error: updateError } = await adminClient
-                .from('news_articles')
-                .update({
-                  ...article,
-                  published_at: new Date(article.published_at).toISOString()
-                })
-                .eq('id', existing.id);
-
-              if (updateError) {
-                console.error('Error updating article:', updateError);
-                continue;
-              }
-              updatedCount++;
-              console.log(`Updated article: ${article.title}`);
-            } else {
-              skippedCount++;
-            }
-          }
-        } catch (error) {
-          console.error('Error storing article:', error);
-          continue;
-        }
-      }
-
-      this.lastRunTime = new Date();
-      console.log(`Data collection completed at ${new Date().toISOString()}`);
-      console.log(`Results: ${insertedCount} articles inserted, ${updatedCount} updated, ${skippedCount} skipped (already existed)`);
+      return true;
     } catch (error) {
-      console.error('Error in data collection service:', error);
-    } finally {
-      this.isRunning = false;
+      console.error('Error inserting article:', error);
+      return false;
     }
   }
 
-  // Method to manually trigger data collection
-  public async triggerDataCollection(): Promise<void> {
-    await this.collectData();
+  private async collectData(): Promise<{ inserted: number; updated: number; skipped: number }> {
+    console.log(`Starting data collection at ${new Date().toISOString()}`);
+    
+    if (this.shouldUpdateSources()) {
+      await this.updateSourceStatus();
+    }
+
+    const availableSources = this.getAvailableSources();
+    console.log(`Found ${availableSources.length} available sources`);
+
+    let inserted = 0;
+    const updated = 0;
+    let skipped = 0;
+
+    for (const source of availableSources) {
+      try {
+        console.log(`Processing source: ${source.name}`);
+        const articles = await this.fetchArticlesForSource(source);
+        
+        let validArticles = 0;
+        for (const article of articles) {
+          const wasInserted = await this.insertArticle(article);
+          if (wasInserted) {
+            inserted++;
+            validArticles++;
+          } else {
+            skipped++;
+          }
+        }
+
+        console.log(`Processed ${validArticles} valid articles from ${source.name}`);
+        
+        // Add delay between sources
+        if (availableSources.indexOf(source) < availableSources.length - 1) {
+          console.log(`Waiting ${this.sourceDelay / 1000}s between sources...`);
+          await this.wait(this.sourceDelay);
+        }
+      } catch (error) {
+        console.error(`Error processing source ${source.name}:`, error);
+      }
+    }
+
+    console.log(`Total articles collected: ${inserted + updated}`);
+    console.log(`Data collection completed at ${new Date().toISOString()}`);
+    return { inserted, updated, skipped };
   }
 
-  // Method to get last run time
-  public getLastRunTime(): Date | null {
-    return this.lastRunTime;
-  }
+  public async triggerDataCollection(): Promise<{ inserted: number; updated: number; skipped: number }> {
+    if (this.isCollecting) {
+      console.log('Data collection already in progress');
+      return { inserted: 0, updated: 0, skipped: 0 };
+    }
 
-  // Method to check if collection is running
-  public isCollectionRunning(): boolean {
-    return this.isRunning;
+    this.isCollecting = true;
+    try {
+      return await this.collectData();
+    } finally {
+      this.isCollecting = false;
+    }
   }
 }
-
-export default DataCollectionService;

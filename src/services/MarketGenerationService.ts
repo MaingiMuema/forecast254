@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Groq } from 'groq-sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { createClient } from '@supabase/supabase-js';
 import { Database } from '@/types/supabase';
 
@@ -9,12 +10,16 @@ const supabase = createClient<Database>(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+if (!process.env.GEMINI_API_KEY) {
+  throw new Error('Missing GEMINI_API_KEY environment variable');
+}
+
 interface MarketTemplate {
-  question: string;
+  title: string;
   description: string;
   category: string;
-  endDate: string;
-  resolutionCriteria: string;
+  end_date: string;
+  resolution_source: string;
 }
 
 class RateLimitError extends Error {
@@ -28,38 +33,28 @@ class RateLimitError extends Error {
 
 export class MarketGenerationService {
   private static instance: MarketGenerationService;
-  private groq: Groq;
+  private genAI: GoogleGenerativeAI;
   private retryQueue: { article: any; retryAfter: number }[] = [];
   private isProcessingQueue = false;
   private isGenerating: boolean = false;
 
   private constructor() {
-    this.groq = new Groq({
-      apiKey: process.env.GROQ_API_KEY!
-    });
+    console.log('Initializing MarketGenerationService...');
+    this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+    console.log('MarketGenerationService initialized');
   }
 
   public static getInstance(): MarketGenerationService {
     if (!MarketGenerationService.instance) {
+      console.log('Creating new MarketGenerationService instance');
       MarketGenerationService.instance = new MarketGenerationService();
     }
     return MarketGenerationService.instance;
   }
 
   private parseRetryAfter(error: any): number {
-    try {
-      const errorObj = JSON.parse(error.message);
-      const message = errorObj.error.message;
-      const match = message.match(/Please try again in (\d+)m([\d.]+)s/);
-      if (match) {
-        const minutes = parseInt(match[1]);
-        const seconds = parseFloat(match[2]);
-        return (minutes * 60 + seconds) * 1000; // Convert to milliseconds
-      }
-    } catch (e) {
-      console.error('Error parsing retry after time:', e);
-    }
-    return 120000; // Default to 2 minutes if parsing fails
+    // Default retry time for Gemini API rate limits
+    return 120000; // 2 minutes
   }
 
   private async processRetryQueue() {
@@ -112,34 +107,20 @@ export class MarketGenerationService {
 
         Required JSON format:
         {
-          "question": "Will X happen by Y date?",
+          "title": "Will X happen by Y date?",
           "description": "Detailed context and background",
           "category": "One of: politics, sports, entertainment, business, tech, education (lowercase only)",
-          "endDate": "YYYY-MM-DD",
-          "resolutionCriteria": "Specific criteria for resolving this market"
+          "end_date": "YYYY-MM-DD",
+          "resolution_source": "Specific source or criteria for resolving this market"
         }
 
         Important: Return ONLY the JSON object, with no additional text, explanations or markdown formatting.
       `;
 
       console.log('Sending request to LLM...');
-      const completion = await this.groq.chat.completions.create({
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a market generation assistant. Create clear, unambiguous prediction market questions from news articles. Return ONLY JSON objects with no additional text or formatting.'
-          },
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        model: 'llama-3.2-90b-vision-preview',
-        temperature: 0.7,
-        max_tokens: 5000,
-      });
-
-      const response = completion.choices[0]?.message?.content;
+      const model = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
+      const result = await model.generateContent(prompt);
+      const response = result.response.text();
       console.log('LLM Response:', response);
 
       if (!response) {
@@ -165,7 +146,8 @@ export class MarketGenerationService {
         return null;
       }
     } catch (error: any) {
-      if (error.status === 429) {
+      // Handle Gemini API rate limits
+      if (error.message?.includes('quota') || error.message?.includes('rate limit')) {
         const retryAfter = this.parseRetryAfter(error);
         throw new RateLimitError('Rate limit exceeded', retryAfter);
       }
@@ -177,16 +159,16 @@ export class MarketGenerationService {
     console.log('Validating market:', market);
     
     // Basic validation rules
-    if (!market.question || !market.description || !market.category || !market.endDate || !market.resolutionCriteria) {
+    if (!market.title || !market.description || !market.category || !market.end_date || !market.resolution_source) {
       console.log('Market missing required fields');
       return false;
     }
 
     // Validate end date
-    const endDate = new Date(market.endDate);
+    const endDate = new Date(market.end_date);
     const now = new Date();
     if (isNaN(endDate.getTime()) || endDate <= now) {
-      console.log('Invalid end date:', market.endDate);
+      console.log('Invalid end date:', market.end_date);
       return false;
     }
 
@@ -204,47 +186,26 @@ export class MarketGenerationService {
   private async createMarketInDatabase(market: MarketTemplate & { source_article_id: string }): Promise<boolean> {
     try {
       console.log('Creating market in database:', market);
-      
-      const endDate = new Date(market.endDate);
-      
-      // Create the market data object first for debugging
-      const marketData = {
-        creator_id: process.env.SYSTEM_USER_ID!,
-        title: market.question,
-        question: market.question,
-        description: market.description,
-        category: market.category,
-        start_date: new Date().toISOString(),
-        end_date: endDate.toISOString(),
-        closing_date: endDate.toISOString(), // Set closing_date to match end_date
-        resolution_date: endDate.toISOString(), // Set resolution_date to match end_date
-        resolution_criteria: market.resolutionCriteria,
-        status: 'open',
-        resolved_value: null,
-        source_article_id: market.source_article_id,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        probability_yes: 0.5, // Default starting probability
-        probability_no: 0.5 // Default starting probability
-      };
-
-      console.log('Market data to insert:', marketData);
-
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('markets')
-        .insert([marketData]);
+        .insert({
+          title: market.title,
+          description: market.description,
+          category: market.category,
+          start_date: new Date().toISOString(),
+          end_date: market.end_date,
+          status: 'open',
+          creator_id: process.env.SYSTEM_USER_ID || null,
+          resolution_source: market.resolution_source,
+          source_article_id: market.source_article_id
+        });
 
       if (error) {
         console.error('Error creating market:', error);
-        console.error('Error details:', {
-          code: error.code,
-          message: error.message,
-          details: error.details
-        });
         return false;
       }
 
-      console.log('Successfully created market:', market.question);
+      console.log('Market created successfully:', data);
       return true;
     } catch (error) {
       console.error('Error creating market:', error);
@@ -254,7 +215,7 @@ export class MarketGenerationService {
 
   public async generateMarketsFromArticles(): Promise<number> {
     if (this.isGenerating) {
-      console.log('Market generation already in progress');
+      console.log('Already generating markets');
       return 0;
     }
 
@@ -262,87 +223,79 @@ export class MarketGenerationService {
     let marketsCreated = 0;
 
     try {
-      // Get recent articles
-      console.log('Fetching recent articles...');
-      const { data: articles, error: articlesError } = await supabase
+      console.log('Starting market generation...');
+      // Get articles without markets
+      const { data: articles, error } = await supabase
         .from('news_articles')
         .select('*')
+        .eq('has_market', false)
+        .eq('status', 'published')
         .order('published_at', { ascending: false })
-        .limit(100); // Limit to most recent 100 articles for efficiency
+        .limit(10);
 
-      if (articlesError) {
-        console.error('Error fetching articles:', articlesError);
-        return marketsCreated;
+      if (error) {
+        console.error('Error fetching articles:', error);
+        throw error;
       }
 
       if (!articles || articles.length === 0) {
-        console.log('No articles found in database');
-        return marketsCreated;
+        console.log('No articles found for market generation');
+        return 0;
       }
 
-      console.log(`Found ${articles.length} total articles in database`);
-      
-      // Process each article
+      console.log(`Found ${articles.length} articles for market generation`);
+
       for (const article of articles) {
         try {
-          // Check if market already exists for this article
-          const { data: existingMarkets, error: marketError } = await supabase
-            .from('markets')
-            .select('id')
-            .eq('source_article_id', article.id);
-
-          if (marketError) {
-            console.error('Error checking existing market:', marketError);
-            continue;
-          }
-
-          if (existingMarkets && existingMarkets.length > 0) {
-            console.log(`Market already exists for article: ${article.title}`);
-            continue;
-          }
-
-          console.log(`Attempting to generate market for article: ${article.title}`);
+          console.log(`Processing article: ${article.title}`);
           const market = await this.generateMarketFromArticle(article);
           
           if (market) {
-            const created = await this.createMarketInDatabase({
+            console.log('Generated market:', market);
+            const success = await this.createMarketInDatabase({
               ...market,
               source_article_id: article.id
             });
-            
-            if (created) {
-              console.log(`Successfully created market for article: ${article.title}`);
-              marketsCreated++;
-            } else {
-              console.log(`Failed to create market for article: ${article.title}`);
+
+            if (success) {
+              // Update article to mark that it has a market
+              const { error: updateError } = await supabase
+                .from('news_articles')
+                .update({ has_market: true })
+                .eq('id', article.id);
+
+              if (updateError) {
+                console.error('Error updating article has_market status:', updateError);
+              } else {
+                marketsCreated++;
+                console.log(`Successfully created market for article: ${article.title}`);
+              }
             }
-          } else {
-            console.log(`Could not generate valid market for article: ${article.title}`);
           }
         } catch (error: any) {
           if (error instanceof RateLimitError) {
-            console.log(`Rate limit hit, queuing article for retry in ${Math.round(error.retryAfter / 1000)}s`);
             this.retryQueue.push({
               article,
               retryAfter: Date.now() + error.retryAfter
             });
+            console.log(`Rate limit hit, queued for retry in ${Math.round(error.retryAfter / 1000)}s`);
           } else {
-            console.error(`Error processing article ${article.id}:`, error);
-            continue;
+            console.error(`Failed to generate market for article:`, error);
           }
         }
       }
 
-      // Start processing retry queue if not already processing
-      if (this.retryQueue.length > 0 && !this.isProcessingQueue) {
-        this.processRetryQueue();
+      // Process retry queue
+      if (this.retryQueue.length > 0) {
+        await this.processRetryQueue();
       }
 
-      console.log(`Market generation completed. Created ${marketsCreated} new markets`);
+      console.log(`Market generation completed. Created ${marketsCreated} markets`);
       return marketsCreated;
+
     } catch (error) {
       console.error('Error in market generation:', error);
-      return marketsCreated;
+      throw error;
     } finally {
       this.isGenerating = false;
     }
