@@ -48,21 +48,21 @@ export default function OverallActivity() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-12">
-        <div className="bg-card rounded-xl p-6">
-          <div className="flex items-center justify-between mb-6">
+      <div className="container mx-auto px-4 py-8 sm:py-12">
+        <div className="bg-card rounded-xl p-4 sm:p-6">
+          <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between mb-6">
             <div className="flex items-center space-x-2">
               <FaHistory className="w-5 h-5 text-primary" />
               <h2 className="text-lg font-semibold text-foreground">Market Activity</h2>
             </div>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
+            <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:space-x-4">
+              <div className="flex flex-wrap gap-2">
                 {(['all', 'trades', 'liquidity', 'resolutions', 'recent'] as ActivityType[]).map((type) => (
                   <div key={type} className="h-8 w-20 bg-muted animate-pulse rounded-full" />
                 ))}
               </div>
-              <div className="h-6 w-px bg-border" />
-              <div className="flex items-center space-x-2">
+              <div className="hidden sm:block h-6 w-px bg-border" />
+              <div className="flex flex-wrap gap-2">
                 {(['24h', '7d', '30d', 'all'] as TimelineFilter[]).map((timeline) => (
                   <div key={timeline} className="h-8 w-12 bg-muted animate-pulse rounded-full" />
                 ))}
@@ -134,7 +134,7 @@ export default function OverallActivity() {
     if (activity.type === 'new_trade') {
       return (
         <>
-          <Link 
+          <Link
             href={`/market/${activity.marketId}`}
             className="text-sm font-medium text-foreground hover:text-primary transition-colors line-clamp-1"
           >
@@ -159,7 +159,7 @@ export default function OverallActivity() {
 
     return (
       <>
-        <Link 
+        <Link
           href={`/market/${activity.marketId}`}
           className="text-sm font-medium text-foreground hover:text-primary transition-colors line-clamp-1"
         >
@@ -179,20 +179,20 @@ export default function OverallActivity() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="bg-card rounded-xl p-6">
-        <div className="flex items-center justify-between mb-6">
+    <div className="container mx-auto px-4 py-8 sm:py-12">
+      <div className="bg-card rounded-xl p-4 sm:p-6">
+        <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between mb-6">
           <div className="flex items-center space-x-2">
             <FaHistory className="w-5 h-5 text-primary" />
             <h2 className="text-lg font-semibold text-foreground">Market Activity</h2>
           </div>
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
+          <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:space-x-4">
+            <div className="flex flex-wrap gap-2">
               {(['all', 'trades', 'liquidity', 'resolutions', 'recent'] as ActivityType[]).map((type) => (
                 <button
                   key={type}
                   onClick={() => setSelectedType(type)}
-                  className={`px-4 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                  className={`px-3 sm:px-4 py-1.5 text-xs font-medium rounded-full transition-colors flex-1 sm:flex-none ${
                     selectedType === type
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-muted text-muted-foreground hover:text-foreground'
@@ -202,13 +202,13 @@ export default function OverallActivity() {
                 </button>
               ))}
             </div>
-            <div className="h-6 w-px bg-border" />
-            <div className="flex items-center space-x-2">
+            <div className="hidden sm:block h-6 w-px bg-border" />
+            <div className="flex flex-wrap gap-2">
               {(['24h', '7d', '30d', 'all'] as TimelineFilter[]).map((timeline) => (
                 <button
                   key={timeline}
                   onClick={() => setSelectedTimeline(timeline)}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                  className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors flex-1 sm:flex-none ${
                     selectedTimeline === timeline
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-muted text-muted-foreground hover:text-foreground'
@@ -232,20 +232,20 @@ export default function OverallActivity() {
                 key={activity.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`bg-muted/50 rounded-lg p-4 ${
+                className={`bg-muted/50 rounded-lg p-3 sm:p-4 ${
                   activity.type === 'new_trade' ? 'border border-indigo-500/10' : ''
                 }`}
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className={`p-2 rounded-full ${getActivityColor(activity.type)}`}>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                  <div className="flex items-start sm:items-center space-x-3">
+                    <div className={`p-2 rounded-full ${getActivityColor(activity.type)} shrink-0`}>
                       {getActivityIcon(activity.type)}
                     </div>
                     <div className="flex-1 min-w-0">
                       {renderActivityContent(activity)}
                     </div>
                   </div>
-                  <div className="text-right ml-4">
+                  <div className="text-left sm:text-right pl-11 sm:pl-0 sm:ml-4">
                     {activity.type !== 'new_trade' && (
                       <p className="text-sm font-medium text-foreground">
                         KES {activity.amount.toLocaleString()}
