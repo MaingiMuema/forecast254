@@ -51,9 +51,9 @@ const CategoriesNav = () => {
     <div className="bg-gradient-to-b from-background via-background/95 to-background/90 backdrop-blur-xl border-b border-white/5">
       <div className="max-w-screen-2xl mx-auto">
         {/* Live Markets Indicator */}
-        <div className="px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
+        <div className="px-4 py-2 sm:py-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-6">
+            <div className="flex items-center gap-4 sm:gap-6">
               <div className="flex items-center gap-2 bg-emerald-500/5 px-3 py-1.5 rounded-full">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -66,18 +66,29 @@ const CategoriesNav = () => {
               <div className="hidden md:block h-6 w-px bg-white/5"></div>
             </div>
 
-            {/* Market Stats - Can be added later */}
+            {/* Market Stats - Hidden on mobile */}
             <div className="hidden md:flex items-center gap-6">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-400">24h Volume:</span>
-                <span className="text-sm font-medium text-white">KES 1.2M</span>
+                <span className="text-xs text-muted-foreground">24h Volume:</span>
+                <span className="text-sm font-medium text-foreground">KES 1.2M</span>
               </div>
               <div className="h-6 w-px bg-white/5"></div>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-400">Active Markets:</span>
-                <span className="text-sm font-medium text-white">{categoryCounts.all || 0}</span>
+                <span className="text-xs text-muted-foreground">Active Markets:</span>
+                <span className="text-sm font-medium text-foreground">{categoryCounts.all || 0}</span>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="px-4 py-2">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search markets..."
+              className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
           </div>
         </div>
 
