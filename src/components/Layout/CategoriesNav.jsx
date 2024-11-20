@@ -92,7 +92,7 @@ const CategoriesNav = () => {
   const showCounts = pathname === '/markets';
 
   return (
-    <div className="sticky top-[64px] z-40 bg-gradient-to-b from-background via-background/95 to-background/90 backdrop-blur-xl border-b border-white/5">
+    <div className="sticky top-[15px] z-40 bg-gradient-to-b from-background via-background/95 to-background/90 backdrop-blur-xl border-b border-white/5">
       <div className="max-w-screen-2xl mx-auto">
         {/* Live Markets Indicator */}
         <div className="px-4 py-2 sm:py-3">
