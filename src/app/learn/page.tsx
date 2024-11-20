@@ -70,7 +70,7 @@ export default function LearnPage() {
         {/* Introduction */}
         <div className="mb-12">
           <p className="text-lg text-muted-foreground">
-            Welcome to the Forecast254 learning center. Here you'll find comprehensive guides and resources
+            Welcome to the Forecast254 learning center. Here you&apos;ll find comprehensive guides and resources
             to help you understand prediction markets and make better forecasts.
           </p>
         </div>

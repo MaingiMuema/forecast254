@@ -84,7 +84,7 @@ export default function MarketsPage() {
         {/* Introduction */}
         <div className="mb-12">
           <p className="text-lg text-muted-foreground">
-            Understand the different types of markets, how they work, and how they're resolved.
+            Understand the different types of markets, how they work, and how they&apos;re resolved.
             This knowledge will help you make more informed trading decisions.
           </p>
         </div>
