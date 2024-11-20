@@ -42,7 +42,7 @@ export async function updateProfile(userId: string, updates: Partial<Profile>) {
 }
 
 // Market operations
-export async function getMarkets(filters?: Partial<Market>) {
+export async function getMarkets(filters?: Partial<Tables['markets']['Row']>) {
   let query = supabase
     .from('markets')
     .select(`
@@ -63,8 +63,10 @@ export async function getMarkets(filters?: Partial<Market>) {
 
   if (filters) {
     Object.entries(filters).forEach(([key, value]) => {
-      if (value !== undefined) {
-        query = query.eq(key, value);
+      if (value !== undefined && value !== null) {
+        query = query.eq(key as keyof Tables['markets']['Row'], value);
+      } else if (value === null) {
+        query = query.is(key as keyof Tables['markets']['Row'], null);
       }
     });
   }
