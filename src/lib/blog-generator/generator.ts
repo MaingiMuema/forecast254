@@ -11,10 +11,6 @@ if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_
   throw new Error('Missing Supabase environment variables');
 }
 
-if (!process.env.POLLINATION_API_KEY) {
-  throw new Error('Missing POLLINATION_API_KEY environment variable');
-}
-
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -98,29 +94,26 @@ Format your response exactly as follows (including the JSON markers):
 
 export async function generateImage(prompt: ImageGenerationPrompt): Promise<string> {
   try {
-    const response = await fetch('https://api.pollinations.ai/v1/images/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.POLLINATION_API_KEY}`
-      },
-      body: JSON.stringify({
-        prompt: `${prompt.description}. Style: ${prompt.style}. Mood: ${prompt.mood}`,
-        aspect_ratio: prompt.aspect_ratio,
-        quality: prompt.quality,
-        num_images: 1
-      })
-    });
+    // Default images for different blog categories
+    const defaultImages = {
+      'markets': 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=1470',
+      'finance': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1470',
+      'technology': 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1470',
+      'analysis': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1470',
+      'default': 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=1470'
+    };
 
-    if (!response.ok) {
-      throw new Error(`Image generation failed: ${response.status} ${response.statusText}`);
-    }
+    // Extract category from prompt description
+    const category = Object.keys(defaultImages).find(cat => 
+      prompt.description.toLowerCase().includes(cat.toLowerCase())
+    ) || 'default';
 
-    const data = await response.json();
-    return data.images[0].url;
+    // Return the corresponding default image
+    return defaultImages[category as keyof typeof defaultImages];
   } catch (error) {
     console.error('Error generating image:', error);
-    throw error;
+    // Return a fallback image in case of any error
+    return 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=1470';
   }
 }
 
