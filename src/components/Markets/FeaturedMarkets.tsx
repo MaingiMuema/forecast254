@@ -80,7 +80,7 @@ const FeaturedMarkets = () => {
               transition={{ duration: 0.3 }}
               className="bg-card rounded-lg p-6 hover:shadow-lg transition-shadow"
             >
-              <Link href={`/markets/${market.id}`}>
+              <Link href={`/market/${market.id}`}>
                 <div className="space-y-4">
                   <div className="flex items-start justify-between">
                     <h3 className="font-semibold text-lg text-foreground line-clamp-2">
