@@ -2667,3 +2667,118 @@
 2024-11-21 14:41:30:4130 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
 2024-11-21 14:41:30:4130 [32minfo[39m: [32mFound 10 news items for category: sports[39m
 2024-11-21 14:41:30:4130 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 14:43:29:4329 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-21 14:43:29:4329 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-21 14:43:29:4329 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-21 14:43:29:4329 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-21 14:43:29:4329 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-21 14:43:29:4329 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-21 14:43:29:4329 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-21 14:43:30:4330 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-21 14:43:30:4330 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-21 14:43:30:4330 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-21 14:43:30:4330 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-21 14:43:30:4330 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 14:43:31:4331 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-21 14:43:31:4331 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-21 14:43:31:4331 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-21 14:43:31:4331 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-21 14:43:31:4331 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-21 14:43:31:4331 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-21 14:43:33:4333 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-21 14:43:33:4333 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-21 14:43:33:4333 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-21 14:43:34:4334 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-21 14:43:34:4334 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-21 14:43:45:4345 [32minfo[39m: [32mCreated 0 markets from sports news[39m
+2024-11-21 14:43:45:4345 [32minfo[39m: [32mProcessing category: entertainment[39m
+2024-11-21 14:43:45:4345 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-21 14:43:46:4346 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-21 14:43:46:4346 [32minfo[39m: [32mFound 10 news items for category: entertainment[39m
+2024-11-21 14:43:47:4347 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 14:45:32:4532 [32minfo[39m: [32mCreated 0 markets from politics news[39m
+2024-11-21 14:45:32:4532 [32minfo[39m: [32mProcessing category: business[39m
+2024-11-21 14:45:32:4532 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-21 14:45:32:4532 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-21 14:45:32:4532 [32minfo[39m: [32mFound 10 news items for category: business[39m
+2024-11-21 14:45:33:4533 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 14:45:49:4549 [32minfo[39m: [32mCreated 0 markets from entertainment news[39m
+2024-11-21 14:45:49:4549 [32minfo[39m: [32mProcessing category: lifestyle[39m
+2024-11-21 14:45:49:4549 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-21 14:45:50:4550 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-21 14:45:50:4550 [32minfo[39m: [32mFound 10 news items for category: lifestyle[39m
+2024-11-21 14:45:51:4551 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 14:47:42:4742 [32minfo[39m: [32mCreated 0 markets from business news[39m
+2024-11-21 14:47:42:4742 [32minfo[39m: [32mProcessing category: sports[39m
+2024-11-21 14:47:42:4742 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-21 14:47:42:4742 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-21 14:47:42:4742 [32minfo[39m: [32mFound 10 news items for category: sports[39m
+2024-11-21 14:47:43:4743 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 14:47:46:4746 [32minfo[39m: [32mCreated 0 markets from lifestyle news[39m
+2024-11-21 14:47:46:4746 [32minfo[39m: [32mCompleted news and market processing. Total markets created: 0[39m
+2024-11-21 14:47:46:4746 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-21 14:49:16:4916 [32minfo[39m: [32mCreated 0 markets from sports news[39m
+2024-11-21 14:49:16:4916 [32minfo[39m: [32mProcessing category: entertainment[39m
+2024-11-21 14:49:16:4916 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-21 14:49:17:4917 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-21 14:49:17:4917 [32minfo[39m: [32mFound 10 news items for category: entertainment[39m
+2024-11-21 14:49:17:4917 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 14:50:43:5043 [32minfo[39m: [32mCreated 0 markets from entertainment news[39m
+2024-11-21 14:50:43:5043 [32minfo[39m: [32mProcessing category: lifestyle[39m
+2024-11-21 14:50:43:5043 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-21 14:50:45:5045 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-21 14:50:45:5045 [32minfo[39m: [32mFound 10 news items for category: lifestyle[39m
+2024-11-21 14:50:46:5046 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 15:00:50:050 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-21 15:00:50:050 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-21 15:00:50:050 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-21 15:00:50:050 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-21 15:00:50:050 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-21 15:00:50:050 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-21 15:00:52:052 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-21 15:00:53:053 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-21 15:00:53:053 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-21 15:00:54:054 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 15:00:54:054 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-21 15:00:54:054 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-21 15:00:54:054 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-21 15:00:55:055 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-21 15:00:55:055 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-21 15:00:55:055 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-21 15:00:55:055 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-21 15:00:55:055 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-21 15:00:57:057 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-21 15:00:57:057 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-21 15:00:57:057 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-21 15:00:58:058 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-21 15:00:59:059 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-21 15:02:53:253 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-21 15:02:55:255 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-21 15:02:55:255 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-21 15:02:56:256 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-21 15:02:56:256 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-21 15:02:56:256 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-21 15:02:57:257 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-21 15:02:57:257 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-21 15:02:57:257 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-21 15:02:57:257 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-21 15:06:00:60 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-21 15:06:00:60 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-21 15:06:01:61 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-21 15:06:01:61 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-21 15:06:02:62 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-21 15:06:05:65 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-21 15:06:12:612 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-21 15:06:13:613 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-21 15:06:15:615 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-21 15:06:15:615 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-21 15:06:18:618 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-21 15:06:18:618 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-21 15:06:18:618 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-21 15:06:19:619 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-21 15:06:19:619 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-21 15:06:20:620 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-21 15:06:20:620 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-21 15:06:20:620 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-21 15:06:21:621 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-21 15:06:21:621 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m

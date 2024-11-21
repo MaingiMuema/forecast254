@@ -28,13 +28,15 @@ const format = winston.format.combine(
   ),
 );
 
-// Create logger
-export const logger = winston.createLogger({
-  levels,
-  format,
-  transports: [
-    // Write all logs to console
-    new winston.transports.Console(),
+// Define transports based on environment
+const transports: winston.transport[] = [
+  // Always write logs to console
+  new winston.transports.Console(),
+];
+
+// Only add file transports in development environment
+if (process.env.NODE_ENV !== 'production') {
+  transports.push(
     // Write all logs with level 'info' and below to combined.log
     new winston.transports.File({
       filename: 'logs/combined.log',
@@ -44,6 +46,13 @@ export const logger = winston.createLogger({
     new winston.transports.File({
       filename: 'logs/error.log',
       level: 'error',
-    }),
-  ],
+    })
+  );
+}
+
+// Create logger
+export const logger = winston.createLogger({
+  levels,
+  format,
+  transports,
 });

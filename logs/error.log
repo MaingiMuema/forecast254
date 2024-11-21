@@ -1263,3 +1263,11 @@
 2024-11-21 14:30:55:3055 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
 2024-11-21 14:34:55:3455 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
 2024-11-21 14:41:30:4130 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 14:43:30:4330 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 14:43:47:4347 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 14:45:33:4533 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 14:45:51:4551 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 14:47:43:4743 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 14:49:17:4917 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 14:50:46:5046 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 15:00:54:054 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
