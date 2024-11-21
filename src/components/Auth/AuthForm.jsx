@@ -3,19 +3,19 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { FaExclamationCircle } from 'react-icons/fa';
 
 export default function AuthForm({ mode = 'login' }) {
   const router = useRouter();
-  const { signIn } = useAuth();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const { signIn } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,56 +23,22 @@ export default function AuthForm({ mode = 'login' }) {
     setLoading(true);
 
     try {
-      if (!formData.email || !formData.password) {
-        setError('Please fill in all fields');
-        setLoading(false);
-        return;
-      }
-
-      if (!formData.email.includes('@')) {
-        setError('Please enter a valid email address');
-        setLoading(false);
-        return;
-      }
-
-      if (formData.password.length < 6) {
-        setError('Password must be at least 6 characters long');
-        setLoading(false);
-        return;
-      }
-
-      console.log('Submitting login form:', { email: formData.email });
-      const response = await signIn(formData.email, formData.password);
-      console.log('Login response:', response);
-
-      if (response.error) {
-        console.error('Login error:', response.error);
-        setError(response.error.message);
-        return;
-      }
-
-      // If login is successful and we have a session, redirect to dashboard
-      if (response.data?.session) {
-        console.log('Login successful, redirecting to dashboard');
-        router.push('/dashboard');
-      }
-    } catch (err) {
-      console.error('Login error:', err);
-      setError(err.message || 'An unexpected error occurred. Please try again.');
+      const { error } = await signIn(email, password);
+      if (error) throw error;
+      
+      // The redirect will be handled by AuthContext after successful login
+      
+    } catch (error) {
+      console.error('Login error:', error);
+      setError(error.message || 'Failed to sign in');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    // Clear error when user starts typing
-    setError('');
-  };
+  // Get error from URL if present
+  const urlError = searchParams.get('error');
+  const displayError = error || (urlError === 'auth_required' ? 'Please log in to access this page' : '');
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
@@ -101,10 +67,10 @@ export default function AuthForm({ mode = 'login' }) {
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && (
+          {displayError && (
             <div className="bg-destructive/10 text-destructive p-3 rounded-md flex items-center space-x-2">
               <FaExclamationCircle className="w-4 h-4 flex-shrink-0" />
-              <p className="text-sm">{error}</p>
+              <p className="text-sm">{displayError}</p>
             </div>
           )}
 
@@ -119,8 +85,9 @@ export default function AuthForm({ mode = 'login' }) {
               autoComplete="email"
               required
               className="mt-1 block w-full px-3 py-2 bg-background border border-input rounded-md shadow-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm"
-              value={formData.email}
-              onChange={handleInputChange}
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
             />
           </div>
@@ -136,8 +103,9 @@ export default function AuthForm({ mode = 'login' }) {
               autoComplete="current-password"
               required
               className="mt-1 block w-full px-3 py-2 bg-background border border-input rounded-md shadow-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm"
-              value={formData.password}
-              onChange={handleInputChange}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
             />
           </div>
@@ -147,7 +115,7 @@ export default function AuthForm({ mode = 'login' }) {
             disabled={loading}
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Loading...' : mode === 'login' ? 'Sign in' : 'Sign up'}
+            {loading ? 'Signing in...' : mode === 'login' ? 'Sign in' : 'Sign up'}
           </button>
         </form>
       </div>

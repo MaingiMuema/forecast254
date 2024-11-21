@@ -1271,3 +1271,32 @@
 2024-11-21 14:49:17:4917 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
 2024-11-21 14:50:46:5046 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
 2024-11-21 15:00:54:054 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 15:46:14:4614 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 15:47:34:4734 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 15:51:36:5136 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: Client network socket disconnected before secure TLS connection was established[39m
+2024-11-21 15:51:36:5136 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: Client network socket disconnected before secure TLS connection was established[39m
+2024-11-21 15:54:19:5419 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 16:10:11:1011 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 16:21:34:2134 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 16:27:45:2745 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 16:35:24:3524 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 16:40:22:4022 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 16:47:50:4750 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 16:49:38:4938 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 16:59:44:5944 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 17:05:59:559 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 17:06:00:60 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: Request failed with status code 504[39m
+2024-11-21 17:06:00:60 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: Request failed with status code 504[39m
+2024-11-21 17:06:01:61 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: Request failed with status code 504[39m
+2024-11-21 17:06:01:61 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: Request failed with status code 504[39m
+2024-11-21 17:06:03:63 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: Request failed with status code 504[39m
+2024-11-21 17:06:03:63 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: Request failed with status code 504[39m
+2024-11-21 17:12:03:123 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 17:15:36:1536 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 17:21:44:2144 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 17:25:05:255 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 17:29:54:2954 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 17:50:05:505 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: Client network socket disconnected before secure TLS connection was established[39m
+2024-11-21 17:50:05:505 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: Client network socket disconnected before secure TLS connection was established[39m
+2024-11-21 17:50:25:5025 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 17:56:57:5657 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m

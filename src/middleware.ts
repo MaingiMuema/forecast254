@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
@@ -8,21 +9,15 @@ const publicRoutes = [
   '/register',
   '/_next',
   '/favicon.ico',
-  '/public'
-];
-
-// List of auth-related API routes that handle their own auth
-const authApiRoutes = [
-  '/api/auth/session',
-  '/api/auth/login',
-  '/api/auth/register',
-  '/api/auth/logout'
+  '/public',
+  '/api/auth',
+  '/',
+  '/markets' // Making markets public as per recent change
 ];
 
 // List of protected routes that require authentication
 const protectedRoutes = [
   '/dashboard',
-  '/markets',
   '/portfolio',
   '/settings',
   '/api/market-generation',
@@ -30,89 +25,61 @@ const protectedRoutes = [
   '/api/user'
 ];
 
-// Helper function to check if a path starts with any of the routes
+// Helper function to check if a path matches any of the routes
 const pathStartsWith = (path: string, routes: string[]) => {
   return routes.some(route => path.startsWith(route));
 };
 
 export async function middleware(request: NextRequest) {
   try {
-    const { pathname } = request.nextUrl;
+    // Create a Supabase client for this request
+    const supabase = createMiddlewareClient({ req: request, res: NextResponse.next() });
     
-    // Skip middleware for public files
-    if (pathStartsWith(pathname, publicRoutes)) {
-      return NextResponse.next();
-    }
-
-    // Skip middleware for auth API routes as they handle their own auth
-    if (pathStartsWith(pathname, authApiRoutes)) {
-      return NextResponse.next();
-    }
-
-    // Create a response object that we'll modify and return
-    const response = NextResponse.next();
-
-    // Create Supabase client specific to this request
-    const supabase = createMiddlewareClient({ 
-      req: request,
-      res: response,
-    });
-
-    // Refresh session if expired and get current session
-    const {
-      data: { session },
-      error: sessionError,
-    } = await supabase.auth.getSession();
-
-    if (sessionError) {
-      console.error('Session error in middleware:', sessionError);
-      return redirectToLogin(request, 'session_error');
-    }
-
-    // Verify user exists if we have a session
-    if (session) {
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
-      
-      if (userError || !user) {
-        console.error('User verification failed in middleware:', userError);
-        return redirectToLogin(request, 'invalid_user');
-      }
-    }
-
-    // If logged in and trying to access login/register pages, redirect to dashboard
-    if (session && (pathname === '/login' || pathname === '/register')) {
-      console.log('Middleware - Redirecting to dashboard (logged in user on auth page)');
+    // Get the current session
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    // Get the requested path
+    const path = request.nextUrl.pathname;
+    
+    // Handle authentication state
+    const isAuthenticated = !!session;
+    const isPublicRoute = pathStartsWith(path, publicRoutes);
+    const isProtectedRoute = pathStartsWith(path, protectedRoutes);
+    
+    // Case 1: Accessing auth pages while authenticated
+    if (isAuthenticated && (path === '/login' || path === '/register')) {
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
-
-    // For the root path ('/'), allow access regardless of auth status
-    if (pathname === '/') {
-      return response;
+    
+    // Case 2: Accessing protected route while not authenticated
+    if (!isAuthenticated && isProtectedRoute) {
+      const redirectUrl = new URL('/login', request.url);
+      redirectUrl.searchParams.set('redirectTo', encodeURIComponent(path));
+      return NextResponse.redirect(redirectUrl);
     }
-
-    // Check if the current route requires authentication
-    const requiresAuth = pathStartsWith(pathname, protectedRoutes);
-
-    // If route requires auth and user is not logged in, redirect to login
-    if (requiresAuth && !session) {
-      console.log('Middleware - Redirecting to login (protected route, no session)');
-      return redirectToLogin(request, 'auth_required', pathname);
+    
+    // Case 3: Public routes are always accessible
+    if (isPublicRoute) {
+      return NextResponse.next();
     }
-
-    // Allow access to the route
-    return response;
+    
+    // Case 4: All other routes proceed normally if authenticated
+    if (isAuthenticated) {
+      return NextResponse.next();
+    }
+    
+    // Default: Redirect to login for unknown routes when not authenticated
+    const redirectUrl = new URL('/login', request.url);
+    redirectUrl.searchParams.set('redirectTo', encodeURIComponent(path));
+    return NextResponse.redirect(redirectUrl);
+    
   } catch (error) {
     console.error('Middleware error:', error);
-    return redirectToLogin(request, 'middleware_error');
+    // On error, redirect to login with error parameter
+    const redirectUrl = new URL('/login', request.url);
+    redirectUrl.searchParams.set('error', 'auth_error');
+    return NextResponse.redirect(redirectUrl);
   }
-}
-
-// Helper function to handle login redirects
-function redirectToLogin(request: NextRequest, error: string, redirectTo?: string) {
-  const url = new URL('/login', request.url);
-  if (error) url.searchParams.set('error', error);
-  if (redirectTo) url.searchParams.set('redirectTo', redirectTo);
-  return NextResponse.redirect(url);
 }
 
 // Configure which routes to run middleware on
