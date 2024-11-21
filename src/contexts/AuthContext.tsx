@@ -64,23 +64,49 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  // Function to handle successful login
+  const handleSuccessfulLogin = () => {
+    // Check if we should redirect
+    const redirectTo = searchParams?.get('redirectTo');
+    if (redirectTo) {
+      const decodedRedirect = decodeURIComponent(redirectTo);
+      router.push(decodedRedirect);
+    } else {
+      router.push('/dashboard');
+    }
+  };
+
+  // Function to handle sign out
+  const signOut = async () => {
+    try {
+      setLoading(true);
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
+      // Clear auth data and redirect
+      clearAuthData();
+      router.push('/login');
+    } catch (error) {
+      console.error('Error signing out:', error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Function to sync session with API
   const syncSession = async (session: Session | null) => {
     if (!session || !session.access_token || !session.refresh_token) {
       console.log('Invalid session data for sync');
-      clearAuthData();
       return false;
     }
 
     try {
-      console.log('Syncing session for user:', session.user?.email);
-
       // First verify the session is still valid
       const { data: { user: currentUser }, error: userError } = await supabase.auth.getUser();
       
       if (userError || !currentUser) {
         console.error('Session validation failed:', userError || 'No user found');
-        clearAuthData();
         return false;
       }
 
@@ -114,7 +140,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return false;
       }
 
-      console.log('Session synced successfully');
       return true;
     } catch (error) {
       console.error('Session sync error:', error);
@@ -126,16 +151,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigateIfNeeded = (shouldNavigate: boolean, path: string) => {
     if (shouldNavigate) {
       router.push(path);
-    }
-  };
-
-  // Handle successful login navigation
-  const handleSuccessfulLogin = () => {
-    const redirectTo = searchParams.get('redirectTo');
-    if (redirectTo) {
-      router.push(decodeURIComponent(redirectTo));
-    } else {
-      router.push('/');
     }
   };
 
@@ -212,84 +227,60 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event: AuthChangeEvent, session: Session | null) => {
-        console.log('Auth state changed:', event, session?.user?.email);
-
         if (!mounted) return;
 
+        console.log('Auth state changed:', event, session?.user?.email);
+        
         try {
           switch (event) {
             case 'SIGNED_OUT':
               console.log('User signed out');
               clearAuthData();
-              navigateIfNeeded(pathname !== '/login', '/login');
+              if (pathname !== '/login' && pathname !== '/register') {
+                router.push('/login');
+              }
               break;
 
             case 'SIGNED_IN':
             case 'TOKEN_REFRESHED':
-            case 'INITIAL_SESSION':
               if (!session) {
                 console.log('No session data received for event:', event);
                 clearAuthData();
-                navigateIfNeeded(pathname !== '/login', '/login');
-                return;
+                break;
               }
 
-              // Validate session data
-              if (!session.access_token || !session.refresh_token) {
-                console.log('Missing session tokens for event:', event);
+              if (await syncSession(session)) {
+                if (event === 'SIGNED_IN') {
+                  handleSuccessfulLogin();
+                }
+              } else {
                 clearAuthData();
-                navigateIfNeeded(pathname !== '/login', '/login');
-                return;
-              }
-
-              if (!session.user?.id || !session.user?.email) {
-                console.log('Invalid user data in session for event:', event);
-                clearAuthData();
-                navigateIfNeeded(pathname !== '/login', '/login');
-                return;
-              }
-
-              console.log(`${event} event for user:`, session.user.email);
-              
-              // Try to sync session
-              if (!await syncSession(session)) {
-                console.log('Failed to sync session for event:', event);
-                clearAuthData();
-                navigateIfNeeded(pathname !== '/login', '/login');
-                return;
-              }
-                
-              if (event === 'SIGNED_IN') {
-                handleSuccessfulLogin();
+                if (pathname !== '/login' && pathname !== '/register') {
+                  router.push('/login');
+                }
               }
               break;
 
+            case 'INITIAL_SESSION':
+              if (!session) {
+                console.log('No session data for INITIAL_SESSION');
+                clearAuthData();
+                break;
+              }
+
+              await syncSession(session);
+              break;
+
             default:
-              // For any other events, verify the session is valid
               if (!session) {
                 clearAuthData();
-                navigateIfNeeded(pathname !== '/login', '/login');
-                return;
-              }
-
-              // Validate session data
-              if (!session.access_token || !session.refresh_token || !session.user?.id) {
-                console.log('Invalid session data in default case');
-                clearAuthData();
-                navigateIfNeeded(pathname !== '/login', '/login');
-                return;
-              }
-
-              // Try to sync session
-              if (!await syncSession(session)) {
-                clearAuthData();
-                navigateIfNeeded(pathname !== '/login', '/login');
+              } else {
+                await syncSession(session);
               }
           }
         } catch (error) {
           console.error('Error handling auth state change:', error);
           clearAuthData();
-          navigateIfNeeded(pathname !== '/login', '/login');
         }
       }
     );
@@ -344,45 +335,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('Sign in error:', error);
       clearAuthData();
       return { data: null, error: error as AuthError };
-    }
-  };
-
-  const signOut = async () => {
-    try {
-      // First, try to clear server-side session
-      const response = await fetch('/api/auth/session', {
-        method: 'DELETE',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        console.warn('Failed to clear server session:', response.status);
-        // Continue with client-side sign out even if server-side fails
-      }
-
-      // Sign out from Supabase client
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        console.error('Error signing out:', error);
-        throw error;
-      }
-
-      // Clear local state regardless of server response
-      clearAuthData();
-      
-      // Redirect to login page
-      router.push('/login');
-
-    } catch (error) {
-      console.error('Sign out error:', error);
-      // Still clear local state and redirect on error
-      clearAuthData();
-      router.push('/login');
-      throw error;
     }
   };
 

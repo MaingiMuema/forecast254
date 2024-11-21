@@ -82,6 +82,9 @@ const Header = () => {
       
       await signOut();
       
+      // Re-enable the button
+      if (button) button.disabled = false;
+      
       // Force a re-render of the header
       router.refresh();
     } catch (error) {
@@ -94,7 +97,10 @@ const Header = () => {
 
   // Effect to handle auth state changes
   useEffect(() => {
-    console.log('Auth state in header:', { user, loading });
+    if (!loading) {
+      // Only log when loading completes
+      console.log('Auth state in header:', { user, loading });
+    }
   }, [user, loading]);
 
   // Effect to close mobile menu on navigation
