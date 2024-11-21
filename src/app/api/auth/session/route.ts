@@ -24,149 +24,120 @@ export async function POST(request: Request) {
       );
     }
 
-    // Initialize supabase client
-    const cookieStore = cookies();
-    const supabase = createRouteHandlerClient<Database>({ cookies: () => cookieStore });
+    const supabase = createRouteHandlerClient<Database>({ cookies });
 
-    // First try to get the current session
-    const { data: { session: currentSession }, error: getCurrentError } = await supabase.auth.getSession();
-    
-    if (getCurrentError) {
-      console.error('Error getting current session:', getCurrentError);
+    try {
+      // First try to get the current session
+      const { data: { session: currentSession }, error: getCurrentError } = await supabase.auth.getSession();
+      
+      if (getCurrentError) {
+        console.error('Error getting current session:', getCurrentError);
+        return NextResponse.json(
+          { error: 'Failed to get current session', details: getCurrentError },
+          { status: 500 }
+        );
+      }
+
+      // Set the session
+      const { error: setSessionError } = await supabase.auth.setSession({
+        access_token: session.access_token,
+        refresh_token: session.refresh_token
+      });
+
+      if (setSessionError) {
+        console.error('Failed to set session:', setSessionError);
+        return NextResponse.json(
+          { error: 'Failed to set session', details: setSessionError },
+          { status: 500 }
+        );
+      }
+
+      // Verify the session was set correctly
+      const { data: { session: verifiedSession }, error: verifyError } = await supabase.auth.getSession();
+
+      if (verifyError || !verifiedSession) {
+        console.error('Session verification failed:', verifyError);
+        return NextResponse.json(
+          { error: 'Session verification failed', details: verifyError },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json({ message: 'Session updated successfully' });
+
+    } catch (error) {
+      console.error('Error in session handling:', error);
       return NextResponse.json(
-        { error: 'Failed to get current session', details: getCurrentError },
+        { error: 'Internal server error', details: error },
         { status: 500 }
       );
     }
 
-    // Set the session
-    const { error: setSessionError } = await supabase.auth.setSession({
-      access_token: session.access_token,
-      refresh_token: session.refresh_token
-    });
-
-    if (setSessionError) {
-      console.error('Failed to set session:', setSessionError);
-      return NextResponse.json(
-        { error: 'Failed to set session', details: setSessionError },
-        { status: setSessionError.status || 401 }
-      );
-    }
-
-    // Verify the session was set correctly
-    const { data: { session: verifiedSession }, error: verifyError } = await supabase.auth.getSession();
-
-    if (verifyError || !verifiedSession) {
-      console.error('Session verification failed:', verifyError);
-      return NextResponse.json(
-        { error: 'Session verification failed', details: verifyError },
-        { status: 401 }
-      );
-    }
-
-    // Create response with session and proper headers
-    const response = NextResponse.json({
-      message: 'Session synced successfully',
-      session: verifiedSession,
-      user: verifiedSession.user
-    });
-
-    // Set CORS headers
-    response.headers.set('Access-Control-Allow-Credentials', 'true');
-    response.headers.set('Access-Control-Allow-Origin', request.headers.get('origin') || '*');
-
-    return response;
   } catch (error) {
-    console.error('Session sync error:', error);
+    console.error('Error parsing request:', error);
     return NextResponse.json(
-      { error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' },
-      { status: 500 }
+      { error: 'Invalid request', details: error },
+      { status: 400 }
     );
   }
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    const cookieStore = cookies();
-    const supabase = createRouteHandlerClient<Database>({ cookies: () => cookieStore });
+    const supabase = createRouteHandlerClient<Database>({ cookies });
 
     const { data: { session }, error } = await supabase.auth.getSession();
 
     if (error) {
-      console.error('Session retrieval error:', error);
+      console.error('Error getting session:', error);
       return NextResponse.json(
-        { error: 'Session error', details: error },
-        { status: 401 }
+        { error: 'Failed to get session', details: error },
+        { status: 500 }
       );
     }
 
-    if (!session) {
-      return NextResponse.json(
-        { error: 'No active session', details: 'User is not authenticated' },
-        { status: 401 }
-      );
-    }
-
-    // Create response with session and proper headers
-    const response = NextResponse.json({ session, user: session.user });
-
-    // Set CORS headers
-    response.headers.set('Access-Control-Allow-Credentials', 'true');
-    response.headers.set('Access-Control-Allow-Origin', request.headers.get('origin') || '*');
-
-    return response;
+    return NextResponse.json({ session });
   } catch (error) {
-    console.error('Session check error:', error);
+    console.error('Error in GET session:', error);
     return NextResponse.json(
-      { error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' },
+      { error: 'Internal server error', details: error },
       { status: 500 }
     );
   }
 }
 
-export async function DELETE(request: Request) {
+export async function DELETE() {
   try {
-    const cookieStore = cookies();
-    const supabase = createRouteHandlerClient<Database>({ cookies: () => cookieStore });
+    const supabase = createRouteHandlerClient<Database>({ cookies });
 
     const { error } = await supabase.auth.signOut();
 
     if (error) {
-      console.error('Signout error:', error);
+      console.error('Error signing out:', error);
       return NextResponse.json(
         { error: 'Failed to sign out', details: error },
         { status: 500 }
       );
     }
 
-    // Create response with proper headers
-    const response = NextResponse.json({ message: 'Signed out successfully' });
-
-    // Set CORS headers
-    response.headers.set('Access-Control-Allow-Credentials', 'true');
-    response.headers.set('Access-Control-Allow-Origin', request.headers.get('origin') || '*');
-
-    return response;
+    return NextResponse.json({ message: 'Signed out successfully' });
   } catch (error) {
-    console.error('Signout error:', error);
+    console.error('Error in DELETE session:', error);
     return NextResponse.json(
-      { error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' },
+      { error: 'Internal server error', details: error },
       { status: 500 }
     );
   }
 }
 
 // Handle CORS preflight requests
-export async function OPTIONS(request: Request) {
-  const response = new NextResponse(null, {
+export async function OPTIONS() {
+  return new NextResponse(null, {
     status: 204,
+    headers: {
+      'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Credentials': 'true',
+    },
   });
-
-  response.headers.set('Access-Control-Allow-Credentials', 'true');
-  response.headers.set('Access-Control-Allow-Origin', request.headers.get('origin') || '*');
-  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
-  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  response.headers.set('Access-Control-Max-Age', '86400');
-
-  return response;
 }

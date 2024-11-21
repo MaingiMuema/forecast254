@@ -1,21 +1,19 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import axios from 'axios';
+import Parser from 'rss-parser';
 import { createClient } from '@supabase/supabase-js';
 import { Database } from '@/types/supabase';
-import Parser from 'rss-parser';
-import axios from 'axios';
+import NodeCache from 'node-cache';
 import { retry } from '@lifeomic/attempt';
 import { logger } from '@/utils/logger';
-import NodeCache from 'node-cache';
 
-// Initialize cache with a checkperiod of 600 seconds
+// Initialize cache with a checkperiod of 600 seconds and disable clone
 const cache = new NodeCache({ 
   checkperiod: 600,
   useClones: false,
   stdTTL: 3600 // Cache for 1 hour
 });
 
-// Initialize Supabase admin client
+// Initialize Supabase client
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -30,24 +28,14 @@ interface NewsItem {
   source: string;
 }
 
-interface RSSFeed {
-  url: string;
-  source: string;
-  type: 'rss';
-}
-
-interface NewsSource {
-  category: string;
-  feeds: RSSFeed[];
-}
-
-export class DataCollectionService {
-  private static instance: DataCollectionService;
+class KenyanNewsService {
   private parser: Parser;
-  private sources: NewsSource[];
-  private isCollecting: boolean = false;
+  private sources: {
+    category: string;
+    feeds: { url: string; source: string; type: 'rss' }[];
+  }[];
 
-  private constructor() {
+  constructor() {
     this.parser = new Parser({
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
@@ -88,18 +76,11 @@ export class DataCollectionService {
         feeds: [
           { url: 'https://www.pulselive.co.ke/lifestyle/rss', source: 'Pulse Live Lifestyle', type: 'rss' }
         ]
-      }
+      },
     ];
   }
 
-  public static getInstance(): DataCollectionService {
-    if (!DataCollectionService.instance) {
-      DataCollectionService.instance = new DataCollectionService();
-    }
-    return DataCollectionService.instance;
-  }
-
-  private async fetchRSSFeed(feed: RSSFeed, category: string): Promise<NewsItem[]> {
+  private async fetchRSSFeed(feed: { url: string; source: string }, category: string): Promise<NewsItem[]> {
     return retry(
       async () => {
         try {
@@ -136,6 +117,7 @@ export class DataCollectionService {
         factor: 2,
         handleError: (error: Error, context: { attemptNum: number }) => {
           logger.error(`Failed to fetch RSS feed ${feed.source} after ${context.attemptNum} attempts: ${error.message}`);
+          // Throw error on final attempt, otherwise continue retrying
           if (context.attemptNum === 3) {
             throw error;
           }
@@ -147,63 +129,76 @@ export class DataCollectionService {
     });
   }
 
-  public async collectData(): Promise<void> {
-    if (this.isCollecting) {
-      logger.warn('Data collection already in progress');
-      return;
+  async getNewsByCategory(category: string, limit: number = 10): Promise<NewsItem[]> {
+    const cacheKey = `news_${category}_${limit}`;
+    const cachedNews = cache.get<NewsItem[]>(cacheKey);
+    
+    if (cachedNews) {
+      return cachedNews;
     }
 
-    this.isCollecting = true;
     try {
-      for (const source of this.sources) {
-        const allNews: NewsItem[] = [];
-        
-        for (const feed of source.feeds) {
-          const news = await this.fetchRSSFeed(feed, source.category);
-          allNews.push(...news);
-        }
+      const categorySource = this.sources.find(source => source.category.toLowerCase() === category.toLowerCase());
+      
+      if (!categorySource) {
+        const availableCategories = this.sources.map(s => s.category).join(', ');
+        throw new Error(`Category "${category}" not found. Available categories are: ${availableCategories}`);
+      }
 
-        if (allNews.length > 0) {
-          await this.saveToDatabase(allNews);
+      const allNews: NewsItem[] = [];
+      
+      for (const feed of categorySource.feeds) {
+        try {
+          const items = await this.fetchRSSFeed(feed, category);
+          allNews.push(...items);
+        } catch (error) {
+          console.error(`Error fetching feed ${feed.url}:`, error);
+          continue;
         }
       }
+
+      // Sort by date (newest first) and limit
+      const sortedNews = allNews
+        .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
+        .slice(0, limit);
+
+      cache.set(cacheKey, sortedNews);
+      return sortedNews;
     } catch (error) {
-      logger.error('Error during data collection:', error);
-    } finally {
-      this.isCollecting = false;
+      console.error('Error fetching news by category:', error);
+      throw error;
     }
   }
 
-  private async saveToDatabase(news: NewsItem[]): Promise<void> {
+  async saveToDatabase(news: NewsItem[]) {
+    if (!news.length) {
+      logger.info('No news items to save to database');
+      return;
+    }
+
     try {
-      const now = new Date().toISOString();
       const { error } = await supabase
         .from('news_articles')
-        .upsert(
+        .insert(
           news.map(item => ({
             title: item.title,
-            content: item.content || '',  // Ensure content is not undefined
+            content: item.content || '',
             url: item.link,
             category: item.category,
-            published_at: new Date(item.pubDate).toISOString(),
-            created_at: now,
-            updated_at: now,
-            has_market: false,
-            status: 'published'
-          })),
-          { onConflict: 'url' }
+            source: item.source,
+            published_at: item.pubDate
+          }))
         );
 
       if (error) {
-        throw error;
+        logger.error('Error saving news to database:', error);
+      } else {
+        logger.info(`Successfully saved ${news.length} articles to database`);
       }
-
-      logger.info(`Successfully saved ${news.length} articles to database`);
     } catch (error) {
-      logger.error('Error saving news to database:', error);
-      throw error;
+      logger.error('Unexpected error while saving to database:', error);
     }
   }
 }
 
-export const dataCollectionService = DataCollectionService.getInstance();
+export const kenyanNewsService = new KenyanNewsService();

@@ -42,7 +42,8 @@ export async function GET(request: NextRequest) {
         end_date,
         status,
         creator_id,
-        resolved_value
+        resolved_value,
+        resolution_criteria
       `)
       .eq('id', marketId)
       .single();

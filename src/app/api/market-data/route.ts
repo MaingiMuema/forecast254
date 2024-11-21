@@ -7,7 +7,7 @@ import { DataCollectionService } from '@/services/DataCollectionService';
 // Initialize Supabase client
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
 export async function GET() {
@@ -15,9 +15,8 @@ export async function GET() {
     const service = DataCollectionService.getInstance();
     console.log('Starting data collection...');
     
-    const results = await service.triggerDataCollection();
-    console.log('Data collection results:', results);
-
+    await service.collectData();
+    
     // Get total articles count
     const { count } = await supabase
       .from('news_articles')
@@ -27,8 +26,7 @@ export async function GET() {
       success: true, 
       message: 'Data collection completed successfully',
       data: {
-        totalArticles: count,
-        results
+        totalArticles: count
       }
     });
   } catch (error) {

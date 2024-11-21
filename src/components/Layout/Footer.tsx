@@ -15,6 +15,7 @@ const Footer = () => {
       { label: 'Market Rules', href: '/markets/rules' },
     ],
     resources: [
+      { label: 'News', href: '/news' },
       { label: 'How It Works', href: '/learn' },
       { label: 'FAQ', href: '/learn/faq' },
       { label: 'Documentation', href: '/docs' },
@@ -146,10 +147,10 @@ const Footer = () => {
         <div className="pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-muted-foreground">
-              © {currentYear} Forecast254. All rights reserved.
+              &copy; {currentYear} Forecast254. All rights reserved.
             </div>
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-              <span>Built in Nairobi 🇰🇪</span>
+              <span>Built in Nairobi &copy;</span>
               <span className="text-primary">•</span>
               <span>Powered by Smatica</span>
             </div>

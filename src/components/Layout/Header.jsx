@@ -15,7 +15,8 @@ import {
   FaTimes,
   FaSun,
   FaMoon,
-  FaChartPie
+  FaChartPie,
+  FaNewspaper
 } from "react-icons/fa";
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import Spinner from '@/components/ui/Spinner';
@@ -123,6 +124,11 @@ const Header = () => {
               <FaChartLine className="text-sm" />
               <span>Markets</span>
             </Link>
+           {/* <Link href="/feeds" className="nav-link">
+              <FaNewspaper className="text-sm" />
+              <span>Feeds</span>
+            </Link>
+            */}
             <Link href="/leaderboard" className="nav-link">
               <FaTrophy className="text-sm" />
               <span>Leaderboard</span>
@@ -295,6 +301,14 @@ const Header = () => {
                 <Link href="/markets" className="mobile-nav-link" onClick={() => setIsMenuOpen(false)}>
                   <FaChartLine className="text-lg" />
                   <span>Markets</span>
+                </Link>
+                <Link
+                  href="/news"
+                  className="mobile-nav-link"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <FaNewspaper className="text-lg" />
+                  <span>Feeds</span>
                 </Link>
                 <Link href="/leaderboard" className="mobile-nav-link" onClick={() => setIsMenuOpen(false)}>
                   <FaTrophy className="text-lg" />

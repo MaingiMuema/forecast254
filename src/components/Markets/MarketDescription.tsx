@@ -6,7 +6,7 @@ import { DocumentTextIcon, ScaleIcon } from '@heroicons/react/24/outline';
 
 interface MarketData {
   description: string;
-  resolutionCriteria: string;
+  resolution_criteria: string;
 }
 
 export default function MarketDescription({ marketId }: { marketId: string }) {
@@ -79,7 +79,7 @@ export default function MarketDescription({ marketId }: { marketId: string }) {
         ) : (
           <div className="prose prose-invert max-w-none">
             <p className="text-gray-300 leading-relaxed whitespace-pre-wrap">
-              {market.resolutionCriteria}
+              {market.resolution_criteria}
             </p>
           </div>
         )}

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { MarketGenerationService } from '@/services/MarketGenerationService';
+import { newsMarketOrchestrator } from '@/services/NewsMarketOrchestrator';
+import { logger } from '@/utils/logger';
 
 // Verify environment variables
 if (!process.env.GEMINI_API_KEY) {
@@ -12,12 +13,11 @@ if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_
 
 export async function POST() {
   try {
-    console.log('Market generation API route called');
-    const service = MarketGenerationService.getInstance();
-    console.log('Got MarketGenerationService instance');
+    logger.info('Market generation API route called');
+    logger.info('Got NewsMarketOrchestrator instance');
     
-    const marketsCreated = await service.generateMarketsFromArticles();
-    console.log(`Generated ${marketsCreated} markets`);
+    const marketsCreated = await newsMarketOrchestrator.processNewsAndGenerateMarkets();
+    logger.info(`Generated ${marketsCreated} markets`);
 
     return NextResponse.json({ 
       success: true, 
@@ -25,7 +25,7 @@ export async function POST() {
       marketsCreated
     });
   } catch (error) {
-    console.error('Error in market generation endpoint:', error);
+    logger.error('Error in market generation endpoint:', error);
     return NextResponse.json({ 
       success: false, 
       message: 'Error generating markets',
