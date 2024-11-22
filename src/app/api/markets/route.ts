@@ -17,6 +17,7 @@ export async function GET(request: Request) {
       .from('markets')
       .select('*')
       .eq('status', 'open')
+      .gt('closing_date', new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString()) // Filter markets closing after 2 days
       .limit(limit);
 
     // Apply category filter if not 'all'

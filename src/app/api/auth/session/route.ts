@@ -49,72 +49,58 @@ export async function POST(request: Request) {
   try {
     const { session }: SessionRequest = await request.json();
     
-    if (!session || !session.access_token || !session.refresh_token) {
-      console.error('Invalid session data:', { session });
+    if (!session?.access_token || !session?.refresh_token) {
       return createCorsResponse(
         NextResponse.json(
-          { error: 'Invalid session data', details: 'Missing required session tokens' },
+          { error: 'Invalid session data' },
           { status: 400 }
         )
       );
     }
 
-    const supabase = createRouteHandlerClient<Database>({ 
-      cookies: () => cookies()
+    // Create response with session cookie
+    const response = NextResponse.json(
+      { status: 'success' },
+      { status: 200 }
+    );
+
+    // Set auth cookies with proper attributes
+    const secure = process.env.NODE_ENV === 'production';
+    const sameSite = secure ? 'strict' : 'lax';
+    const domain = new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').hostname;
+
+    response.cookies.set('sb-access-token', session.access_token, {
+      path: '/',
+      secure,
+      sameSite,
+      domain,
+      maxAge: 3600,
+      httpOnly: true
     });
 
-    try {
-      // Set the session
-      const { data: sessionData, error: setSessionError } = await supabase.auth.setSession({
-        access_token: session.access_token,
-        refresh_token: session.refresh_token
-      });
+    response.cookies.set('sb-refresh-token', session.refresh_token, {
+      path: '/',
+      secure,
+      sameSite,
+      domain,
+      maxAge: 7200,
+      httpOnly: true
+    });
 
-      if (setSessionError) {
-        console.error('Failed to set session:', setSessionError);
-        return createCorsResponse(
-          NextResponse.json(
-            { error: 'Failed to set session', details: setSessionError },
-            { status: 500 }
-          )
-        );
-      }
+    // Store session data
+    const supabase = createRouteHandlerClient<Database>({ cookies });
+    await supabase.auth.setSession({
+      access_token: session.access_token,
+      refresh_token: session.refresh_token
+    });
 
-      if (!sessionData.session) {
-        console.error('No session returned after setting session');
-        return createCorsResponse(
-          NextResponse.json(
-            { error: 'Session not set', details: 'No session returned' },
-            { status: 500 }
-          )
-        );
-      }
-
-      // Create response with session data
-      const response = NextResponse.json({
-        message: 'Session updated successfully',
-        user: session.user || sessionData.session.user
-      });
-
-      // Copy auth cookies to response
-      return await createCorsResponse(await copyAuthCookiesToResponse(response));
-
-    } catch (error) {
-      console.error('Error in session handling:', error);
-      return createCorsResponse(
-        NextResponse.json(
-          { error: 'Internal server error', details: error },
-          { status: 500 }
-        )
-      );
-    }
-
+    return createCorsResponse(response);
   } catch (error) {
-    console.error('Error parsing request:', error);
+    console.error('Error setting session:', error);
     return createCorsResponse(
       NextResponse.json(
-        { error: 'Invalid request', details: error },
-        { status: 400 }
+        { error: 'Internal server error' },
+        { status: 500 }
       )
     );
   }
@@ -157,8 +143,9 @@ export async function GET() {
 
 export async function DELETE() {
   try {
-    const cookieStore = cookies();
-    const supabase = createRouteHandlerClient<Database>({ cookies: () => cookieStore });
+    const supabase = createRouteHandlerClient<Database>({ 
+      cookies: () => cookies()
+    });
 
     // Sign out from Supabase
     const { error } = await supabase.auth.signOut();

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -32,7 +33,7 @@ export const sidebarLinks = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { signOut } = useAuth();
+  const { user, loading, signOut } = useAuth();
 
   const handleSignOut = async () => {
     try {
@@ -41,6 +42,7 @@ export default function Sidebar() {
       console.error('Error signing out:', error);
     }
   };
+  
 
   return (
     <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 px-6">

@@ -1307,3 +1307,209 @@
 2024-11-21 18:32:55:3255 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
 2024-11-21 18:38:00:380 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
 2024-11-21 18:44:19:4419 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 19:04:14:414 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 19:12:36:1236 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-21 19:29:56:2956 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 09:46:06:466 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 10:09:13:913 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 10:16:56:1656 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 10:47:54:4754 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 10:50:17:5017 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:01:01:11 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:01:01:11 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:01:57:157 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:03:01:31 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:03:01:31 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:03:22:322 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:03:36:336 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:04:37:437 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:04:37:437 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:05:34:534 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:06:36:636 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:06:37:637 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:07:00:70 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:07:11:711 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:07:11:711 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:21:35:2135 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:22:19:2219 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:23:22:2322 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:23:28:2328 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:23:28:2328 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:24:29:2429 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:24:30:2430 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:25:18:2518 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:26:08:268 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:27:00:270 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:27:10:2710 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:27:10:2710 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:30:44:3044 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:45:45:4545 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 11:58:26:5826 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 12:00:03:03 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 12:59:06:596 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 13:46:15:4615 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 13:58:48:5848 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 14:02:06:26 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 14:02:14:214 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 14:02:14:214 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 14:09:10:910 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 14:13:52:1352 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 14:14:39:1439 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 14:14:52:1452 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 14:14:58:1458 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 14:30:57:3057 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:30:57:3057 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:30:58:3058 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:30:58:3058 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:30:58:3058 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:30:58:3058 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:30:59:3059 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:30:59:3059 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:00:310 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:00:310 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:00:310 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:00:310 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:01:311 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:01:311 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:01:311 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:01:311 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:01:311 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:01:311 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:02:312 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:02:312 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:02:312 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:02:312 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:02:312 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:02:312 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:02:312 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:02:312 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:03:313 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:03:313 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:04:314 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:04:314 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:04:314 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:04:314 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:04:314 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:04:314 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:04:314 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:04:314 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:04:314 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:04:314 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:04:314 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:04:314 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:05:315 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:05:315 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-22 14:31:05:315 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:05:315 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:05:315 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:05:315 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:06:316 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:06:316 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:06:316 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:06:316 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:06:316 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:06:316 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:06:316 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:06:316 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:07:317 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:07:317 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:07:317 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:07:317 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:08:318 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:08:318 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:08:318 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:08:318 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:08:318 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:08:318 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:08:318 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:08:318 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:08:318 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:08:318 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:08:318 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:08:318 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:08:318 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:08:318 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:09:319 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:09:319 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:09:319 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:09:319 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:09:319 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:09:319 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:09:319 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:09:319 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:10:3110 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:10:3110 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:10:3110 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:10:3110 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:10:3110 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:10:3110 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:11:3111 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:11:3111 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:11:3111 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:11:3111 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:11:3111 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:11:3111 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:12:3112 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:12:3112 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:13:3113 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 14:31:13:3113 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-22 15:14:19:1419 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 15:15:52:1552 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 15:17:15:1715 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 15:17:30:1730 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 15:18:52:1852 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 15:19:13:1913 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 15:20:36:2036 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 15:21:01:211 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 15:22:44:2244 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 15:23:35:2335 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 15:24:25:2425 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 15:27:52:2752 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 15:29:25:2925 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 15:56:03:563 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 16:01:27:127 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 16:07:06:76 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 16:16:02:162 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 16:19:13:1913 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 16:20:52:2052 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 16:27:33:2733 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 16:34:35:3435 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: socket hang up[39m
+2024-11-22 16:34:35:3435 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: socket hang up[39m
+2024-11-22 16:36:03:363 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 16:38:59:3859 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 16:43:04:434 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 16:47:32:4732 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 16:50:16:5016 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 16:57:17:5717 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 16:59:05:595 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 17:03:55:355 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 17:06:43:643 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 17:08:30:830 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 17:10:57:1057 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 17:15:33:1533 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 17:18:01:181 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 17:19:36:1936 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 17:29:51:2951 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 17:32:14:3214 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 17:33:19:3319 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 17:35:49:3549 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 17:40:42:4042 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 17:43:33:4333 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 17:50:31:5031 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 17:54:36:5436 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 18:04:34:434 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 18:14:22:1422 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 18:18:57:1857 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 18:20:29:2029 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 18:26:12:2612 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 18:28:43:2843 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 18:36:02:362 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 18:37:26:3726 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 18:41:57:4157 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 18:50:42:5042 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 18:53:26:5326 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 18:58:26:5826 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 19:04:07:47 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 19:08:08:88 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 19:15:00:150 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-22 19:22:11:2211 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m

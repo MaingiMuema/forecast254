@@ -8,6 +8,7 @@ import MainLayout from "@/components/Layout/MainLayout";
 import { DataCollectionService } from '@/services/DataCollectionService';
 import DataCollectionScheduler from "@/components/DataCollectionScheduler";
 import MarketGenerationScheduler from "@/components/MarketGenerationScheduler";
+import { Toaster } from 'react-hot-toast';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -49,6 +50,7 @@ export default function RootLayout({
               {children}
               <DataCollectionScheduler />
               <MarketGenerationScheduler />
+              <Toaster position="top-right" />
             </MainLayout>
           </AuthProvider>
         </ThemeProvider>

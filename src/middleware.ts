@@ -1,96 +1,84 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// List of public routes that don't require authentication
-const publicRoutes = [
-  '/login',
-  '/register',
-  '/_next',
-  '/favicon.ico',
-  '/public',
-  '/api/auth',
-  '/',
-  '/markets' // Making markets public as per recent change
-];
+export async function middleware(req: NextRequest) {
+  const res = NextResponse.next();
+  const supabase = createMiddlewareClient({ req, res });
 
-// List of protected routes that require authentication
-const protectedRoutes = [
-  '/dashboard',
-  '/portfolio',
-  '/settings',
-  '/api/market-generation',
-  '/api/market-data',
-  '/api/user'
-];
-
-// Helper function to check if a path matches any of the routes
-const pathStartsWith = (path: string, routes: string[]) => {
-  return routes.some(route => path.startsWith(route));
-};
-
-export async function middleware(request: NextRequest) {
   try {
-    // Create a Supabase client for this request
-    const supabase = createMiddlewareClient({ req: request, res: NextResponse.next() });
-    
-    // Get the current session
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    // Get the requested path
-    const path = request.nextUrl.pathname;
-    
-    // Handle authentication state
-    const isAuthenticated = !!session;
-    const isPublicRoute = pathStartsWith(path, publicRoutes);
-    const isProtectedRoute = pathStartsWith(path, protectedRoutes);
-    
-    // Case 1: Accessing auth pages while authenticated
-    if (isAuthenticated && (path === '/login' || path === '/register')) {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
+    // Refresh session if expired
+    const {
+      data: { session },
+      error: sessionError,
+    } = await supabase.auth.getSession();
+
+    if (sessionError) {
+      console.error('Session error in middleware:', sessionError);
+      // Don't throw, continue with null session
     }
-    
-    // Case 2: Accessing protected route while not authenticated
-    if (!isAuthenticated && isProtectedRoute) {
-      const redirectUrl = new URL('/login', request.url);
-      redirectUrl.searchParams.set('redirectTo', encodeURIComponent(path));
-      return NextResponse.redirect(redirectUrl);
+
+    const protectedPaths = [
+      '/dashboard',
+      '/api/markets/trade',
+      '/api/markets/positions',
+      '/dashboard/portfolio',
+      '/dashboard/trades',
+      '/dashboard/settings',
+      '/dashboard/analysis'
+    ];
+
+    const isProtectedPath = protectedPaths.some(path => 
+      req.nextUrl.pathname.startsWith(path)
+    );
+
+    // If accessing protected routes without auth, handle appropriately
+    if (!session && isProtectedPath) {
+      // For API routes, return 401 JSON response
+      if (req.nextUrl.pathname.startsWith('/api/')) {
+        return new NextResponse(
+          JSON.stringify({ 
+            error: 'Authentication required',
+            code: 'AUTH_REQUIRED'
+          }),
+          { 
+            status: 401,
+            headers: { 
+              'Content-Type': 'application/json',
+              'WWW-Authenticate': 'Bearer'
+            }
+          }
+        );
+      }
+      
+      // For page routes, redirect to login with return URL
+      const returnTo = encodeURIComponent(req.nextUrl.pathname);
+      return NextResponse.redirect(new URL(`/login?returnTo=${returnTo}`, req.url));
     }
-    
-    // Case 3: Public routes are always accessible
-    if (isPublicRoute) {
-      return NextResponse.next();
-    }
-    
-    // Case 4: All other routes proceed normally if authenticated
-    if (isAuthenticated) {
-      return NextResponse.next();
-    }
-    
-    // Default: Redirect to login for unknown routes when not authenticated
-    const redirectUrl = new URL('/login', request.url);
-    redirectUrl.searchParams.set('redirectTo', encodeURIComponent(path));
-    return NextResponse.redirect(redirectUrl);
-    
+
+    return res;
   } catch (error) {
     console.error('Middleware error:', error);
-    // On error, redirect to login with error parameter
-    const redirectUrl = new URL('/login', request.url);
-    redirectUrl.searchParams.set('error', 'auth_error');
-    return NextResponse.redirect(redirectUrl);
+    return new NextResponse(
+      JSON.stringify({ 
+        error: 'Internal server error',
+        code: 'INTERNAL_ERROR'
+      }),
+      { 
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
   }
 }
 
-// Configure which routes to run middleware on
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    '/((?!_next/static|_next/image|favicon.ico).*)',
-  ],
+    '/dashboard/:path*',
+    '/api/markets/:path*',
+    '/api/user/:path*'
+  ]
 };

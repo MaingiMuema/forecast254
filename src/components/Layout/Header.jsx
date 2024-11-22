@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React, { useState, useEffect, useRef } from "react";
@@ -75,23 +76,10 @@ const Header = () => {
   const handleSignOut = async () => {
     try {
       setIsMenuOpen(false); // Close mobile menu if open
-      
-      // Disable the signout button to prevent double-clicks
-      const button = document.activeElement;
-      if (button) button.disabled = true;
-      
-      await signOut();
-      
-      // Re-enable the button
-      if (button) button.disabled = false;
-      
-      // Force a re-render of the header
-      router.refresh();
+      await signOut(); // Let AuthContext handle all cleanup
     } catch (error) {
       console.error('Error signing out:', error);
-      // Re-enable the button in case of error
-      const button = document.activeElement;
-      if (button) button.disabled = false;
+      toast.error('Failed to sign out. Please try again.');
     }
   };
 
