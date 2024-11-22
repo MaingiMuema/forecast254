@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
 
 export async function GET(
-  request: Request,
-  { params }: { params: { marketId: string } }
+  request: NextRequest,
+  context: { params: { marketId: string } }
 ) {
   try {
-    const { marketId } = params;
+    const { marketId } = context.params;
 
     // Create a Supabase client using the auth helpers
     const supabase = createRouteHandlerClient({ cookies });
@@ -18,22 +18,16 @@ export async function GET(
 
     if (sessionError) {
       console.error('Session error:', sessionError);
-      return new NextResponse(
-        JSON.stringify({ error: 'Authentication failed', details: sessionError.message }),
-        { 
-          status: 401,
-          headers: { 'Content-Type': 'application/json' }
-        }
+      return Response.json(
+        { error: 'Authentication failed', details: sessionError.message },
+        { status: 401 }
       );
     }
 
     if (!session?.user) {
-      return new NextResponse(
-        JSON.stringify({ error: 'No active session found' }), 
-        {
-          status: 401,
-          headers: { 'Content-Type': 'application/json' }
-        }
+      return Response.json(
+        { error: 'No active session found' },
+        { status: 401 }
       );
     }
 
@@ -54,36 +48,24 @@ export async function GET(
 
     if (positionsError) {
       console.error('Error fetching positions:', positionsError);
-      return new NextResponse(
-        JSON.stringify({ 
+      return Response.json(
+        { 
           error: 'Failed to fetch positions',
           details: positionsError
-        }),
-        { 
-          status: 500,
-          headers: { 'Content-Type': 'application/json' }
-        }
+        },
+        { status: 500 }
       );
     }
 
-    return new NextResponse(
-      JSON.stringify(positions || []),
-      {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    return Response.json(positions || []);
   } catch (error) {
     console.error('Error in positions endpoint:', error);
-    return new NextResponse(
-      JSON.stringify({ 
+    return Response.json(
+      { 
         error: 'Internal server error',
         details: error instanceof Error ? error.message : String(error)
-      }),
-      { 
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      }
+      },
+      { status: 500 }
     );
   }
 }
