@@ -7177,3 +7177,22 @@
 2024-11-22 19:24:18:2418 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
 2024-11-22 19:24:19:2419 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
 2024-11-22 19:24:20:2420 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-22 19:25:33:2533 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-22 19:25:33:2533 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-22 19:25:33:2533 [32minfo[39m: [32mAlready processing news and markets[39m
+2024-11-22 19:25:33:2533 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-22 19:25:33:2533 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-22 19:25:34:2534 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-22 19:25:35:2535 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-22 19:25:35:2535 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-22 19:25:36:2536 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-22 19:25:36:2536 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-22 19:25:36:2536 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-22 19:25:36:2536 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-22 19:25:37:2537 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-22 19:25:37:2537 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-22 19:25:38:2538 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-22 19:25:39:2539 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-22 19:25:39:2539 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-22 19:25:40:2540 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-22 19:25:40:2540 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
