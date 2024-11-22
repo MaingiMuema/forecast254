@@ -1,19 +1,24 @@
 import { createClient } from '@supabase/supabase-js';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-export async function GET(
-  request: Request,
-  context: { params: { marketId: string } }
-) {
-  // Properly await and destructure the marketId
-  const { marketId } = await Promise.resolve(context.params);
-
+export async function GET(request: NextRequest) {
   try {
+    // Extract marketId from URL pattern
+    const pathname = request.nextUrl.pathname;
+    const marketId = pathname.split('/')[3]; // /api/markets/[marketId]
+
+    if (!marketId) {
+      return NextResponse.json(
+        { error: 'Market ID is required' },
+        { status: 400 }
+      );
+    }
+
     // Get market data
     const { data: market, error: marketError } = await supabase
       .from('markets')
@@ -42,25 +47,19 @@ export async function GET(
 
     if (marketError) {
       console.error('Database error:', marketError);
-      return new NextResponse(
-        JSON.stringify({ 
+      return NextResponse.json(
+        { 
           error: 'Database error',
           details: marketError
-        }),
-        { 
-          status: 500,
-          headers: { 'Content-Type': 'application/json' }
-        }
+        },
+        { status: 500 }
       );
     }
 
     if (!market) {
-      return new NextResponse(
-        JSON.stringify({ error: 'Market not found' }),
-        { 
-          status: 404,
-          headers: { 'Content-Type': 'application/json' }
-        }
+      return NextResponse.json(
+        { error: 'Market not found' },
+        { status: 404 }
       );
     }
 
@@ -71,18 +70,15 @@ export async function GET(
         probability_yes: market.probability_yes,
         probability_no: market.probability_no
       });
-      return new NextResponse(
-        JSON.stringify({ 
+      return NextResponse.json(
+        { 
           error: 'Invalid market probabilities',
           details: { 
             probability_yes: market.probability_yes,
             probability_no: market.probability_no 
           }
-        }),
-        { 
-          status: 400,
-          headers: { 'Content-Type': 'application/json' }
-        }
+        },
+        { status: 400 }
       );
     }
 
@@ -95,17 +91,17 @@ export async function GET(
 
     console.log('Transformed market data:', transformedMarket);
 
-    return new NextResponse(JSON.stringify(transformedMarket), {
+    return NextResponse.json(transformedMarket, {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
     console.error('Error fetching market:', error);
-    return new NextResponse(
-      JSON.stringify({ 
+    return NextResponse.json(
+      { 
         error: 'Failed to fetch market data',
         details: error instanceof Error ? error.message : String(error)
-      }),
+      },
       { 
         status: 500,
         headers: { 'Content-Type': 'application/json' }
