@@ -1,18 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { type NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-
-type Params = {
-  marketId: string;
-};
 
 export async function GET(
   request: NextRequest,
-  context: { params: Params }
+  { params }: { params: { marketId: string } }
 ) {
   try {
-    const { marketId } = context.params;
+    const { marketId } = params;
 
     // Create a Supabase client using the auth helpers
     const supabase = createRouteHandlerClient({ cookies });
