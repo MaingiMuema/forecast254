@@ -3,8 +3,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { createContext, useContext, useEffect, useState, useRef } from 'react';
-import { User, AuthError, Session, AuthChangeEvent, WeakPassword } from '@supabase/supabase-js';
+import { createContext, useContext, useEffect, useState, useRef, useCallback } from 'react';
+import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { usePathname } from 'next/navigation';
@@ -13,9 +13,9 @@ type AuthResponse = {
   data: {
     user: User | null;
     session: Session | null;
-    weakPassword?: WeakPassword | null;
+    weakPassword?: any;
   } | null;
-  error: AuthError | null;
+  error: any;
 };
 
 interface AuthContextType {
@@ -28,268 +28,338 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const SESSION_REFRESH_INTERVAL = 10 * 60 * 1000; // 10 minutes
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 2000;
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [initialized, setInitialized] = useState(false);
+  const [pendingRedirect, setPendingRedirect] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const sessionCheckIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const mountedRef = useRef(true);
+  const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const authStateChangeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Constants for auth configuration
-  const AUTH_CONFIG = {
-    MAX_RETRIES: 3,
-    RETRY_DELAY: 2000,
-    AUTH_TIMEOUT: 5000,
-    SESSION_CHECK_INTERVAL: 30000,
-  };
-
-  // Function to clear all auth-related data
-  const clearAuthData = async () => {
-    // Clear state
-    setUser(null);
-
-    // Clear all localStorage data
-    if (typeof window !== 'undefined') {
-      // Clear Supabase specific items
-      const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID;
-      if (projectId) {
-        window.localStorage.removeItem(`sb-${projectId}-auth-token`);
-        window.localStorage.removeItem('supabase.auth.token');
-        window.localStorage.removeItem('supabase.auth.expires');
-        window.localStorage.removeItem('supabase.auth.data');
+  // Safety timeout to prevent infinite loading
+  const startLoadingSafetyTimeout = useCallback(() => {
+    if (loadingTimeoutRef.current) {
+      clearTimeout(loadingTimeoutRef.current);
+    }
+    loadingTimeoutRef.current = setTimeout(() => {
+      if (mountedRef.current) {
+        setLoading(false);
       }
-      
-      // Clear any other auth-related items
-      Object.keys(localStorage).forEach(key => {
-        if (key.includes('auth') || key.includes('token') || key.includes('session')) {
-          localStorage.removeItem(key);
-        }
-      });
+    }, 5000);
+  }, []);
+
+  // Debounced set loading state
+  const debouncedSetLoading = useCallback((value: boolean) => {
+    if (authStateChangeTimeoutRef.current) {
+      clearTimeout(authStateChangeTimeoutRef.current);
+    }
+    authStateChangeTimeoutRef.current = setTimeout(() => {
+      if (mountedRef.current) {
+        setLoading(value);
+      }
+    }, 100); // 100ms debounce
+  }, []);
+
+  // Clear auth data without automatic redirect
+  const clearAuthData = useCallback(async () => {
+    if (!mountedRef.current) return;
+
+    setUser(null);
+    
+    if (typeof window === 'undefined') return;
+
+    // Clear Supabase specific items
+    const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID;
+    if (projectId) {
+      window.localStorage.removeItem(`sb-${projectId}-auth-token`);
     }
 
-    // Clear cookies with multiple domain variations
-    const cookies = [
-      'sb:token',
-      'sb:session',
-      'sb-access-token',
-      'sb-refresh-token',
-      'supabase-auth-token',
-      '__session',
-      'auth',
-      'token'
-    ];
-
-    if (typeof window !== 'undefined') {
-      const domains = [
-        window.location.hostname,
-        `.${window.location.hostname}`,
-        window.location.hostname.split('.').slice(1).join('.'),
-        ''  // Empty string for cookies without domain
-      ];
-
-      const paths = ['/', '/api', '', '*'];
-
-      // Function to clear a cookie with all possible combinations
-      const clearCookie = (name: string) => {
-        domains.forEach(domain => {
-          paths.forEach(path => {
-            // Clear with domain and path
-            if (domain) {
-              document.cookie = `${name}=; path=${path}; expires=Thu, 01 Jan 1970 00:00:01 GMT; domain=${domain}`;
-            }
-            // Clear without domain
-            document.cookie = `${name}=; path=${path}; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
-          });
-        });
-
-        // Also try clearing with Secure and SameSite attributes
-        document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT; secure; samesite=strict`;
-        document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT; secure; samesite=lax`;
-      };
-
-      // Clear all specified cookies
-      cookies.forEach(clearCookie);
-
-      // Also clear any existing cookies that match our patterns
-      document.cookie.split(';').forEach(cookie => {
-        const [name] = cookie.split('=');
-        const trimmedName = name.trim();
-        if (
-          trimmedName.includes('sb:') ||
-          trimmedName.includes('sb-') ||
-          trimmedName.includes('supabase') ||
-          trimmedName.includes('auth') ||
-          trimmedName.includes('token') ||
-          trimmedName.includes('session')
-        ) {
-          clearCookie(trimmedName);
-        }
-      });
+    // Clear refresh timer
+    if (refreshTimerRef.current) {
+      clearInterval(refreshTimerRef.current);
+      refreshTimerRef.current = null;
     }
 
-    // Clear session storage
-    if (typeof window !== 'undefined') {
-      sessionStorage.clear();
+    // Clear loading timeout
+    if (loadingTimeoutRef.current) {
+      clearTimeout(loadingTimeoutRef.current);
+      loadingTimeoutRef.current = null;
     }
 
-    // Clear any pending auth operations
-    if (sessionCheckIntervalRef.current) {
-      clearInterval(sessionCheckIntervalRef.current);
-      sessionCheckIntervalRef.current = null;
+    // Clear auth state change timeout
+    if (authStateChangeTimeoutRef.current) {
+      clearTimeout(authStateChangeTimeoutRef.current);
+      authStateChangeTimeoutRef.current = null;
     }
-  };
 
-  // Function to handle successful login
-  const handleSuccessfulLogin = () => {
-    // Check if we should redirect
-    const redirectTo = searchParams?.get('redirectTo');
-    if (redirectTo) {
-      const decodedRedirect = decodeURIComponent(redirectTo);
-      router.push(decodedRedirect);
-    } else {
-      router.push('/');
-    }
-  };
-
-  // Enhanced session sync with retry logic
-  const syncSession = async (retryCount = 0): Promise<boolean> => {
+    // Clear server session
     try {
-      // Get current session state
+      await fetch('/api/auth/session', {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.warn('Error clearing server session:', error);
+    }
+  }, []);
+
+  // Handle navigation
+  useEffect(() => {
+    if (!router || !pendingRedirect) return;
+
+    const performRedirect = async () => {
+      try {
+        console.log('Attempting navigation to:', pendingRedirect);
+        await router.push(pendingRedirect);
+        console.log('Navigation completed successfully');
+      } catch (error) {
+        console.error('Navigation failed:', error);
+      } finally {
+        setPendingRedirect(null);
+      }
+    };
+
+    performRedirect();
+  }, [router, pendingRedirect]);
+
+  // Handle successful login
+  const handleSuccessfulLogin = useCallback(() => {
+    const redirectTo = searchParams?.get('redirectTo');
+    const targetPath = redirectTo ? decodeURIComponent(redirectTo) : '/';
+    console.log('Setting redirect path to:', targetPath);
+    setPendingRedirect(targetPath);
+  }, [searchParams]);
+
+  // Refresh session
+  const refreshSession = useCallback(async () => {
+    if (!mountedRef.current) return false;
+
+    try {
       const { data: { session }, error } = await supabase.auth.getSession();
       
-      if (error) {
-        console.warn('Session sync error:', error);
-        if (retryCount < AUTH_CONFIG.MAX_RETRIES) {
-          await new Promise(resolve => setTimeout(resolve, AUTH_CONFIG.RETRY_DELAY));
-          return syncSession(retryCount + 1);
-        }
+      if (error || !session) {
+        console.warn('Session refresh failed:', error);
         return false;
       }
 
-      if (!session) {
-        setUser(null);
+      // Verify session with server
+      const response = await fetch('/api/auth/session', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        console.warn('Server session verification failed');
         return false;
       }
 
-      // Verify the session is still valid
-      const { data: { user: currentUser }, error: refreshError } = await supabase.auth.getUser();
-      
-      if (refreshError || !currentUser) {
-        setUser(null);
-        return false;
-      }
-
-      setUser(currentUser);
       return true;
     } catch (error) {
-      console.error('Session sync error:', error);
-      if (retryCount < AUTH_CONFIG.MAX_RETRIES) {
-        await new Promise(resolve => setTimeout(resolve, AUTH_CONFIG.RETRY_DELAY));
-        return syncSession(retryCount + 1);
-      }
+      console.error('Error refreshing session:', error);
       return false;
     }
-  };
+  }, []);
 
-  // Enhanced auth state change handler
-  const handleAuthStateChange = async (event: AuthChangeEvent, session: Session | null) => {
+  // Start session refresh timer
+  const startSessionRefresh = useCallback(() => {
+    if (refreshTimerRef.current) {
+      clearInterval(refreshTimerRef.current);
+    }
+
+    refreshTimerRef.current = setInterval(refreshSession, SESSION_REFRESH_INTERVAL);
+  }, [refreshSession]);
+
+  // Handle auth state changes
+  const handleAuthStateChange = useCallback(async (event: string, session: Session | null) => {
+    if (!mountedRef.current) return;
+
     console.log('Auth state changed:', event);
-    
-    // Handle sign out immediately
-    if (event === 'SIGNED_OUT') {
-      await clearAuthData();
-      if (pathname !== '/login' && pathname !== '/register') {
-        router.push('/login');
-      }
-      return;
-    }
+    debouncedSetLoading(true);
 
-    // Handle missing access token
-    if (!session?.access_token) {
-      if (event !== 'INITIAL_SESSION') {
-        await clearAuthData();
-      }
-      return;
-    }
-
-    setLoading(true);
     try {
-      // First verify the session is valid
-      const { data: { user: currentUser }, error: userError } = await supabase.auth.getUser();
-      
-      if (userError || !currentUser) {
-        throw new Error('Invalid session');
+      if (event === 'SIGNED_OUT' || !session) {
+        await clearAuthData();
+        setPendingRedirect(null); // Clear any pending redirects
+        debouncedSetLoading(false);
+        return;
       }
 
-      // Then attempt to sync the session
-      const syncPromise = syncSession();
-      const timeoutPromise = new Promise((_, reject) => {
-        const timeoutId = setTimeout(() => {
-          clearTimeout(timeoutId);
-          reject(new Error('Auth timeout'));
-        }, AUTH_CONFIG.AUTH_TIMEOUT);
-      });
-      
-      const syncResult = await Promise.race([
-        syncPromise,
-        timeoutPromise
-      ]).catch(async (error) => {
-        console.warn('Initial sync attempt failed:', error);
-        // If timeout, try one more time with increased timeout
-        if (error.message === 'Auth timeout') {
-          return syncSession();
-        }
-        return false;
-      });
-
-      if (syncResult) {
-        if (event === 'SIGNED_IN') {
-          handleSuccessfulLogin();
-        }
-      } else {
-        // One final session check before clearing
-        const { data: { session: finalSession } } = await supabase.auth.getSession();
-        if (!finalSession) {
+      if (session) {
+        const { data: { user: currentUser }, error } = await supabase.auth.getUser();
+        
+        if (error || !currentUser) {
+          console.warn('Error getting user:', error);
           await clearAuthData();
-          if (pathname !== '/login' && pathname !== '/register') {
-            router.push('/login');
+          setPendingRedirect(null); // Clear any pending redirects
+          debouncedSetLoading(false);
+          return;
+        }
+
+        if (mountedRef.current) {
+          setUser(currentUser);
+          startSessionRefresh();
+          
+          if (event === 'SIGNED_IN') {
+            handleSuccessfulLogin();
           }
         }
       }
     } catch (error) {
-      console.error('Error during auth state change:', error);
+      console.error('Error handling auth state change:', error);
       await clearAuthData();
-      if (pathname !== '/login' && pathname !== '/register') {
-        router.push('/login');
-      }
+      setPendingRedirect(null); // Clear any pending redirects
     } finally {
-      setLoading(false);
+      if (mountedRef.current) {
+        debouncedSetLoading(false);
+      }
+    }
+  }, [clearAuthData, debouncedSetLoading, handleSuccessfulLogin, startSessionRefresh]);
+
+  // Sign in implementation
+  const signIn = async (email: string, password: string): Promise<AuthResponse> => {
+    try {
+      setLoading(true);
+      startLoadingSafetyTimeout();
+  
+      // Sign in with Supabase
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+  
+      if (error) {
+        console.error('Sign in error:', error);
+        return { data: null, error };
+      }
+  
+      if (!data?.session) {
+        console.error('No session returned from auth');
+        return {
+          data: null,
+          error: new Error('No session returned from auth'),
+        };
+      }
+
+      // Store session in API route and cookies
+      try {
+        const response = await fetch('/api/auth/session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({ 
+            session: data.session,
+            cookieOptions: {
+              secure: process.env.NODE_ENV === 'production',
+              sameSite: 'lax',
+              path: '/',
+              maxAge: 30 * 24 * 60 * 60
+            }
+          }),
+        });
+  
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Failed to store session:', errorText);
+          return {
+            data: null,
+            error: new Error('Failed to store session'),
+          };
+        }
+  
+        // Set cookies on client side as backup
+        if (typeof window !== 'undefined') {
+          const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID;
+          if (projectId) {
+            document.cookie = `sb-access-token=${data.session.access_token}; path=/; max-age=${30 * 24 * 60 * 60}; secure; samesite=lax`;
+            document.cookie = `sb-refresh-token=${data.session.refresh_token}; path=/; max-age=${30 * 24 * 60 * 60}; secure; samesite=lax`;
+            document.cookie = `sb-user-id=${data.user?.id}; path=/; max-age=${30 * 24 * 60 * 60}; secure; samesite=lax`;
+          }
+        }
+  
+      } catch (error) {
+        console.error('Error storing session:', error);
+        return {
+          data: null,
+          error: new Error('Failed to store session'),
+        };
+      }
+  
+      // Set session in Supabase client
+      try {
+        await supabase.auth.setSession({
+          access_token: data.session.access_token,
+          refresh_token: data.session.refresh_token,
+        });
+      } catch (error) {
+        console.error('Error setting client session:', error);
+        return {
+          data: null,
+          error: new Error('Failed to set client session'),
+        };
+      }
+  
+      // Update user state and trigger redirect
+      setUser(data.user);
+      startSessionRefresh();
+      handleSuccessfulLogin(); // Trigger redirect
+      
+      if (mountedRef.current) {
+        setLoading(false);
+      }
+  
+      return { data, error: null };
+    } catch (error) {
+      console.error('Unexpected sign in error:', error);
+      if (mountedRef.current) {
+        setLoading(false);
+      }
+      return { data: null, error };
     }
   };
 
-  // Function to handle sign out
+  // Sign up implementation
+  const signUp = async (
+    email: string,
+    password: string,
+    metadata: Record<string, any>
+  ): Promise<AuthResponse> => {
+    try {
+      setLoading(true);
+      startLoadingSafetyTimeout();
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: metadata },
+      });
+
+      return { data, error };
+    } catch (error) {
+      return { data: null, error };
+    } finally {
+      if (mountedRef.current) {
+        setLoading(false);
+      }
+    }
+  };
+
+  // Sign out implementation
   const signOut = async () => {
     try {
       setLoading(true);
       
-      // First attempt to sign out from Supabase
-      const { error } = await supabase.auth.signOut();
-      
-      // Force session cleanup regardless of signout success
-      try {
-        await supabase.auth.setSession({
-          access_token: '',
-          refresh_token: ''
-        });
-      } catch (sessionError) {
-        console.warn('Error clearing session:', sessionError);
-      }
-
-      // Clear all client-side data
-      await clearAuthData();
-      
-      // Clear any server-side session data
+      // First clear server session
       try {
         await fetch('/api/auth/session', {
           method: 'DELETE',
@@ -298,18 +368,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } catch (serverError) {
         console.warn('Error clearing server session:', serverError);
       }
-
-      // If there was an error in the initial signout, throw it
-      if (error) throw error;
-
+      
+      // Then sign out from Supabase
+      await supabase.auth.signOut();
+      
+      // Clear all auth data
+      await clearAuthData();
+      
       // Set loading to false before navigation
       setLoading(false);
-
-      // Use window.location.href for a complete reset of the application state
+      
+      // Force clear any Supabase session data
       if (typeof window !== 'undefined') {
+        const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID;
+        if (projectId) {
+          window.localStorage.removeItem(`sb-${projectId}-auth-token`);
+        }
+        // Use window.location for a full page reload
         window.location.href = '/login';
-      } else {
-        router.push('/login');
       }
     } catch (error) {
       console.error('Error during sign out:', error);
@@ -319,158 +395,66 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       if (typeof window !== 'undefined') {
         window.location.href = '/login';
-      } else {
-        router.push('/login');
       }
     }
   };
 
-  // Function to persist session
-  const persistSession = async (session: Session) => {
-    try {
-      // Store session in API
-      const response = await fetch('/api/auth/session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ session }),
-        credentials: 'include'
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to persist session');
-      }
-
-      return true;
-    } catch (error) {
-      console.error('Error persisting session:', error);
-      return false;
-    }
-  };
-
+  // Initialize auth state
   useEffect(() => {
-    let mounted = true;
-
+    mountedRef.current = true;
+    
     const initializeAuth = async () => {
-      if (!mounted) return;
-      
-      try {
-        setLoading(true);
-        const { data: { session }, error } = await supabase.auth.getSession();
+      if (!mountedRef.current || initialized) return;
 
-        if (error) {
-          console.error('Initial session error:', error);
-          clearAuthData();
+      try {
+        startLoadingSafetyTimeout();
+        
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError || !session) {
+          if (mountedRef.current) {
+            setLoading(false);
+            setInitialized(true);
+          }
           return;
         }
 
-        if (session?.access_token) {
-          await handleAuthStateChange('INITIAL_SESSION', session);
+        const { data: { user: currentUser }, error: userError } = await supabase.auth.getUser();
+        
+        if (userError || !currentUser) {
+          console.warn('Error getting user:', userError);
+          if (mountedRef.current) {
+            await clearAuthData();
+            setLoading(false);
+            setInitialized(true);
+          }
+          return;
+        }
+
+        if (mountedRef.current) {
+          setUser(currentUser);
+          startSessionRefresh();
+          setLoading(false);
+          setInitialized(true);
         }
       } catch (error) {
         console.error('Auth initialization error:', error);
-      } finally {
-        if (mounted) {
+        if (mountedRef.current) {
+          await clearAuthData();
           setLoading(false);
+          setInitialized(true);
         }
       }
-    };
-
-    // Set up periodic session checks
-    const startSessionChecks = () => {
-      // Clear any existing interval
-      if (sessionCheckIntervalRef.current) {
-        clearInterval(sessionCheckIntervalRef.current);
-      }
-      
-      sessionCheckIntervalRef.current = setInterval(async () => {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session && user) {
-          clearAuthData();
-          router.push('/login');
-        }
-      }, AUTH_CONFIG.SESSION_CHECK_INTERVAL);
     };
 
     initializeAuth();
-    startSessionChecks();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(handleAuthStateChange);
 
     return () => {
-      mounted = false;
-      subscription.unsubscribe();
-      if (sessionCheckIntervalRef.current) {
-        clearInterval(sessionCheckIntervalRef.current);
-        sessionCheckIntervalRef.current = null;
-      }
+      mountedRef.current = false;
     };
-  }, []);
+  }, [initialized, clearAuthData, startLoadingSafetyTimeout, startSessionRefresh]);
 
-  const signUp = async (
-    email: string,
-    password: string,
-    metadata: Record<string, any>
-  ): Promise<AuthResponse> => {
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: metadata,
-        },
-      });
-
-      return { data, error };
-    } catch (error) {
-      return {
-        data: null,
-        error: error as AuthError,
-      };
-    }
-  };
-
-  const signIn = async (
-    email: string,
-    password: string
-  ): Promise<AuthResponse> => {
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        return { data: null, error };
-      }
-
-      // Store session in API route
-      const response = await fetch('/api/auth/session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ session: data.session }),
-      });
-
-      if (!response.ok) {
-        return {
-          data: null,
-          error: new Error('Failed to store session') as AuthError,
-        };
-      }
-
-      return { data, error: null };
-    } catch (error) {
-      return {
-        data: null,
-        error: error as AuthError,
-      };
-    }
-  };
-
-  const value: AuthContextType = {
+  const value = {
     user,
     loading,
     signUp,

@@ -7304,3 +7304,1529 @@
 2024-11-22 23:31:02:312 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
 2024-11-22 23:31:05:315 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
 2024-11-22 23:31:05:315 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 08:18:14:1814 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 08:18:14:1814 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 08:18:14:1814 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 08:18:14:1814 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 08:18:14:1814 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:18:14:1814 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:18:15:1815 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:18:15:1815 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 08:18:15:1815 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:18:15:1815 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 08:18:16:1816 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 08:18:16:1816 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:18:16:1816 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 08:18:16:1816 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 08:18:16:1816 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:18:17:1817 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 08:18:17:1817 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 08:18:17:1817 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:18:18:1818 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 08:18:19:1819 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 08:18:19:1819 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:18:19:1819 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 08:18:20:1820 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 08:20:10:2010 [32minfo[39m: [32mCreated 0 markets from politics news[39m
+2024-11-23 08:20:11:2011 [32minfo[39m: [32mProcessing category: business[39m
+2024-11-23 08:20:11:2011 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:00:210 [32minfo[39m: [32mCreated 0 markets from politics news[39m
+2024-11-23 08:20:12:2012 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:20:12:2012 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:00:210 [32minfo[39m: [32mProcessing category: business[39m
+2024-11-23 08:21:00:210 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:02:212 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:03:213 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:03:213 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:05:215 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:05:215 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:05:215 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:07:217 [32minfo[39m: [32mCreated 0 markets from politics news[39m
+2024-11-23 08:21:09:219 [32minfo[39m: [32mCreated 0 markets from politics news[39m
+2024-11-23 08:21:08:218 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:08:218 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:08:218 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:07:217 [32minfo[39m: [32mProcessing category: business[39m
+2024-11-23 08:21:07:217 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:10:2110 [32minfo[39m: [32mCreated 0 markets from politics news[39m
+2024-11-23 08:21:09:219 [32minfo[39m: [32mProcessing category: business[39m
+2024-11-23 08:21:09:219 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:11:2111 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:11:2111 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:11:2111 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:11:2111 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Business. Returning empty array.[39m
+2024-11-23 08:21:11:2111 [32minfo[39m: [32mNo news found for category: business[39m
+2024-11-23 08:21:11:2111 [32minfo[39m: [32mProcessing category: sports[39m
+2024-11-23 08:21:11:2111 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:11:2111 [32minfo[39m: [32mCreated 0 markets from politics news[39m
+2024-11-23 08:21:11:2111 [32minfo[39m: [32mCreated 0 markets from politics news[39m
+2024-11-23 08:21:10:2110 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:10:2110 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:10:2110 [32minfo[39m: [32mProcessing category: business[39m
+2024-11-23 08:21:10:2110 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:12:2112 [32minfo[39m: [32mCreated 0 markets from politics news[39m
+2024-11-23 08:21:12:2112 [32minfo[39m: [32mCreated 0 markets from politics news[39m
+2024-11-23 08:21:15:2115 [32minfo[39m: [32mCreated 0 markets from politics news[39m
+2024-11-23 08:21:11:2111 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:11:2111 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:14:2114 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:13:2113 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:14:2114 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:14:2114 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Business. Returning empty array.[39m
+2024-11-23 08:21:14:2114 [32minfo[39m: [32mNo news found for category: business[39m
+2024-11-23 08:21:14:2114 [32minfo[39m: [32mProcessing category: sports[39m
+2024-11-23 08:21:14:2114 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:13:2113 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:11:2111 [32minfo[39m: [32mProcessing category: business[39m
+2024-11-23 08:21:13:2113 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:11:2111 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:11:2111 [32minfo[39m: [32mProcessing category: business[39m
+2024-11-23 08:21:11:2111 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:16:2116 [32minfo[39m: [32mCreated 0 markets from politics news[39m
+2024-11-23 08:21:14:2114 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:12:2112 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:12:2112 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:14:2114 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:12:2112 [32minfo[39m: [32mProcessing category: business[39m
+2024-11-23 08:21:12:2112 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:12:2112 [32minfo[39m: [32mProcessing category: business[39m
+2024-11-23 08:21:13:2113 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:15:2115 [32minfo[39m: [32mProcessing category: business[39m
+2024-11-23 08:21:15:2115 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:15:2115 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:16:2116 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:16:2116 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:16:2116 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:16:2116 [32minfo[39m: [32mProcessing category: business[39m
+2024-11-23 08:21:16:2116 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:16:2116 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:16:2116 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:16:2116 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:16:2116 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:17:2117 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:17:2117 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:18:2118 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:18:2118 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:18:2118 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:18:2118 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:18:2118 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:18:2118 [32minfo[39m: [32mCreated 0 markets from politics news[39m
+2024-11-23 08:21:18:2118 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:18:2118 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:18:2118 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:18:2118 [32minfo[39m: [32mProcessing category: business[39m
+2024-11-23 08:21:18:2118 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:18:2118 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:18:2118 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:18:2118 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:18:2118 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:18:2118 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:18:2118 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:18:2118 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Business. Returning empty array.[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mNo news found for category: business[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mProcessing category: sports[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Business. Returning empty array.[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mNo news found for category: business[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mProcessing category: sports[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Business. Returning empty array.[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mNo news found for category: business[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mProcessing category: sports[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Sports. Returning empty array.[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mNo news found for category: sports[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mProcessing category: entertainment[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Business. Returning empty array.[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mNo news found for category: business[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mProcessing category: sports[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Business. Returning empty array.[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mNo news found for category: business[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mProcessing category: sports[39m
+2024-11-23 08:21:19:2119 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:19:2119 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Business. Returning empty array.[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mNo news found for category: business[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mProcessing category: sports[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Business. Returning empty array.[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mNo news found for category: business[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mProcessing category: sports[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Sports. Returning empty array.[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mNo news found for category: sports[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mProcessing category: entertainment[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Business. Returning empty array.[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mNo news found for category: business[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mProcessing category: sports[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Business. Returning empty array.[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mNo news found for category: business[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mProcessing category: sports[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:20:2120 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:20:2120 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:21:2121 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:21:2121 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:21:2121 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:21:2121 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:21:2121 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:21:2121 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:21:2121 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:21:21:2121 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:21:2121 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:21:2121 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Business. Returning empty array.[39m
+2024-11-23 08:21:21:2121 [32minfo[39m: [32mNo news found for category: business[39m
+2024-11-23 08:21:21:2121 [32minfo[39m: [32mProcessing category: sports[39m
+2024-11-23 08:21:21:2121 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:21:2121 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:21:2121 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:21:2121 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:21:2121 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:21:2121 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:21:2121 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:21:2121 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:21:2121 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:21:2121 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:21:2121 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:21:2121 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:22:2122 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Sports. Returning empty array.[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mNo news found for category: sports[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mProcessing category: entertainment[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:22:2122 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Sports. Returning empty array.[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mNo news found for category: sports[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mProcessing category: entertainment[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:22:2122 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Sports. Returning empty array.[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mNo news found for category: sports[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mProcessing category: entertainment[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:22:2122 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Entertainment. Returning empty array.[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mNo news found for category: entertainment[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mProcessing category: lifestyle[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:22:2122 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Sports. Returning empty array.[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mNo news found for category: sports[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mProcessing category: entertainment[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:22:2122 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Sports. Returning empty array.[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mNo news found for category: sports[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mProcessing category: entertainment[39m
+2024-11-23 08:21:22:2122 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:22:2122 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:23:2123 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Sports. Returning empty array.[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mNo news found for category: sports[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mProcessing category: entertainment[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:23:2123 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Sports. Returning empty array.[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mNo news found for category: sports[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mProcessing category: entertainment[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Entertainment. Returning empty array.[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mNo news found for category: entertainment[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mProcessing category: lifestyle[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:23:2123 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Sports. Returning empty array.[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mNo news found for category: sports[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mProcessing category: entertainment[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:23:2123 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Sports. Returning empty array.[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mNo news found for category: sports[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mProcessing category: entertainment[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:23:2123 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:24:2124 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:24:2124 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:24:2124 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:24:2124 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:24:2124 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:24:2124 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:24:2124 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:21:24:2124 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:24:2124 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:21:24:2124 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Sports. Returning empty array.[39m
+2024-11-23 08:21:24:2124 [32minfo[39m: [32mNo news found for category: sports[39m
+2024-11-23 08:21:24:2124 [32minfo[39m: [32mProcessing category: entertainment[39m
+2024-11-23 08:21:24:2124 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:24:2124 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:24:2124 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:24:2124 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:24:2124 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:24:2124 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:24:2124 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:24:2124 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:24:2124 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:24:2124 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:24:2124 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:24:2124 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:25:2125 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:25:2125 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:25:2125 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:25:2125 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:25:2125 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:25:2125 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:25:2125 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:26:2126 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:26:2126 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:26:2126 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:26:2126 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:26:2126 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:26:2126 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:26:2126 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:26:2126 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:26:2126 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Entertainment. Returning empty array.[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mNo news found for category: entertainment[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mProcessing category: lifestyle[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:26:2126 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:26:2126 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Entertainment. Returning empty array.[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mNo news found for category: entertainment[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mProcessing category: lifestyle[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:26:2126 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:26:2126 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Entertainment. Returning empty array.[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mNo news found for category: entertainment[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mProcessing category: lifestyle[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:26:2126 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:26:2126 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Lifestyle. Returning empty array.[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mNo news found for category: lifestyle[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mCompleted news and market processing. Total markets created: 0[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-23 08:21:26:2126 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:26:2126 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Entertainment. Returning empty array.[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mNo news found for category: entertainment[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mProcessing category: lifestyle[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:26:2126 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:26:2126 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Entertainment. Returning empty array.[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mNo news found for category: entertainment[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mProcessing category: lifestyle[39m
+2024-11-23 08:21:26:2126 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:26:2126 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Entertainment. Returning empty array.[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mNo news found for category: entertainment[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mProcessing category: lifestyle[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Entertainment. Returning empty array.[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mNo news found for category: entertainment[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mProcessing category: lifestyle[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Lifestyle. Returning empty array.[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mNo news found for category: lifestyle[39m
+2024-11-23 08:21:27:2127 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Entertainment. Returning empty array.[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mCompleted news and market processing. Total markets created: 0[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mNo news found for category: entertainment[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mProcessing category: lifestyle[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Entertainment. Returning empty array.[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mNo news found for category: entertainment[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mProcessing category: lifestyle[39m
+2024-11-23 08:21:27:2127 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:27:2127 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:28:2128 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:28:2128 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:28:2128 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:28:2128 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:28:2128 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:28:2128 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:28:2128 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:28:2128 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:28:2128 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:28:2128 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:28:2128 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:28:2128 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:28:2128 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:28:2128 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:28:2128 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:29:2129 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:29:2129 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:29:2129 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:29:2129 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:21:28:2128 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:28:2128 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:28:2128 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:28:2128 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:28:2128 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:28:2128 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:29:2129 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:29:2129 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:29:2129 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:29:2129 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:29:2129 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:29:2129 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Entertainment. Returning empty array.[39m
+2024-11-23 08:21:29:2129 [32minfo[39m: [32mNo news found for category: entertainment[39m
+2024-11-23 08:21:29:2129 [32minfo[39m: [32mProcessing category: lifestyle[39m
+2024-11-23 08:21:29:2129 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:29:2129 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:29:2129 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:30:2130 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:30:2130 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:30:2130 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:30:2130 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:30:2130 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Lifestyle. Returning empty array.[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mNo news found for category: lifestyle[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mCompleted news and market processing. Total markets created: 0[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-23 08:21:30:2130 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:30:2130 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:30:2130 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Lifestyle. Returning empty array.[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mNo news found for category: lifestyle[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mCompleted news and market processing. Total markets created: 0[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-23 08:21:30:2130 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:30:2130 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:30:2130 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Lifestyle. Returning empty array.[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mNo news found for category: lifestyle[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mCompleted news and market processing. Total markets created: 0[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-23 08:21:30:2130 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:30:2130 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:30:2130 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Lifestyle. Returning empty array.[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mNo news found for category: lifestyle[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mCompleted news and market processing. Total markets created: 0[39m
+2024-11-23 08:21:30:2130 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-23 08:21:30:2130 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:30:2130 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:30:2130 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Lifestyle. Returning empty array.[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mNo news found for category: lifestyle[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mCompleted news and market processing. Total markets created: 0[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-23 08:21:31:2131 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:31:2131 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:31:2131 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:31:2131 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:31:2131 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:31:2131 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Lifestyle. Returning empty array.[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mNo news found for category: lifestyle[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mCompleted news and market processing. Total markets created: 0[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-23 08:21:31:2131 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:31:2131 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Lifestyle. Returning empty array.[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mNo news found for category: lifestyle[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mCompleted news and market processing. Total markets created: 0[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-23 08:21:31:2131 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:31:2131 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Lifestyle. Returning empty array.[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mNo news found for category: lifestyle[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mCompleted news and market processing. Total markets created: 0[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-23 08:21:31:2131 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:31:2131 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Lifestyle. Returning empty array.[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mNo news found for category: lifestyle[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mCompleted news and market processing. Total markets created: 0[39m
+2024-11-23 08:21:31:2131 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-23 08:21:32:2132 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:21:32:2132 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:32:2132 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:21:32:2132 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Lifestyle. Returning empty array.[39m
+2024-11-23 08:21:32:2132 [32minfo[39m: [32mNo news found for category: lifestyle[39m
+2024-11-23 08:21:32:2132 [32minfo[39m: [32mCompleted news and market processing. Total markets created: 0[39m
+2024-11-23 08:21:32:2132 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-23 08:22:43:2243 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:22:43:2243 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 08:22:43:2243 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 08:22:43:2243 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 08:22:43:2243 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 08:22:43:2243 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:22:43:2243 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:43:2243 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:43:2243 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:43:2243 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:44:2244 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:22:44:2244 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:44:2244 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:44:2244 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:22:44:2244 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:44:2244 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:46:2246 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:22:46:2246 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:46:2246 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:46:2246 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM. Returning empty array.[39m
+2024-11-23 08:22:46:2246 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:22:46:2246 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:22:46:2246 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:46:2246 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:46:2246 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:46:2246 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:46:2246 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM. Returning empty array.[39m
+2024-11-23 08:22:46:2246 [32minfo[39m: [32mNo news found for category: politics[39m
+2024-11-23 08:22:46:2246 [32minfo[39m: [32mProcessing category: business[39m
+2024-11-23 08:22:46:2246 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:22:46:2246 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:46:2246 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:47:2247 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:22:47:2247 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:47:2247 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:47:2247 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:22:47:2247 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:47:2247 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:49:2249 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:22:49:2249 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:49:2249 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:49:2249 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Business. Returning empty array.[39m
+2024-11-23 08:22:49:2249 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:22:49:2249 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:49:2249 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:49:2249 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:22:49:2249 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:49:2249 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:49:2249 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Business. Returning empty array.[39m
+2024-11-23 08:22:49:2249 [32minfo[39m: [32mNo news found for category: business[39m
+2024-11-23 08:22:49:2249 [32minfo[39m: [32mProcessing category: sports[39m
+2024-11-23 08:22:49:2249 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:22:50:2250 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:50:2250 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:50:2250 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:22:50:2250 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:50:2250 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:51:2251 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:22:51:2251 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:51:2251 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:52:2252 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:22:52:2252 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:52:2252 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:52:2252 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Sports. Returning empty array.[39m
+2024-11-23 08:22:52:2252 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:22:53:2253 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:53:2253 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:53:2253 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:22:53:2253 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:53:2253 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-23 08:22:53:2253 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Sports. Returning empty array.[39m
+2024-11-23 08:22:53:2253 [32minfo[39m: [32mNo news found for category: sports[39m
+2024-11-23 08:22:53:2253 [32minfo[39m: [32mProcessing category: entertainment[39m
+2024-11-23 08:22:53:2253 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:22:53:2253 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:53:2253 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:54:2254 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:22:54:2254 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:54:2254 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:54:2254 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:22:54:2254 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:54:2254 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:56:2256 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:22:56:2256 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:56:2256 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:56:2256 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Entertainment. Returning empty array.[39m
+2024-11-23 08:22:56:2256 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:22:56:2256 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:56:2256 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:56:2256 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:22:56:2256 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:56:2256 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:56:2256 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Entertainment. Returning empty array.[39m
+2024-11-23 08:22:56:2256 [32minfo[39m: [32mNo news found for category: entertainment[39m
+2024-11-23 08:22:56:2256 [32minfo[39m: [32mProcessing category: lifestyle[39m
+2024-11-23 08:22:56:2256 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:22:56:2256 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:56:2256 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:57:2257 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:22:57:2257 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:57:2257 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:57:2257 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:22:57:2257 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:57:2257 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:59:2259 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:22:59:2259 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:59:2259 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:59:2259 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Lifestyle. Returning empty array.[39m
+2024-11-23 08:22:59:2259 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:22:59:2259 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:59:2259 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-23 08:22:59:2259 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Pulse Live Lifestyle. Returning empty array.[39m
+2024-11-23 08:22:59:2259 [32minfo[39m: [32mNo news found for category: lifestyle[39m
+2024-11-23 08:22:59:2259 [32minfo[39m: [32mCompleted news and market processing. Total markets created: 0[39m
+2024-11-23 08:22:59:2259 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-23 08:47:07:477 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:47:07:477 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 08:47:07:477 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 08:47:07:477 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 08:47:07:477 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 08:47:07:477 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:47:08:478 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:47:08:478 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 08:47:08:478 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:47:08:478 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 08:47:08:478 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:47:09:479 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 08:47:09:479 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 08:47:09:479 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 08:47:09:479 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:47:09:479 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 08:47:09:479 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 08:47:09:479 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:47:11:4711 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 08:47:12:4712 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 08:47:12:4712 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:47:12:4712 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 08:47:13:4713 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 08:48:29:4829 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:48:29:4829 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:48:29:4829 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:48:30:4830 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 08:48:30:4830 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 08:48:30:4830 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:48:30:4830 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:48:30:4830 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:48:31:4831 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 08:48:31:4831 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 08:50:41:5041 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:50:41:5041 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:50:42:5042 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 08:50:42:5042 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:50:43:5043 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:50:45:5045 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 08:50:47:5047 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:50:47:5047 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:50:47:5047 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:50:47:5047 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 08:50:48:5048 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 08:50:48:5048 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:50:48:5048 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:50:48:5048 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 08:50:49:5049 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:50:49:5049 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 08:52:04:524 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:52:04:524 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 08:52:04:524 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 08:52:04:524 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 08:52:04:524 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 08:52:04:524 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:52:05:525 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:52:05:525 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:52:05:525 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 08:52:06:526 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 08:52:06:526 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:52:06:526 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 08:52:06:526 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 08:52:06:526 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 08:52:06:526 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:52:07:527 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 08:52:07:527 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 08:52:07:527 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:52:08:528 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 08:52:08:528 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 08:52:08:528 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:52:09:529 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 08:52:09:529 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 08:52:44:5244 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:52:44:5244 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:52:48:5248 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 08:52:49:5249 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:52:49:5249 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 08:52:50:5250 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 08:52:52:5252 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:52:52:5252 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:52:53:5253 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 08:52:53:5253 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:52:53:5253 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:52:53:5253 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:52:54:5254 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 08:52:54:5254 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:52:54:5254 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 08:52:54:5254 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 08:54:18:5418 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:54:18:5418 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:54:18:5418 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:54:18:5418 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:54:18:5418 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:54:19:5419 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 08:54:19:5419 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 08:54:19:5419 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:54:20:5420 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 08:54:20:5420 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 08:54:24:5424 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:54:24:5424 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:54:24:5424 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:54:24:5424 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 08:54:24:5424 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 08:54:25:5425 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:54:25:5425 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:54:26:5426 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:54:26:5426 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 08:54:26:5426 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 08:55:26:5526 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:55:26:5526 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 08:55:26:5526 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 08:55:26:5526 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 08:55:26:5526 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 08:55:26:5526 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:55:27:5527 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:55:28:5528 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:55:28:5528 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 08:55:28:5528 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 08:55:28:5528 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:55:28:5528 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 08:55:29:5529 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 08:55:29:5529 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 08:55:29:5529 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:55:29:5529 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 08:55:30:5530 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 08:55:30:5530 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:55:32:5532 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 08:55:32:5532 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 08:55:32:5532 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:55:32:5532 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:55:33:5533 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:55:33:5533 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 08:55:33:5533 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 08:55:33:5533 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:55:33:5533 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:55:33:5533 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:55:34:5534 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:55:34:5534 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 08:55:34:5534 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 08:55:35:5535 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 08:55:35:5535 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 08:56:37:5637 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:56:38:5638 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:56:40:5640 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 08:56:40:5640 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 08:56:40:5640 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 08:56:40:5640 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 08:56:40:5640 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:56:44:5644 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:56:44:5644 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 08:56:44:5644 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 08:56:44:5644 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:56:44:5644 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 08:56:45:5645 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 08:56:45:5645 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 08:56:45:5645 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:56:45:5645 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 08:56:45:5645 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 08:56:45:5645 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:56:47:5647 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 08:56:47:5647 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 08:56:47:5647 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:56:48:5648 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 08:56:49:5649 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 08:59:03:593 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:59:03:593 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:59:03:593 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:59:03:593 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:59:03:593 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:59:03:593 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 08:59:04:594 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:59:04:594 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 08:59:04:594 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 08:59:05:595 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 08:59:08:598 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 08:59:08:598 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 08:59:08:598 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 08:59:08:598 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 08:59:08:598 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 08:59:08:598 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 08:59:08:598 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 08:59:09:599 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 08:59:09:599 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 08:59:09:599 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:00:00:00 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:00:01:01 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:00:02:02 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:00:02:02 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:00:02:02 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:00:02:02 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:00:02:02 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:00:03:03 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:00:04:04 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 09:00:04:04 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:00:04:04 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 09:00:04:04 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 09:00:04:04 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 09:00:04:04 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:00:04:04 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:00:04:04 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:00:04:04 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 09:00:05:05 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 09:00:06:06 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:00:06:06 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:00:06:06 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:00:11:011 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:00:13:013 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:01:46:146 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:01:46:146 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:01:46:146 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:01:47:147 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:01:48:148 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:01:48:148 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:01:52:152 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:01:52:152 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:01:52:152 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:01:53:153 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:01:53:153 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:01:53:153 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:01:53:153 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:01:53:153 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:01:53:153 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:01:54:154 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:02:40:240 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:02:40:240 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 09:02:40:240 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 09:02:40:240 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 09:02:40:240 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 09:02:40:240 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:02:41:241 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:02:41:241 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:02:41:241 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 09:02:41:241 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 09:02:41:241 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:02:41:241 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:02:42:242 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:02:42:242 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:02:42:242 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:02:42:242 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:02:42:242 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:02:42:242 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:02:44:244 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:02:44:244 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:02:44:244 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:02:44:244 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:02:44:244 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:04:00:40 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:04:00:40 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:04:00:40 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:04:00:40 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:04:01:41 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:04:01:41 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:04:01:41 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:04:01:41 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:04:02:42 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:04:02:42 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:05:59:559 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 09:05:59:559 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 09:05:59:559 [32minfo[39m: [32mAlready processing news and markets[39m
+2024-11-23 09:05:59:559 [32minfo[39m: [32mGenerated 0 markets[39m
+2024-11-23 09:05:59:559 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:05:59:559 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:06:00:60 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:06:00:60 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:06:00:60 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:06:01:61 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:06:01:61 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:06:01:61 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:06:01:61 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:06:01:61 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:06:10:610 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:06:12:612 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:06:12:612 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:06:17:617 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:06:17:617 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:06:41:641 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:06:41:641 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:06:41:641 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:06:42:642 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:06:42:642 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:06:43:643 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:06:46:646 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:06:47:647 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:06:49:649 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:06:49:649 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:06:55:655 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:06:56:656 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:07:00:70 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:07:00:70 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:07:00:70 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:07:00:70 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:07:00:70 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:07:01:71 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:07:01:71 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:07:02:72 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:07:59:759 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 09:07:59:759 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 09:07:59:759 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 09:07:59:759 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 09:07:59:759 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:07:59:759 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:08:03:83 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:08:03:83 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:08:03:83 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 09:08:04:84 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:08:04:84 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:08:04:84 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 09:08:04:84 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:08:04:84 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:08:04:84 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:08:05:85 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:08:05:85 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:08:05:85 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:08:07:87 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:08:09:89 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:08:09:89 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:08:10:810 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:08:11:811 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:08:21:821 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:08:21:821 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:08:22:822 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:08:22:822 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:08:22:822 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:08:24:824 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:08:24:824 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:08:24:824 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:08:24:824 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:08:25:825 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:09:15:915 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:09:15:915 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:09:16:916 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:09:17:917 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:09:17:917 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:09:17:917 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:09:17:917 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:09:17:917 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:09:17:917 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:09:18:918 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:10:03:103 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 09:10:03:103 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 09:10:03:103 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 09:10:03:103 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 09:10:03:103 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:10:03:103 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:10:04:104 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:10:04:104 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 09:10:04:104 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:10:05:105 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:10:05:105 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:10:05:105 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:10:05:105 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 09:10:06:106 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:10:06:106 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:10:06:106 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:10:06:106 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:10:06:106 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:10:07:107 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:10:07:107 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:10:07:107 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:10:08:108 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:10:08:108 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:16:24:1624 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:16:24:1624 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:16:24:1624 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:16:25:1625 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:16:25:1625 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:16:26:1626 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:16:26:1626 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:16:27:1627 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:16:30:1630 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:16:30:1630 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:16:30:1630 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:16:30:1630 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:16:30:1630 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:16:31:1631 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:16:31:1631 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:16:31:1631 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:16:31:1631 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:16:32:1632 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:17:19:1719 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:17:19:1719 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 09:17:19:1719 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 09:17:19:1719 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 09:17:19:1719 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 09:17:19:1719 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:17:20:1720 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:17:20:1720 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 09:17:20:1720 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:17:21:1721 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 09:17:21:1721 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:17:21:1721 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:17:21:1721 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:17:21:1721 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:17:21:1721 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:17:22:1722 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:17:22:1722 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:17:22:1722 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:17:23:1723 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:17:23:1723 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:17:23:1723 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:17:24:1724 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:17:24:1724 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:19:40:1940 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:19:40:1940 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:19:40:1940 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:19:40:1940 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:19:40:1940 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:19:41:1941 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:19:47:1947 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:19:48:1948 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:19:50:1950 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:19:50:1950 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:19:50:1950 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:19:51:1951 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:19:51:1951 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:19:51:1951 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:19:51:1951 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:19:51:1951 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:19:52:1952 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:19:53:1953 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:21:21:2121 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 09:21:21:2121 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 09:21:21:2121 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 09:21:21:2121 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 09:21:21:2121 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:21:21:2121 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:21:21:2121 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:21:21:2121 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 09:21:21:2121 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:21:22:2122 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:21:22:2122 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:21:22:2122 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 09:21:22:2122 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:21:23:2123 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:21:23:2123 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:21:23:2123 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:21:23:2123 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:21:25:2125 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:21:25:2125 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:21:25:2125 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:21:26:2126 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:21:27:2127 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:22:47:2247 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:22:48:2248 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:22:48:2248 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:22:48:2248 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:22:48:2248 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:22:48:2248 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:22:51:2251 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:22:52:2252 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:22:52:2252 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:22:52:2252 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:22:54:2254 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:22:54:2254 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:22:55:2255 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:22:55:2255 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:22:55:2255 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:22:55:2255 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:22:55:2255 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:22:55:2255 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:22:55:2255 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:22:55:2255 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:23:49:2349 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 09:23:49:2349 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 09:23:49:2349 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 09:23:49:2349 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 09:23:49:2349 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:23:49:2349 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:23:50:2350 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:23:50:2350 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 09:23:50:2350 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:23:51:2351 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 09:23:51:2351 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:23:51:2351 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:23:52:2352 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:28:20:2820 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:28:20:2820 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:28:21:2821 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:28:21:2821 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:28:25:2825 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:28:26:2826 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:28:26:2826 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:28:27:2827 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:28:28:2828 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:28:29:2829 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:28:34:2834 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:28:35:2835 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:28:35:2835 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:28:35:2835 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:28:35:2835 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:28:35:2835 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:28:35:2835 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:28:36:2836 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:28:36:2836 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:28:37:2837 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:29:42:2942 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:29:42:2942 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:29:43:2943 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:29:43:2943 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:29:43:2943 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:29:43:2943 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:29:44:2944 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:29:44:2944 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:29:45:2945 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:29:45:2945 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:31:07:317 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:31:10:3110 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 09:31:10:3110 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 09:31:10:3110 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 09:31:10:3110 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 09:31:10:3110 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:31:13:3113 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:31:13:3113 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:31:13:3113 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 09:31:15:3115 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 09:31:15:3115 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:31:15:3115 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:31:15:3115 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:31:16:3116 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:31:16:3116 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:31:16:3116 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:31:17:3117 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:31:17:3117 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:31:18:3118 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:31:18:3118 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:31:18:3118 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:31:20:3120 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:31:20:3120 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:31:25:3125 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:31:25:3125 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:31:25:3125 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:31:25:3125 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:31:26:3126 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:31:26:3126 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:31:26:3126 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:31:26:3126 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:31:28:3128 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:31:28:3128 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:31:28:3128 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:31:29:3129 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:31:29:3129 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:31:29:3129 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:31:29:3129 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:31:29:3129 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:31:30:3130 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:31:30:3130 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:34:43:3443 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 09:34:43:3443 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 09:34:43:3443 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 09:34:43:3443 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 09:34:43:3443 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:34:43:3443 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:34:43:3443 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:34:43:3443 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 09:34:43:3443 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:34:44:3444 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:34:44:3444 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:34:44:3444 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 09:34:44:3444 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:34:44:3444 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:34:45:3445 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:34:45:3445 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:34:45:3445 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:34:45:3445 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:34:46:3446 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:34:47:3447 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:34:47:3447 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:34:47:3447 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:34:47:3447 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:41:26:4126 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:41:26:4126 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:41:27:4127 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:41:27:4127 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:41:28:4128 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:41:30:4130 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:41:31:4131 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:41:31:4131 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:41:32:4132 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:41:32:4132 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:41:32:4132 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:41:32:4132 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:41:32:4132 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:41:32:4132 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:41:32:4132 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:41:33:4133 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:42:25:4225 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 09:42:25:4225 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 09:42:25:4225 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 09:42:25:4225 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 09:42:25:4225 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:42:25:4225 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:42:26:4226 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:42:26:4226 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:42:26:4226 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 09:42:26:4226 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:42:26:4226 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:42:26:4226 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 09:42:27:4227 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:42:27:4227 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:42:27:4227 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:42:27:4227 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:42:28:4228 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:42:28:4228 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:42:29:4229 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:42:29:4229 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:42:29:4229 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:42:31:4231 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:42:31:4231 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:46:54:4654 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:46:54:4654 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 09:46:54:4654 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 09:46:54:4654 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 09:46:54:4654 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 09:46:54:4654 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:46:55:4655 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:46:55:4655 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 09:46:55:4655 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:46:55:4655 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 09:46:55:4655 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:46:55:4655 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:46:56:4656 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:46:56:4656 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:46:56:4656 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:46:57:4657 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:46:57:4657 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:46:57:4657 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:46:59:4659 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:47:00:470 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:47:00:470 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:47:01:471 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:47:02:472 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:47:37:4737 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:47:37:4737 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:47:38:4738 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:47:38:4738 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:47:38:4738 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:47:38:4738 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:47:39:4739 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:47:40:4740 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:47:41:4741 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:47:42:4742 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:47:42:4742 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:47:42:4742 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:47:42:4742 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:47:42:4742 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:47:42:4742 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:47:43:4743 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:47:43:4743 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:47:44:4744 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:49:57:4957 [32minfo[39m: [32mMarket generation API route called[39m
+2024-11-23 09:49:57:4957 [32minfo[39m: [32mGot NewsMarketOrchestrator instance[39m
+2024-11-23 09:49:57:4957 [32minfo[39m: [32mStarting news and market processing[39m
+2024-11-23 09:49:57:4957 [32minfo[39m: [32mProcessing category: politics[39m
+2024-11-23 09:49:57:4957 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:49:57:4957 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:49:58:4958 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:49:58:4958 [32minfo[39m: [32mFound 10 news items for category: politics[39m
+2024-11-23 09:49:58:4958 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:49:58:4958 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:49:59:4959 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:49:59:4959 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:49:59:4959 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:49:59:4959 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:49:59:4959 [31merror[39m: [31mError saving news to database: duplicate key value violates unique constraint "news_articles_url_key"[39m
+2024-11-23 09:49:59:4959 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:50:00:500 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:50:00:500 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:50:01:501 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:50:01:501 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:50:02:502 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:50:02:502 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:50:03:503 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:56:28:5628 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:56:29:5629 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:56:30:5630 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:56:30:5630 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:56:30:5630 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:56:30:5630 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:56:30:5630 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:56:30:5630 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:56:31:5631 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:56:31:5631 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:56:32:5632 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:56:32:5632 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:56:32:5632 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:56:33:5633 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:56:33:5633 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:59:13:5913 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 09:59:14:5914 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 09:59:15:5915 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:59:15:5915 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 09:59:15:5915 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 09:59:15:5915 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:59:15:5915 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 09:59:15:5915 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 09:59:16:5916 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 09:59:16:5916 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 09:59:17:5917 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 09:59:17:5917 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 09:59:17:5917 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 09:59:19:5919 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 09:59:19:5919 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 10:01:02:12 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 10:01:03:13 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 10:01:04:14 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 10:01:04:14 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 10:01:04:14 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 10:01:04:14 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 10:01:04:14 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 10:01:05:15 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 10:01:05:15 [32minfo[39m: [32mSuccessfully saved 10 articles to database[39m
+2024-11-23 10:01:05:15 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 10:01:08:18 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 10:01:08:18 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 10:01:08:18 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 10:01:09:19 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 10:01:09:19 [32minfo[39m: [32mSuccessfully saved 25 articles to database[39m
+2024-11-23 10:24:42:2442 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 10:24:42:2442 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 10:24:42:2442 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 10:24:43:2443 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 10:24:43:2443 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 10:24:43:2443 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 10:24:45:2445 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 10:24:45:2445 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 10:24:47:2447 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 10:24:47:2447 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 10:24:47:2447 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 10:24:47:2447 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 10:24:48:2448 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 10:24:48:2448 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 10:24:48:2448 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 10:24:48:2448 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 10:24:49:2449 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 10:24:49:2449 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 10:52:23:5223 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 10:52:23:5223 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 10:52:23:5223 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 10:52:23:5223 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 10:52:24:5224 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 10:52:24:5224 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 10:52:25:5225 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 10:52:25:5225 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 10:52:25:5225 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 10:52:25:5225 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 10:52:29:5229 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 10:52:30:5230 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 10:52:32:5232 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 10:52:32:5232 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 10:52:32:5232 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 10:52:32:5232 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 10:52:32:5232 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 10:52:33:5233 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 10:52:33:5233 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 10:52:33:5233 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 11:43:13:4313 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 11:43:13:4313 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 11:43:13:4313 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 11:43:13:4313 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 11:43:14:4314 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 11:43:14:4314 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 11:43:14:4314 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 11:43:14:4314 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 11:43:15:4315 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-23 11:43:16:4316 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 11:43:18:4318 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-23 11:43:18:4318 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-23 11:43:18:4318 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-23 11:43:18:4318 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-23 11:43:18:4318 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-23 11:43:18:4318 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-23 11:43:19:4319 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-23 11:43:19:4319 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-23 11:43:19:4319 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-23 11:43:19:4319 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m

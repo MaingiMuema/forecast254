@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import { useTheme } from '@/hooks/useTheme';
 import { useAuth } from '@/contexts/AuthContext';
@@ -85,11 +85,17 @@ const Header = () => {
 
   // Effect to handle auth state changes
   useEffect(() => {
-    if (!loading) {
-      // Only log when loading completes
+    // Only update UI when we have a definitive auth state
+    if (!loading && user !== undefined) {
       console.log('Auth state in header:', { user, loading });
     }
   }, [user, loading]);
+
+  // Memoize auth state to prevent unnecessary renders
+  const authState = useMemo(() => ({
+    isAuthenticated: !!user && !loading,
+    isLoading: loading
+  }), [user, loading]);
 
   // Effect to close mobile menu on navigation
   useEffect(() => {

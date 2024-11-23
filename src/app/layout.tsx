@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { Metadata } from "next";
 import { Inter } from 'next/font/google'
 import localFont from "next/font/local";
@@ -25,9 +26,9 @@ const geistMono = localFont({
 const inter = Inter({ subsets: ['latin'] })
 
 // Initialize data collection service
-if (process.env.NODE_ENV === 'production') {
+/* if (process.env.NODE_ENV === 'production') {
   DataCollectionService.getInstance();
-}
+} */
 
 export const metadata: Metadata = {
   title: "Forecast254 - Kenya's First Prediction Market Platform",
@@ -48,8 +49,6 @@ export default function RootLayout({
           <AuthProvider>
             <MainLayout>
               {children}
-              <DataCollectionScheduler />
-              <MarketGenerationScheduler />
               <Toaster position="top-right" />
             </MainLayout>
           </AuthProvider>

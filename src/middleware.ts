@@ -29,9 +29,24 @@ export async function middleware(req: NextRequest) {
       '/dashboard/analysis'
     ];
 
+    const authOnlyPaths = [
+      '/login',
+      '/register',
+      '/forgot-password'
+    ];
+
     const isProtectedPath = protectedPaths.some(path => 
       req.nextUrl.pathname.startsWith(path)
     );
+
+    const isAuthOnlyPath = authOnlyPaths.some(path =>
+      req.nextUrl.pathname.startsWith(path)
+    );
+
+    // Redirect authenticated users away from auth-only routes
+    if (session && isAuthOnlyPath) {
+      return NextResponse.redirect(new URL('/dashboard', req.url));
+    }
 
     // If accessing protected routes without auth, handle appropriately
     if (!session && isProtectedPath) {
