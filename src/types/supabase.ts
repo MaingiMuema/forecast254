@@ -7,6 +7,11 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
+export type OrderType = 'limit' | 'market'
+export type OrderSide = 'buy' | 'sell'
+export type OrderPosition = 'yes' | 'no'
+export type OrderStatus = 'open' | 'filled' | 'partial' | 'cancelled'
+
 export type Database = {
   public: {
     Tables: {
@@ -142,6 +147,8 @@ export type Database = {
           created_at: string
           updated_at: string
           source_article_id: string | null
+          total_yes_amount?: number
+          total_no_amount?: number
         }
         Insert: {
           id?: string
@@ -157,6 +164,8 @@ export type Database = {
           created_at?: string
           updated_at?: string
           source_article_id?: string | null
+          total_yes_amount?: number
+          total_no_amount?: number
         }
         Update: {
           id?: string
@@ -172,6 +181,55 @@ export type Database = {
           created_at?: string
           updated_at?: string
           source_article_id?: string | null
+          total_yes_amount?: number
+          total_no_amount?: number
+        }
+      }
+      orders: {
+        Row: {
+          id: string
+          market_id: string
+          user_id: string
+          order_type: OrderType
+          side: OrderSide
+          position: OrderPosition
+          price: number | null
+          amount: number
+          filled_amount: number
+          remaining_amount: number
+          status: OrderStatus
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          market_id: string
+          user_id: string
+          order_type: OrderType
+          side: OrderSide
+          position: OrderPosition
+          price?: number | null
+          amount: number
+          filled_amount?: number
+          remaining_amount?: number
+          status?: OrderStatus
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          market_id?: string
+          user_id?: string
+          order_type?: OrderType
+          side?: OrderSide
+          position?: OrderPosition
+          price?: number | null
+          amount?: number
+          filled_amount?: number
+          remaining_amount?: number
+          status?: OrderStatus
+          created_at?: string
+          updated_at?: string
         }
       }
       positions: {

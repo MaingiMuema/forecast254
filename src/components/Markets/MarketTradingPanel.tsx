@@ -1,473 +1,748 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-'use client';
-
-import { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/solid';
-import { useAuth } from '@/contexts/AuthContext';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+import React, { useState, useEffect } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Order, OrderBook, CreateOrderRequest, OrderType, OrderSide, Position } from '@/types/order';
 import { toast } from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { calculateSharePrice, calculateProbability } from '@/lib/priceCalculation';
+import { RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 
-interface MarketData {
-  id: string;
-  title: string;
-  description: string;
-  probability_yes: number;
-  probability_no: number;
-  total_volume: number;
-  volume?: number; // For backward compatibility
-  total_yes_amount: number;
-  total_no_amount: number;
-  closing_date: string;
-  status: string;
-  min_amount: number;
-  max_amount: number;
-  trades: number;
-  views: number;
-  resolved_value?: boolean;
+interface MarketTradingPanelProps {
+  marketId: string;
 }
 
-interface Position {
-  id: string;
-  user_id: string;
-  market_id: string;
-  position: 'yes' | 'no';
-  amount: number;
+interface UserPosition {
+  position_type: 'yes' | 'no';
   shares: number;
+}
+
+interface Profile {
+  id: string;
+  balance: number;
+  updated_at: string;
   created_at: string;
 }
 
-export default function MarketTradingPanel({ marketId }: { marketId: string }) {
-  const { user } = useAuth();
-  const router = useRouter();
-  const [market, setMarket] = useState<MarketData | null>(null);
-  const [positions, setPositions] = useState<Position[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [tradeLoading, setTradeLoading] = useState(false);
-  const [amount, setAmount] = useState('');
-  const [position, setPosition] = useState<'yes' | 'no'>('yes');
-  const [estimatedShares, setEstimatedShares] = useState<number>(0);
+export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps) {
+  const supabase = createClientComponentClient();
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [orderBook, setOrderBook] = useState<OrderBook>({ asks: [], bids: [] });
+  const [orderType, setOrderType] = useState<OrderType>('market');
+  const [side, setSide] = useState<OrderSide>('buy');
+  const [position, setPosition] = useState<Position>('yes');
+  const [price, setPrice] = useState<string>('');
+  const [amount, setAmount] = useState<string>('');
+  const [userBalance, setUserBalance] = useState<number | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [user, setUser] = useState<any | null>(null);
+  const [market, setMarket] = useState<any>(null);
+  const [userPositions, setUserPositions] = useState<{ yes: number; no: number }>({ yes: 0, no: 0 });
 
-  // Fetch market data and user positions
   useEffect(() => {
-    let mounted = true;
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    
+    fetchUser();
+  }, []);
 
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        
-        // Fetch market data
-        const marketRes = await fetch(`/api/markets/${marketId}`);
-        if (!marketRes.ok) {
-          const errorData = await marketRes.json();
-          console.error('Market fetch error:', errorData);
-          throw new Error(errorData.error || 'Failed to fetch market data');
-        }
-        
-        const marketData = await marketRes.json();
-        console.log('Received market data:', marketData);
-        
-        // Only set state if component is still mounted
-        if (!mounted) return;
-        setMarket(marketData);
-
-        // Fetch positions if user is logged in
-        if (user) {
-          try {
-            const positionsRes = await fetch(`/api/markets/${marketId}/positions`, {
-              credentials: 'include', // Include cookies for authentication
-            });
-            
-            if (!positionsRes.ok) {
-              const errorData = await positionsRes.json();
-              console.error('Positions fetch error:', errorData);
-              if (positionsRes.status === 401) {
-                // Handle unauthorized error quietly - user might not be logged in
-                console.log('User not authenticated for positions');
-                return;
-              }
-              throw new Error(errorData.error || 'Failed to fetch positions');
-            }
-            
-            const positionsData = await positionsRes.json();
-            console.log('Received positions data:', positionsData);
-            if (mounted) {
-              setPositions(positionsData || []);
-            }
-          } catch (posError) {
-            console.error('Error fetching positions:', posError);
-            toast.error('Failed to load your positions');
-            // Don't throw here to prevent market data from being hidden
+  useEffect(() => {
+    if (user) {
+      fetchUserPositions();
+      fetchBalance();
+      
+      // Subscribe to balance updates
+      const channel = supabase.channel(`profile:${user.id}`)
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'profiles',
+          filter: `id=eq.${user.id}`
+        }, (payload: RealtimePostgresChangesPayload<Profile>) => {
+          console.log('Profile update:', payload);
+          if (payload.new && 'balance' in payload.new) {
+            setUserBalance(payload.new.balance);
           }
-        }
+        })
+        .subscribe((status) => {
+          if (status === 'SUBSCRIBED') {
+            console.log('Successfully subscribed to profile updates');
+          }
+          if (status === 'CHANNEL_ERROR') {
+            console.error('Failed to subscribe to profile updates');
+            toast.error('Failed to connect to real-time balance updates');
+          }
+        });
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (!marketId) return;
+
+    // Fetch order book data
+    const fetchOrderBook = async () => {
+      try {
+        const { data: orders, error } = await supabase
+          .from('orders')
+          .select('*')
+          .eq('market_id', marketId)
+          .in('status', ['open', 'partial'])
+          .order('price', { ascending: false });
+
+        if (error) throw error;
+
+        // Process and sort orders
+        const bids = orders
+          .filter(order => order.side === 'buy')
+          .sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+        
+        const asks = orders
+          .filter(order => order.side === 'sell')
+          .sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+
+        setOrderBook({ bids, asks });
       } catch (error) {
-        console.error('Failed to fetch data:', error);
-        if (mounted) {
-          toast.error(error instanceof Error ? error.message : 'Failed to load market data');
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false);
-        }
+        console.error('Error fetching order book:', error);
       }
     };
 
-    fetchData();
+    // Initial fetch
+    fetchOrderBook();
+
+    // Set up polling interval
+    const pollInterval = setInterval(fetchOrderBook, 1000);
+
+    // Subscribe to real-time changes
+    const channel = supabase
+      .channel('order-book-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'orders',
+          filter: `market_id=eq.${marketId}`,
+        },
+        async (payload) => {
+          console.log('Real-time order update:', payload);
+          await fetchOrderBook();
+        }
+      )
+      .subscribe();
 
     // Cleanup function
     return () => {
-      mounted = false;
+      clearInterval(pollInterval);
+      channel.unsubscribe();
     };
-  }, [marketId, user]);
+  }, [marketId]);
 
-  // Calculate estimated shares based on amount and position
   useEffect(() => {
-    if (!market || !amount) {
-      setEstimatedShares(0);
-      return;
+    if (!user || !marketId) return;
+
+    const channel = supabase.channel(`orders:${marketId}:${user.id}`)
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'orders',
+        filter: `market_id=eq.${marketId} AND user_id=eq.${user.id}`
+      }, (payload) => {
+        console.log('Order update:', payload);
+        // Refresh positions when orders are updated
+        fetchUserPositions();
+      })
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          console.log('Successfully subscribed to order updates');
+        }
+        if (status === 'CHANNEL_ERROR') {
+          console.error('Failed to subscribe to order updates');
+          toast.error('Failed to connect to real-time order updates');
+        }
+      });
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user, marketId]);
+
+  const fetchBalance = async () => {
+    if (user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('balance')
+        .eq('id', user.id)
+        .single();
+      
+      if (profile) {
+        setUserBalance(profile.balance);
+      }
     }
+  };
 
-    const numAmount = Number(amount);
-    if (isNaN(numAmount) || numAmount <= 0) {
-      setEstimatedShares(0);
-      return;
+  const fetchUserPositions = async () => {
+    if (!user) return;
+    
+    try {
+      // Get all filled/partial orders and open sell orders for this user in this market
+      const { data: orders, error } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('market_id', marketId)
+        .eq('user_id', user.id)
+        .or('status.in.(filled,partial),and(status.eq.open,side.eq.sell)')
+        .order('created_at', { ascending: true });
+      
+      console.log('User filled/partially orders:', orders);
+
+      if (error) throw error;
+
+      // Calculate net positions from orders
+      const positions = (orders || []).reduce((acc, order) => {
+        let positionChange = 0;
+        
+        if (order.status === 'open') {
+          // For open sell orders, subtract the remaining amount
+          positionChange = -order.remaining_amount;
+        } else {
+          // For filled/partial orders, use filled_amount with buy/sell direction
+          positionChange = order.filled_amount * (order.side === 'buy' ? 1 : -1);
+        }
+
+        console.log('Processing order:', {
+          position: order.position,
+          status: order.status,
+          filled_amount: order.filled_amount,
+          remaining_amount: order.remaining_amount,
+          side: order.side,
+          positionChange,
+          currentAccumulator: acc
+        });
+        
+        acc[order.position] = (acc[order.position] || 0) + positionChange;
+        return acc;
+      }, { yes: 0, no: 0 } as { yes: number; no: number });
+
+      console.log('Final positions:', positions);
+
+      setUserPositions(positions);
+    } catch (error) {
+      console.error('Error fetching user positions:', error);
+      toast.error('Failed to fetch your positions');
     }
+  };
 
-    const probability = position === 'yes' ? market.probability_yes : market.probability_no;
-    if (probability <= 0 || probability >= 100) {
-      setEstimatedShares(0);
-      return;
+  const validateOrder = () => {
+    if (side === 'sell') {
+      const availableShares = userPositions[position];
+      const sellingAmount = Number(amount);
+      
+      if (sellingAmount > availableShares) {
+        toast.error(`Insufficient shares. You only have ${availableShares} ${position.toUpperCase()} shares available.`);
+        return false;
+      }
     }
+    return true;
+  };
 
-    const shares = Number((numAmount / (probability / 100)).toFixed(4));
-    setEstimatedShares(shares);
-  }, [amount, position, market]);
+  const getEffectivePrice = () => {
+    if (orderType === 'limit') {
+      return Number(price);
+    }
+    // For market orders, use current market price
+    const marketPrice = position === 'yes'
+      ? (market?.yes_price || calculateSharePrice(market?.probability_yes || 0.5))
+      : (market?.no_price || calculateSharePrice(market?.probability_no || 0.5));
 
-  const formattedShares = useMemo(() => {
-    if (!estimatedShares || isNaN(estimatedShares)) return '0.00';
-    return estimatedShares.toFixed(2);
-  }, [estimatedShares]);
+    console.log('Market price calculation:', {
+      position,
+      yes_price: market?.yes_price,
+      no_price: market?.no_price,
+      probability_yes: market?.probability_yes,
+      probability_no: market?.probability_no,
+      calculatedPrice: marketPrice
+    });
 
-  const handleTrade = async () => {
+    return Number(marketPrice);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!user) {
-      toast.error('Please sign in to trade');
-      router.push('/login');
+      toast.error('Please login to place orders');
       return;
     }
 
-    if (!market) {
-      toast.error('Market data not available');
+    if (!validateOrder()) {
       return;
     }
 
-    const tradeAmount = Number(amount);
-    if (!amount || isNaN(tradeAmount) || tradeAmount <= 0) {
-      toast.error('Please enter a valid positive amount');
-      return;
-    }
-
-    if (tradeAmount < market.min_amount || tradeAmount > market.max_amount) {
-      toast.error(`Amount must be between ${market.min_amount} and ${market.max_amount}`);
-      return;
-    }
-
-    setTradeLoading(true);
+    setIsSubmitting(true);
+    setError(null);
 
     try {
-      const res = await fetch(`/api/markets/trade`, {
+      const response = await fetch('/api/markets/trade/order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
         body: JSON.stringify({
-          marketId: market.id,
-          amount: tradeAmount,
+          market_id: marketId,
+          order_type: orderType,
+          side,
           position,
+          price: Number(price),
+          amount: Number(amount),
+          market_price: market?.last_trade_price || Number(price),
+          calculated_price: Number(price)
         }),
       });
 
-      const responseData = await res.json();
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to place order');
+      }else{
+        
+      }
+
+      // Clear form
+      setAmount('');
       
-      if (!res.ok) {
-        console.log('Trade failed:', responseData);
-        toast.error(responseData.error || 'Failed to execute trade');
-        setTradeLoading(false);
+      // Reset price to current market price
+      if (market) {
+        const marketPrice = position === 'yes' 
+          ? market.probability_yes 
+          : market.probability_no;
+        setPrice(calculateSharePrice(marketPrice).toString());
+      }
+      
+      // Show success message
+      toast.success(`${side === 'buy' ? 'Buy' : 'Sell'} order placed successfully`);
+      
+      // Update local state
+      setUserBalance(data.balance);
+      
+    } catch (error: any) {
+      console.error('Error placing order:', error);
+      setError(error.message);
+      toast.error(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const getSuggestedPrice = () => {
+    if (!market) return null;
+    const probability = position === 'yes' ? market.probability_yes : market.probability_no;
+    return calculateSharePrice(probability);
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchBalance();
+    }
+  }, [supabase, user]);
+
+  useEffect(() => {
+    if (!user) return;
+    
+    fetchUserPositions();
+  }, [user, marketId]);
+
+  useEffect(() => {
+    const suggestedPrice = getSuggestedPrice();
+    if (suggestedPrice !== null) {
+      setPrice(suggestedPrice.toString());
+    }
+  }, [position]);
+
+  useEffect(() => {
+    if (market && orderType === 'market') {
+      const marketPrice = position === 'yes'
+        ? (market.yes_price || calculateSharePrice(market.probability_yes))
+        : (market.no_price || calculateSharePrice(market.probability_no));
+      setPrice(marketPrice.toString());
+    }
+  }, [market, position, orderType]);
+
+  useEffect(() => {
+    const fetchMarket = async () => {
+      const { data, error } = await supabase
+        .from('markets')
+        .select('*')
+        .eq('id', marketId)
+        .single();
+      
+      if (error) {
+        console.error('Error fetching market:', error);
         return;
       }
-
-      await fetchMarketData();
-      toast.success('Trade executed successfully');
-      setAmount('');
-    } catch (error) {
-      console.error('Trade error:', error);
-      toast.error('Failed to execute trade. Please try again.');
-    } finally {
-      setTradeLoading(false);
-    }
-  };
-
-  const fetchMarketData = async () => {
-    try {
-      setLoading(true);
       
-      // Fetch market data
-      const marketRes = await fetch(`/api/markets/${marketId}`);
-      if (!marketRes.ok) {
-        const error = await marketRes.json();
-        throw new Error(error.message || 'Failed to fetch market data');
+      console.log('Fetched market data:', data);
+      setMarket(data);
+      
+      // Update price immediately after getting market data
+      if (data && orderType === 'market') {
+        const marketPrice = position === 'yes'
+          ? (data.yes_price || calculateSharePrice(data.probability_yes))
+          : (data.no_price || calculateSharePrice(data.probability_no));
+        setPrice(marketPrice.toString());
       }
-      
-      const marketData = await marketRes.json();
-      
-      // Only set state if component is still mounted
-      setMarket(marketData);
+    };
 
-      // Fetch positions if user is logged in
-      if (user) {
-        try {
-          const positionsRes = await fetch(`/api/markets/${marketId}/positions`, {
-            credentials: 'include', // Include cookies for authentication
-          });
-          
-          if (!positionsRes.ok) {
-            const error = await positionsRes.json();
-            if (positionsRes.status === 401) {
-              // Handle unauthorized error quietly - user might not be logged in
-              console.log('User not authenticated for positions');
-              return;
-            }
-            console.error('Failed to fetch positions:', error);
-            return;
-          }
-          
-          const positionsData = await positionsRes.json();
-          setPositions(positionsData || []);
-        } catch (posError) {
-          console.error('Error fetching positions:', posError);
-          // Don't throw here to prevent market data from being hidden
-        }
-      }
-    } catch (error) {
-      console.error('Failed to fetch data:', error);
-      toast.error(error instanceof Error ? error.message : 'Failed to load market data');
-    } finally {
-      setLoading(false);
-    }
-  };
+    fetchMarket();
+  }, [marketId]);
 
-  if (loading) {
-    return (
-      <div className="p-4 bg-white rounded-lg shadow">
-        <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
-          <div className="h-8 bg-gray-200 rounded w-1/2"></div>
-        </div>
-      </div>
-    );
+  function generateUUID() {
+    // Generate 16 random bytes
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    
+    // Set version (4) and variant (2) bits
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;  // version 4
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;  // variant 2
+    
+    // Convert to hex string with proper UUID format
+    const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+    return `${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`;
   }
-
-  if (!market) {
-    return (
-      <div className="p-4 bg-white rounded-lg shadow">
-        <p className="text-gray-500">Market data not available</p>
-      </div>
-    );
-  }
-
-  const isMarketClosed = market.status !== 'open' || new Date(market.closing_date) <= new Date();
-
-  // Safe formatting functions
-  const formatPercent = (num: number | null | undefined) => 
-    num !== null && num !== undefined && isFinite(num) ? num.toFixed(2) : '0.00';
-
-  const formatCurrency = (num: number | null | undefined) => 
-    num !== null && num !== undefined && isFinite(num)
-      ? num.toLocaleString('en-KE', { style: 'currency', currency: 'KES' })
-      : 'KES 0.00';
 
   return (
-    <div className="bg-gray-900 rounded-xl p-6 space-y-6">
-      {/* Market Status */}
-      {isMarketClosed && (
-        <div className="bg-red-500/10 text-red-500 px-4 py-2 rounded-lg text-sm text-center">
-          This market is closed for trading
-        </div>
-      )}
-
-      {/* Current Price */}
-      <div className="text-center">
-        <h3 className="text-sm font-medium text-gray-400 mb-1">Current Price</h3>
-        <div className="text-4xl font-bold text-white">
-          {formatPercent(market.probability_yes)}%
-        </div>
-        <p className="text-sm text-gray-400 mt-1">
-          24h Volume: {formatCurrency(market.total_volume || 0)}
-        </p>
-      </div>
-
-      {/* Position Selector */}
-      <div className="grid grid-cols-2 gap-2">
-        <button
-          onClick={() => setPosition('yes')}
-          disabled={isMarketClosed}
-          className={`p-4 rounded-lg flex flex-col items-center justify-center transition-colors ${
-            position === 'yes'
-              ? 'bg-emerald-500/10 text-emerald-500'
-              : 'bg-gray-800 text-gray-400 hover:text-white'
-          } ${isMarketClosed ? 'opacity-50 cursor-not-allowed' : ''}`}
-        >
-          <ArrowUpIcon className="h-6 w-6 mb-2" />
-          <span className="text-sm font-medium">Yes ({formatPercent(market.probability_yes)}%)</span>
-        </button>
-        <button
-          onClick={() => setPosition('no')}
-          disabled={isMarketClosed}
-          className={`p-4 rounded-lg flex flex-col items-center justify-center transition-colors ${
-            position === 'no'
-              ? 'bg-rose-500/10 text-rose-500'
-              : 'bg-gray-800 text-gray-400 hover:text-white'
-          } ${isMarketClosed ? 'opacity-50 cursor-not-allowed' : ''}`}
-        >
-          <ArrowDownIcon className="h-6 w-6 mb-2" />
-          <span className="text-sm font-medium">No ({formatPercent(market.probability_no)}%)</span>
-        </button>
-      </div>
-
-      {/* User Positions Summary */}
-      {user && positions && positions.length > 0 && (
-        <div className="bg-gray-800 rounded-lg p-4 space-y-2">
-          <h4 className="text-sm font-medium text-gray-400">Your Positions</h4>
-          {(() => {
-            // Calculate position summaries
-            const summary = positions.reduce((acc, pos) => {
-              const shares = Number(pos.shares) || 0;
-              const amount = Number(pos.amount) || 0;
-              
-              if (pos.position === 'yes') {
-                acc.totalYesShares += shares;
-                acc.totalYesAmount += amount;
-              } else if (pos.position === 'no') {
-                acc.totalNoShares += shares;
-                acc.totalNoAmount += amount;
-              }
-              return acc;
-            }, {
-              totalYesShares: 0,
-              totalYesAmount: 0,
-              totalNoShares: 0,
-              totalNoAmount: 0
-            });
-
-            // Format numbers safely
-            const formatNumber = (num: number) => 
-              isFinite(num) ? num.toFixed(2) : '0.00';
-
-            const formatCurrency = (num: number) => 
-              isFinite(num) 
-                ? num.toLocaleString('en-KE', { style: 'currency', currency: 'KES' })
-                : 'KES 0.00';
-
-            return (
-              <>
-                {summary.totalYesShares > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-emerald-500">Yes Position:</span>
-                    <span className="text-white">
-                      {formatNumber(summary.totalYesShares)} shares 
-                      ({formatCurrency(summary.totalYesAmount)})
-                    </span>
-                  </div>
-                )}
-                {summary.totalNoShares > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-rose-500">No Position:</span>
-                    <span className="text-white">
-                      {formatNumber(summary.totalNoShares)} shares
-                      ({formatCurrency(summary.totalNoAmount)})
-                    </span>
-                  </div>
-                )}
-              </>
-            );
-          })()}
-        </div>
-      )}
-
-      {/* Amount Input */}
-      <div className="space-y-2">
-        <div className="flex justify-between">
-          <label htmlFor="amount" className="block text-sm font-medium text-gray-400">
-            Amount (KES)
-          </label>
-          <span className="text-xs text-gray-400">
-            Min: {market.min_amount} KES | Max: {market.max_amount} KES
-          </span>
-        </div>
+    <div className="bg-card rounded-xl border border-border p-6">
+      {/* Trading Form Section */}
+      <div className="mb-8 relative">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent rounded-xl pointer-events-none" />
+        <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/10 to-transparent opacity-50 blur-2xl pointer-events-none" />
+        
         <div className="relative">
-          <input
-            type="number"
-            id="amount"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            disabled={isMarketClosed}
-            min={market.min_amount}
-            max={market.max_amount}
-            step="1"
-            className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-            placeholder={`Enter amount (${market.min_amount}-${market.max_amount})...`}
-          />
-          <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-            <span className="text-sm text-gray-400">KES</span>
+          {/* Buy/Sell Tabs */}
+          <div className="flex items-center space-x-1 mb-6 bg-background/80 p-1 rounded-lg border border-border/50 backdrop-blur-sm">
+            <button
+              type="button"
+              onClick={() => setSide('buy')}
+              className={`flex-1 px-4 py-2.5 rounded-md font-medium text-sm transition-all duration-300 ${
+                side === 'buy'
+                  ? 'bg-green-500 text-white shadow-lg shadow-green-500/20'
+                  : 'hover:bg-background/90 text-foreground/80 hover:text-green-500'
+              }`}
+            >
+              Buy Shares
+            </button>
+            <button
+              type="button"
+              onClick={() => setSide('sell')}
+              className={`flex-1 px-4 py-2.5 rounded-md font-medium text-sm transition-all duration-300 ${
+                side === 'sell'
+                  ? 'bg-red-500 text-white shadow-lg shadow-red-500/20'
+                  : 'hover:bg-background/90 text-foreground/80 hover:text-red-500'
+              }`}
+            >
+              Sell Shares
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between mb-6">
+            <div className="space-y-1">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
+                Place Order
+              </h2>
+              <p className="text-sm text-muted-foreground/80">Create a new market position</p>
+            </div>
+            {userBalance !== null && (
+              <div className="px-5 py-3 rounded-xl bg-background/90 border border-border/50 backdrop-blur-sm hover:border-primary/20 transition-colors">
+                <p className="text-xs font-medium text-muted-foreground/80">Available Balance</p>
+                <p className="text-sm font-semibold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                  {userBalance.toLocaleString('en-KE', { style: 'currency', currency: 'KES' })}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {error && (
+            <div className="mb-6 p-4 rounded-xl bg-red-500/5 border border-red-500/20 backdrop-blur-sm animate-in slide-in-from-top-4 duration-300">
+              <p className="text-sm text-red-500 font-medium">{error}</p>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Order Type Selection */}
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-foreground/80">Order Type</label>
+              <select
+                value={orderType}
+                onChange={(e) => {
+                  const newOrderType = e.target.value as OrderType;
+                  setOrderType(newOrderType);
+                  
+                  // For market orders, set price to current market price
+                  if (newOrderType === 'market' && market) {
+                    const marketPrice = position === 'yes' 
+                      ? (market.yes_price || calculateSharePrice(market.probability_yes))
+                      : (market.no_price || calculateSharePrice(market.probability_no));
+                    setPrice(marketPrice.toString());
+                  } else if (newOrderType === 'limit') {
+                    // For limit orders, set to suggested price as default
+                    const suggestedPrice = getSuggestedPrice();
+                    if (suggestedPrice !== null) {
+                      setPrice(suggestedPrice.toString());
+                    }
+                  }
+                }}
+                className="w-full p-3.5 rounded-xl border border-border/50 bg-background/80 hover:bg-background/90 hover:border-primary/30 transition-all focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer backdrop-blur-sm"
+              >
+                <option value="limit">Limit Order</option>
+                <option value="market">Market Order</option>
+              </select>
+            </div>
+
+            {/* Position Selection with Prices */}
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-foreground/80">Position</label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setPosition('yes')}
+                  className={`relative p-4 rounded-xl font-medium transition-all duration-300 ${
+                    position === 'yes'
+                      ? 'bg-primary text-white shadow-lg shadow-primary/20'
+                      : 'bg-background/80 border border-border/50 hover:border-primary/30 text-foreground/80 hover:text-primary'
+                  }`}
+                >
+                  <div className="flex flex-col items-center">
+                    <span className="text-lg font-bold mb-1">YES</span>
+                    {market && (
+                      <>
+                        <span className="text-sm opacity-80">
+                          {(market.yes_price || calculateSharePrice(market.probability_yes)).toFixed(2)} KES
+                        </span>
+                        <span className="text-xs opacity-60">
+                          ({(market.probability_yes * 100).toFixed(1)}%)
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPosition('no')}
+                  className={`relative p-4 rounded-xl font-medium transition-all duration-300 ${
+                    position === 'no'
+                      ? 'bg-red-500 text-white shadow-lg shadow-red-500/20'
+                      : 'bg-background/80 border border-border/50 hover:border-red-500/30 text-foreground/80 hover:text-red-500'
+                  }`}
+                >
+                  <div className="flex flex-col items-center">
+                    <span className="text-lg font-bold mb-1">NO</span>
+                    {market && (
+                      <>
+                        <span className="text-sm opacity-80">
+                          {(market.no_price || calculateSharePrice(market.probability_no)).toFixed(2)} KES
+                        </span>
+                        <span className="text-xs opacity-60">
+                          ({(market.probability_no * 100).toFixed(1)}%)
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            {/* Price Input (Show for both limit and market orders, but readonly for market) */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <label className="block text-sm font-medium text-foreground/80">Price (KES)</label>
+              </div>
+              <div className="relative">
+                <input
+                  type="number"
+                  value={price}
+                  onChange={(e) => {
+                    if (orderType === 'limit') {
+                      setPrice(e.target.value);
+                      if (market && e.target.value) {
+                        const newProbability = calculateProbability(Number(e.target.value));
+                        if (position === 'yes') {
+                          market.probability_yes = newProbability;
+                          market.yes_price = Number(e.target.value);
+                        } else {
+                          market.probability_no = newProbability;
+                          market.no_price = Number(e.target.value);
+                        }
+                        setMarket({...market});
+                      }
+                    }
+                  }}
+                  readOnly={orderType === 'market'}
+                  step="0.01"
+                  min="0"
+                  max="100"
+                  required
+                  className={`w-full p-3.5 rounded-xl border border-border/50 bg-background/80 hover:bg-background/90 hover:border-primary/30 transition-all focus:outline-none focus:ring-2 focus:ring-primary/20 pr-24 backdrop-blur-sm ${orderType === 'market' ? 'cursor-not-allowed opacity-75' : ''}`}
+                  placeholder="0.00"
+                />
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-background/90 text-xs font-medium text-muted-foreground/80">
+                  KES
+                </div>
+              </div>
+              {market && (
+                <div className="flex items-center justify-between text-xs text-muted-foreground/80">
+                  <span>Market Price: {getSuggestedPrice()?.toFixed(2)} KES</span>
+                  <span>Probability: {((position === 'yes' ? market.probability_yes : market.probability_no) * 100).toFixed(1)}%</span>
+                </div>
+              )}
+            </div>
+
+            {/*Share Amount Input */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <label className="block text-sm font-medium text-foreground/80">Share Amount</label>
+                <div className="flex flex-col items-end text-xs text-muted-foreground/80">
+                  {side === 'sell' && (
+                    <span>Available: {userPositions[position]} {position.toUpperCase()} shares</span>
+                  )}
+                  {market && side === 'buy' && (
+                    <span>
+                      Max: {Math.floor(userBalance! / (position === 'yes' ? (market.yes_price || calculateSharePrice(market.probability_yes)) : (market.no_price || calculateSharePrice(market.probability_no))))} shares
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="relative">
+                <input
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  step="1"
+                  min="1"
+                  required
+                  className="w-full p-3.5 rounded-xl border border-border/50 bg-background/80 hover:bg-background/90 hover:border-primary/30 transition-all focus:outline-none focus:ring-2 focus:ring-primary/20 pr-24 backdrop-blur-sm"
+                  placeholder="Enter amount"
+                />
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-background/90 text-xs font-medium text-muted-foreground/80">
+                  SHARES
+                </div>
+              </div>
+              {market && price && amount && (
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground/80">
+                    Total Cost: {(Number(price) * Number(amount)).toLocaleString('en-KE', { style: 'currency', currency: 'KES' })}
+                  </span>
+                  <span className={`font-medium ${userBalance! >= Number(price) * Number(amount) ? 'text-green-500' : 'text-red-500'}`}>
+                    {userBalance! >= Number(price) * Number(amount) ? 'Sufficient Balance' : 'Insufficient Balance'}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isSubmitting || (market && userBalance! < Number(price) * Number(amount))}
+              className={`w-full p-4 rounded-xl font-semibold text-white transition-all transform hover:scale-[1.02] shadow-lg ${
+                side === 'buy'
+                  ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 shadow-green-500/20'
+                  : 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 shadow-red-500/20'
+              } disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none backdrop-blur-sm`}
+            >
+              {isSubmitting ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Processing Order...
+                </span>
+              ) : (
+                `${side === 'buy' ? 'Buy' : 'Sell'} ${position.toUpperCase()} Shares`
+              )}
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* Order Book Section */}
+      <div>
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">Order Book</h2>
+            <p className="text-xs text-muted-foreground mt-1">Live market depth</p>
+          </div>
+          <div className="px-3 py-1 rounded-full bg-primary/10 text-xs font-medium text-primary">
+            Top 5 Orders
           </div>
         </div>
-        {estimatedShares > 0 && (
-          <p className="text-xs text-gray-400">
-            Estimated shares: {formattedShares}
-          </p>
-        )}
+
+        <div className="grid grid-cols-2 gap-6">
+          {/* Asks (Sell Orders) */}
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs font-semibold text-muted-foreground px-2">
+              <span>PRICE</span>
+              <span>SHARES</span>
+            </div>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-b from-red-500/5 to-transparent pointer-events-none" />
+              <div className="space-y-[2px] relative">
+                {orderBook.asks.slice(0, 5).map((order, index) => (
+                  <div
+                    key={order.id}
+                    className="flex justify-between text-sm py-2 px-3 rounded-lg hover:bg-red-500/10 transition-colors group"
+                    style={{ backgroundColor: `rgba(239, 68, 68, ${0.02 + (0.01 * (5 - index))})` }}
+                  >
+                    <span className="font-medium text-red-500 group-hover:text-red-600">{order.price !== null ? order.price.toFixed(2) : 'N/A'}</span>
+                    <span className="font-medium text-foreground/80">{order.remaining_amount.toFixed(2)}</span>
+                  </div>
+                ))}
+                {orderBook.asks.length === 0 && (
+                  <div className="text-sm text-muted-foreground text-center py-4 border border-dashed border-border rounded-lg">
+                    No sell orders
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Bids (Buy Orders) */}
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs font-semibold text-muted-foreground px-2">
+              <span>PRICE</span>
+              <span>SHARES</span>
+            </div>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-b from-green-500/5 to-transparent pointer-events-none" />
+              <div className="space-y-[2px] relative">
+                {orderBook.bids.slice(0, 5).map((order, index) => (
+                  <div
+                    key={order.id}
+                    className="flex justify-between text-sm py-2 px-3 rounded-lg hover:bg-green-500/10 transition-colors group"
+                    style={{ backgroundColor: `rgba(34, 197, 94, ${0.02 + (0.01 * (5 - index))})` }}
+                  >
+                    <span className="font-medium text-green-500 group-hover:text-green-600">{order.price !== null ? order.price.toFixed(2) : 'N/A'}</span>
+                    <span className="font-medium text-foreground/80">{order.remaining_amount.toFixed(2)}</span>
+                  </div>
+                ))}
+                {orderBook.bids.length === 0 && (
+                  <div className="text-sm text-muted-foreground text-center py-4 border border-dashed border-border rounded-lg">
+                    No buy orders
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      {/* Quick Amount Buttons */}
-      <div className="grid grid-cols-3 gap-2">
-        {[100, 500, 1000].map((quickAmount) => (
-          <button
-            key={quickAmount}
-            onClick={() => setAmount(quickAmount.toString())}
-            disabled={isMarketClosed || quickAmount > market.max_amount}
-            className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
-              isMarketClosed || quickAmount > market.max_amount
-                ? 'bg-gray-800 text-gray-400 cursor-not-allowed opacity-50'
-                : 'bg-gray-800 text-gray-400 hover:text-white'
-            }`}
-          >
-            +{quickAmount}
-          </button>
-        ))}
-      </div>
-
-      {/* Trade Button */}
-      <motion.button
-        whileTap={{ scale: 0.95 }}
-        onClick={handleTrade}
-        disabled={!amount || isMarketClosed || tradeLoading || !user}
-        className={`w-full py-3 px-4 rounded-lg text-sm font-medium transition-colors ${
-          amount && !isMarketClosed && !tradeLoading && user
-            ? 'bg-primary text-white hover:bg-primary/90'
-            : 'bg-gray-800 text-gray-400 cursor-not-allowed'
-        }`}
-      >
-        {!user ? 'Sign in to Trade' :
-         tradeLoading ? 'Processing...' :
-         isMarketClosed ? 'Market Closed' :
-         position === 'yes' ? 'Buy Yes' : 'Buy No'}
-      </motion.button>
-
-      {/* Disclaimer */}
-      <p className="text-xs text-gray-400 text-center">
-        By trading, you agree to our terms and conditions.
-        Make sure you understand the risks involved.
-      </p>
     </div>
   );
 }
+
+const crypto = window.crypto || (window as any).msCrypto;

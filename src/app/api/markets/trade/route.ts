@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
@@ -148,10 +149,54 @@ export async function POST(request: Request) {
       calculatedProbability: probability
     });
 
+    // Handle initial market state (when no trades have occurred)
+    if (market.total_volume === 0) {
+      // Set initial probability to 0.5 for first trade
+      const initialProbability = 0.5;
+      console.log('Using initial probability for first trade:', initialProbability);
+      
+      // Calculate shares using initial probability
+      const shares = Number((Number(amount) / initialProbability).toFixed(4));
+      console.log('Initial shares calculation:', {
+        amount: Number(amount),
+        initialProbability,
+        shares
+      });
+
+      // Start transaction
+      const { error: tradeError } = await supabaseAdmin.rpc('execute_trade', {
+        p_market_id: marketId,
+        p_user_id: session.user.id,
+        p_position: position,
+        p_amount: amount,
+        p_shares: shares
+      });
+
+      if (tradeError) {
+        console.error('Trade execution error:', tradeError);
+        return new NextResponse(
+          JSON.stringify({ error: 'Failed to execute trade', details: tradeError.message }),
+          { 
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+          }
+        );
+      }
+
+      return new NextResponse(
+        JSON.stringify({ success: true, shares }),
+        { 
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+    }
+
+    // For markets with existing trades, validate probability
     if (probability <= 0 || probability >= 1) {
       return new NextResponse(
         JSON.stringify({ 
-          error: 'Invalid market probability for this position',
+          error: 'Cannot trade on this position at this time',
           details: { 
             probability_yes: market.probability_yes,
             probability_no: market.probability_no,
