@@ -149,24 +149,22 @@ BEGIN
                 WHEN v_order.position = 'no' THEN COALESCE(m.total_no_amount, 0) + v_match_amount
                 ELSE COALESCE(m.total_no_amount, 0)
             END,
-            last_trade_price = v_match_price,
-            last_trade_time = NOW(),
             trades = COALESCE(trades, 0) + 1,
             updated_at = NOW()
         WHERE id = v_order.market_id
         RETURNING * INTO v_market;
 
-        -- Calculate new probabilities
+        -- Calculate new probabilities (yes_price and no_price will be automatically generated)
         UPDATE markets
         SET
             probability_yes = CASE
                 WHEN COALESCE(total_yes_amount, 0) + COALESCE(total_no_amount, 0) > 0 THEN
-                    COALESCE(total_yes_amount, 0)::FLOAT / (COALESCE(total_yes_amount, 0) + COALESCE(total_no_amount, 0))
+                    LEAST(0.99, GREATEST(0.01, COALESCE(total_yes_amount, 0)::FLOAT / (COALESCE(total_yes_amount, 0) + COALESCE(total_no_amount, 0))))
                 ELSE 0.5
             END,
             probability_no = CASE
                 WHEN COALESCE(total_yes_amount, 0) + COALESCE(total_no_amount, 0) > 0 THEN
-                    COALESCE(total_no_amount, 0)::FLOAT / (COALESCE(total_yes_amount, 0) + COALESCE(total_no_amount, 0))
+                    LEAST(0.99, GREATEST(0.01, COALESCE(total_no_amount, 0)::FLOAT / (COALESCE(total_yes_amount, 0) + COALESCE(total_no_amount, 0))))
                 ELSE 0.5
             END
         WHERE id = v_order.market_id;

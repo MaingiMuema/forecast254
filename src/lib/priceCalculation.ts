@@ -1,20 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  * Calculate share price based on probability percentage
- * Uses a logit function to map probabilities to prices
+ * Uses a linear function to map probabilities to prices
  * Price will be between 0 and 100 KES
  */
 export function calculateSharePrice(probability: number): number {
-  // Ensure probability is between 0 and 1
+  /**
+   * Ensure probability is within valid range (0.01 to 0.99)
+   * This prevents division by zero and ensures price is within bounds
+   */
   probability = Math.max(0.01, Math.min(0.99, probability));
   
-  // Convert probability to odds ratio
-  const odds = probability / (1 - probability);
-  
-  // Calculate price (will be between 0 and 100 KES)
+  /**
+   * Calculate price directly from probability
+   * Price is a linear function of probability, scaled to 0-100 KES range
+   */
   const price = 100 * probability;
   
-  // Round to 2 decimal places
+  /**
+   * Round price to 2 decimal places for display purposes
+   */
   return Math.round(price * 100) / 100;
 }
 
@@ -34,6 +39,15 @@ export function calculateProbability(price: number): number {
 }
 
 /**
+ * Validates that yes and no probabilities sum to 1 (within rounding error)
+ * Returns true if valid, false otherwise
+ */
+export function validateProbabilities(yesProb: number, noProb: number): boolean {
+  const sum = Math.round((yesProb + noProb) * 10000) / 10000;
+  return Math.abs(sum - 1) < 0.0001; // Allow for small rounding errors
+}
+
+/**
  * Get initial share prices for a new market
  * Returns both YES and NO prices based on 50/50 probability
  */
@@ -41,6 +55,10 @@ export function getInitialSharePrices() {
   const initialProbability = 0.5;
   const yesPrice = calculateSharePrice(initialProbability);
   const noPrice = calculateSharePrice(1 - initialProbability);
+  
+  if (!validateProbabilities(initialProbability, 1 - initialProbability)) {
+    throw new Error('Probabilities do not sum to 1');
+  }
   
   return {
     yesPrice,

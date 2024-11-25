@@ -40,6 +40,7 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
   const [user, setUser] = useState<any | null>(null);
   const [market, setMarket] = useState<any>(null);
   const [userPositions, setUserPositions] = useState<{ yes: number; no: number }>({ yes: 0, no: 0 });
+  const [lastTradePrice, setLastTradePrice] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -51,78 +52,81 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
   }, []);
 
   useEffect(() => {
-    if (user) {
-      fetchUserPositions();
-      fetchBalance();
-      
+    if (!user) return;
+
+    let retryCount = 0;
+    const MAX_RETRIES = 3;
+    let retryTimeout: NodeJS.Timeout;
+
+    const setupSubscription = () => {
+      // Clear any existing retry timeout
+      if (retryTimeout) clearTimeout(retryTimeout);
+
       // Subscribe to balance updates
-      const channel = supabase.channel(`profile:${user.id}`)
+      const channel = supabase.channel(`profile:${user.id}:${Date.now()}`)
         .on('postgres_changes', {
-          event: '*',
+          event: 'UPDATE',
           schema: 'public',
           table: 'profiles',
           filter: `id=eq.${user.id}`
         }, (payload: RealtimePostgresChangesPayload<Profile>) => {
-          console.log('Profile update:', payload);
+          console.log('Profile update received:', payload);
           if (payload.new && 'balance' in payload.new) {
             setUserBalance(payload.new.balance);
           }
         })
-        .subscribe((status) => {
+        .subscribe((status, err) => {
           if (status === 'SUBSCRIBED') {
             console.log('Successfully subscribed to profile updates');
+            retryCount = 0; // Reset retry count on successful subscription
           }
           if (status === 'CHANNEL_ERROR') {
-            console.error('Failed to subscribe to profile updates');
-            toast.error('Failed to connect to real-time balance updates');
+            console.log('Profile subscription error:', err);
+            if (retryCount < MAX_RETRIES) {
+              retryCount++;
+              console.log(`Retrying subscription (attempt ${retryCount}/${MAX_RETRIES})...`);
+              retryTimeout = setTimeout(() => {
+                channel.unsubscribe();
+                setupSubscription();
+              }, 5000);
+            } else {
+              console.error('Max retry attempts reached');
+              toast.error('Unable to connect to real-time updates. Please refresh the page.');
+            }
           }
         });
 
-      return () => {
-        supabase.removeChannel(channel);
-      };
+      return channel;
+    };
+
+    // Initial subscription setup
+    const channel = setupSubscription();
+
+    // Cleanup function
+    return () => {
+      if (retryTimeout) clearTimeout(retryTimeout);
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      fetchUserPositions();
+      fetchBalance();
     }
   }, [user]);
 
   useEffect(() => {
     if (!marketId) return;
 
-    // Fetch order book data
-    const fetchOrderBook = async () => {
-      try {
-        const { data: orders, error } = await supabase
-          .from('orders')
-          .select('*')
-          .eq('market_id', marketId)
-          .in('status', ['open', 'partial'])
-          .order('price', { ascending: false });
-
-        if (error) throw error;
-
-        // Process and sort orders
-        const bids = orders
-          .filter(order => order.side === 'buy')
-          .sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
-        
-        const asks = orders
-          .filter(order => order.side === 'sell')
-          .sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
-
-        setOrderBook({ bids, asks });
-      } catch (error) {
-        console.error('Error fetching order book:', error);
-      }
-    };
-
-    // Initial fetch
+    // Fetch initial order book
     fetchOrderBook();
 
-    // Set up polling interval
-    const pollInterval = setInterval(fetchOrderBook, 1000);
+    // Set up 1-second interval for updates
+    const updateInterval = setInterval(fetchOrderBook, 1000);
 
-    // Subscribe to real-time changes
-    const channel = supabase
-      .channel('order-book-changes')
+    // Set up real-time subscription
+    const channel = supabase.channel(`orderbook:${marketId}`)
       .on(
         'postgres_changes',
         {
@@ -140,39 +144,99 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
 
     // Cleanup function
     return () => {
-      clearInterval(pollInterval);
-      channel.unsubscribe();
+      clearInterval(updateInterval);
+      supabase.removeChannel(channel);
     };
   }, [marketId]);
 
   useEffect(() => {
     if (!user || !marketId) return;
 
-    const channel = supabase.channel(`orders:${marketId}:${user.id}`)
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'orders',
-        filter: `market_id=eq.${marketId} AND user_id=eq.${user.id}`
-      }, (payload) => {
-        console.log('Order update:', payload);
-        // Refresh positions when orders are updated
-        fetchUserPositions();
-      })
-      .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          console.log('Successfully subscribed to order updates');
-        }
-        if (status === 'CHANNEL_ERROR') {
-          console.error('Failed to subscribe to order updates');
-          toast.error('Failed to connect to real-time order updates');
-        }
-      });
+    let retryCount = 0;
+    const MAX_RETRIES = 3;
+    let retryTimeout: NodeJS.Timeout;
 
+    const setupOrderSubscription = () => {
+      // Clear any existing retry timeout
+      if (retryTimeout) clearTimeout(retryTimeout);
+
+      const channel = supabase.channel(`orders:${marketId}:${user.id}:${Date.now()}`)
+        .on('postgres_changes', {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'orders',
+          filter: `market_id=eq.${marketId} AND user_id=eq.${user.id}`
+        }, (payload) => {
+          console.log('Order update received:', payload);
+          fetchUserPositions();
+        })
+        .subscribe((status, err) => {
+          if (status === 'SUBSCRIBED') {
+            console.log('Successfully subscribed to order updates');
+            retryCount = 0; // Reset retry count on successful subscription
+          }
+          if (status === 'CHANNEL_ERROR') {
+            console.log('Order subscription error:', err);
+            if (retryCount < MAX_RETRIES) {
+              retryCount++;
+              console.log(`Retrying order subscription (attempt ${retryCount}/${MAX_RETRIES})...`);
+              retryTimeout = setTimeout(() => {
+                channel.unsubscribe();
+                setupOrderSubscription();
+              }, 5000);
+            } else {
+              console.error('Max retry attempts reached for order subscription');
+              toast.error('Unable to connect to real-time order updates. Please refresh the page.');
+            }
+          }
+        });
+
+      return channel;
+    };
+
+    // Initial subscription setup
+    const channel = setupOrderSubscription();
+
+    // Cleanup function
     return () => {
+      if (retryTimeout) clearTimeout(retryTimeout);
       supabase.removeChannel(channel);
     };
   }, [user, marketId]);
+
+  const fetchOrderBook = async () => {
+    try {
+      // Fetch asks (sell orders)
+      const { data: asks, error: asksError } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('market_id', marketId)
+        .eq('side', 'sell')
+        .eq('status', 'open')
+        .order('created_at', { ascending: false });  // Latest first
+
+      if (asksError) throw asksError;
+
+      // Fetch bids (buy orders)
+      const { data: bids, error: bidsError } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('market_id', marketId)
+        .eq('side', 'buy')
+        .eq('status', 'open')
+        .order('created_at', { ascending: false });  // Latest first
+
+      if (bidsError) throw bidsError;
+
+      setOrderBook({
+        asks: asks || [],
+        bids: bids || []
+      });
+    } catch (error) {
+      console.error('Error fetching order book:', error);
+      toast.error('Failed to fetch order book');
+    }
+  };
 
   const fetchBalance = async () => {
     if (user) {
@@ -257,22 +321,52 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
     if (orderType === 'limit') {
       return Number(price);
     }
-    // For market orders, use current market price
-    const marketPrice = position === 'yes'
-      ? (market?.yes_price || calculateSharePrice(market?.probability_yes || 0.5))
-      : (market?.no_price || calculateSharePrice(market?.probability_no || 0.5));
-
-    console.log('Market price calculation:', {
-      position,
-      yes_price: market?.yes_price,
-      no_price: market?.no_price,
-      probability_yes: market?.probability_yes,
-      probability_no: market?.probability_no,
-      calculatedPrice: marketPrice
-    });
-
-    return Number(marketPrice);
+    
+    // For market orders, use last trade price if available, otherwise calculate from probability
+    if (lastTradePrice !== null) {
+      return lastTradePrice;
+    }
+    
+    // Calculate price from probability
+    const probability = position === 'yes' 
+      ? (market?.probability_yes || 0.5)
+      : (market?.probability_no || 0.5);
+    
+    return calculateSharePrice(probability);
   };
+
+  const fetchLastTradePrice = async () => {
+    if (!marketId) return null;
+    
+    try {
+      const { data, error } = await supabase
+        .from('orders')
+        .select('price')
+        .eq('market_id', marketId)
+        .eq('status', 'filled')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error) {
+        console.error('Error fetching last trade price:', error);
+        return null;
+      }
+
+      return data?.price || null;
+    } catch (error) {
+      console.error('Error in fetchLastTradePrice:', error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const getLastTradePrice = async () => {
+      const price = await fetchLastTradePrice();
+      setLastTradePrice(price);
+    };
+    getLastTradePrice();
+  }, [marketId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -289,6 +383,9 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
     setError(null);
 
     try {
+      const currentPrice = await fetchLastTradePrice();
+      const effectivePrice = currentPrice || getEffectivePrice();
+      
       const response = await fetch('/api/markets/trade/order', {
         method: 'POST',
         headers: {
@@ -301,8 +398,7 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
           position,
           price: Number(price),
           amount: Number(amount),
-          market_price: market?.last_trade_price || Number(price),
-          calculated_price: Number(price)
+          market_price: effectivePrice
         }),
       });
 
@@ -310,8 +406,6 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to place order');
-      }else{
-        
       }
 
       // Clear form
@@ -319,10 +413,11 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
       
       // Reset price to current market price
       if (market) {
-        const marketPrice = position === 'yes' 
+        const probability = position === 'yes' 
           ? market.probability_yes 
           : market.probability_no;
-        setPrice(calculateSharePrice(marketPrice).toString());
+        const marketPrice = calculateSharePrice(probability);
+        setPrice(marketPrice.toString());
       }
       
       // Show success message
@@ -330,6 +425,10 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
       
       // Update local state
       setUserBalance(data.balance);
+      
+      // Refresh last trade price
+      const newLastTradePrice = await fetchLastTradePrice();
+      setLastTradePrice(newLastTradePrice);
       
     } catch (error: any) {
       console.error('Error placing order:', error);
@@ -367,12 +466,38 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
 
   useEffect(() => {
     if (market && orderType === 'market') {
-      const marketPrice = position === 'yes'
-        ? (market.yes_price || calculateSharePrice(market.probability_yes))
-        : (market.no_price || calculateSharePrice(market.probability_no));
+      // Use last trade price if available
+      if (lastTradePrice !== null) {
+        setPrice(lastTradePrice.toString());
+        return;
+      }
+
+      const probability = position === 'yes' 
+        ? (market.probability_yes || 0.5)
+        : (market.probability_no || 0.5);
+      
+      const marketPrice = calculateSharePrice(probability);
       setPrice(marketPrice.toString());
     }
-  }, [market, position, orderType]);
+  }, [market, position, orderType, lastTradePrice]);
+
+  function generateUUID() {
+    // Generate 16 random bytes
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    
+    // Set version (4) and variant (2) bits
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;  // version 4
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;  // variant 2
+    
+    // Convert to hex string with proper UUID format
+    const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+    return `${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`;
+  }
+
+  const validateProbabilities = (yesProb: number, noProb: number) => {
+    return yesProb >= 0 && yesProb <= 1 && noProb >= 0 && noProb <= 1 && yesProb + noProb === 1;
+  };
 
   useEffect(() => {
     const fetchMarket = async () => {
@@ -392,29 +517,21 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
       
       // Update price immediately after getting market data
       if (data && orderType === 'market') {
-        const marketPrice = position === 'yes'
-          ? (data.yes_price || calculateSharePrice(data.probability_yes))
-          : (data.no_price || calculateSharePrice(data.probability_no));
-        setPrice(marketPrice.toString());
+        // Use last trade price if available
+        if (lastTradePrice !== null) {
+          setPrice(lastTradePrice.toString());
+        } else {
+          const probability = position === 'yes' 
+            ? (data.probability_yes || 0.5)
+            : (data.probability_no || 0.5);
+          const marketPrice = calculateSharePrice(probability);
+          setPrice(marketPrice.toString());
+        }
       }
     };
 
     fetchMarket();
-  }, [marketId]);
-
-  function generateUUID() {
-    // Generate 16 random bytes
-    const bytes = new Uint8Array(16);
-    crypto.getRandomValues(bytes);
-    
-    // Set version (4) and variant (2) bits
-    bytes[6] = (bytes[6] & 0x0f) | 0x40;  // version 4
-    bytes[8] = (bytes[8] & 0x3f) | 0x80;  // variant 2
-    
-    // Convert to hex string with proper UUID format
-    const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
-    return `${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`;
-  }
+  }, [marketId, orderType, position, lastTradePrice]);
 
   return (
     <div className="bg-card rounded-xl border border-border p-6">
@@ -486,9 +603,10 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
                   
                   // For market orders, set price to current market price
                   if (newOrderType === 'market' && market) {
-                    const marketPrice = position === 'yes' 
-                      ? (market.yes_price || calculateSharePrice(market.probability_yes))
-                      : (market.no_price || calculateSharePrice(market.probability_no));
+                    const probability = position === 'yes' 
+                      ? (market.probability_yes || 0.5)
+                      : (market.probability_no || 0.5);
+                    const marketPrice = calculateSharePrice(probability);
                     setPrice(marketPrice.toString());
                   } else if (newOrderType === 'limit') {
                     // For limit orders, set to suggested price as default
@@ -523,10 +641,7 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
                     {market && (
                       <>
                         <span className="text-sm opacity-80">
-                          {(market.yes_price || calculateSharePrice(market.probability_yes)).toFixed(2)} KES
-                        </span>
-                        <span className="text-xs opacity-60">
-                          ({(market.probability_yes * 100).toFixed(1)}%)
+                          {(market.probability_yes || 0.5) * 100}% 
                         </span>
                       </>
                     )}
@@ -546,10 +661,7 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
                     {market && (
                       <>
                         <span className="text-sm opacity-80">
-                          {(market.no_price || calculateSharePrice(market.probability_no)).toFixed(2)} KES
-                        </span>
-                        <span className="text-xs opacity-60">
-                          ({(market.probability_no * 100).toFixed(1)}%)
+                          {(market.probability_no || 0.5) * 100}% 
                         </span>
                       </>
                     )}
@@ -613,7 +725,7 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
                   )}
                   {market && side === 'buy' && (
                     <span>
-                      Max: {Math.floor(userBalance! / (position === 'yes' ? (market.yes_price || calculateSharePrice(market.probability_yes)) : (market.no_price || calculateSharePrice(market.probability_no))))} shares
+                      Max: {Math.floor(userBalance! / (position === 'yes' ? (market.probability_yes || 0.5) : (market.probability_no || 0.5)))} shares
                     </span>
                   )}
                 </div>
