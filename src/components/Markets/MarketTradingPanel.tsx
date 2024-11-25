@@ -465,33 +465,21 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
   }, [position]);
 
   useEffect(() => {
-    const fetchMarket = async () => {
-      const { data, error } = await supabase
-        .from('markets')
-        .select('*')
-        .eq('id', marketId)
-        .single();
-      
-      if (error) {
-        console.error('Error fetching market:', error);
+    if (market && orderType === 'market') {
+      // Use last trade price if available
+      if (lastTradePrice !== null) {
+        setPrice(lastTradePrice.toString());
         return;
       }
-      
-      console.log('Fetched market data:', data);
-      setMarket(data);
-      
-      // Always initialize with market price regardless of order type
-      if (data) {
-        const probability = position === 'yes' 
-          ? (data.probability_yes || 0.5)
-          : (data.probability_no || 0.5);
-        const marketPrice = calculateSharePrice(probability);
-        setPrice(marketPrice.toString());
-      }
-    };
 
-    fetchMarket();
-  }, [marketId, position]);
+      const probability = position === 'yes' 
+        ? (market.probability_yes || 0.5)
+        : (market.probability_no || 0.5);
+      
+      const marketPrice = calculateSharePrice(probability);
+      setPrice(marketPrice.toString());
+    }
+  }, [market, position, orderType, lastTradePrice]);
 
   function generateUUID() {
     // Generate 16 random bytes
@@ -510,6 +498,40 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
   const validateProbabilities = (yesProb: number, noProb: number) => {
     return yesProb >= 0 && yesProb <= 1 && noProb >= 0 && noProb <= 1 && yesProb + noProb === 1;
   };
+
+  useEffect(() => {
+    const fetchMarket = async () => {
+      const { data, error } = await supabase
+        .from('markets')
+        .select('*')
+        .eq('id', marketId)
+        .single();
+      
+      if (error) {
+        console.error('Error fetching market:', error);
+        return;
+      }
+      
+      console.log('Fetched market data:', data);
+      setMarket(data);
+      
+      // Update price immediately after getting market data
+      if (data && orderType === 'market') {
+        // Use last trade price if available
+        if (lastTradePrice !== null) {
+          setPrice(lastTradePrice.toString());
+        } else {
+          const probability = position === 'yes' 
+            ? (data.probability_yes || 0.5)
+            : (data.probability_no || 0.5);
+          const marketPrice = calculateSharePrice(probability);
+          setPrice(marketPrice.toString());
+        }
+      }
+    };
+
+    fetchMarket();
+  }, [marketId, orderType, position, lastTradePrice]);
 
   return (
     <div className="bg-card rounded-xl border border-border p-6">
