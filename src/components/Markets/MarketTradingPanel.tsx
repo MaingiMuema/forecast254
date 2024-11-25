@@ -204,6 +204,52 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
     };
   }, [user, marketId]);
 
+  useEffect(() => {
+    if (!marketId) return;
+
+    // Fetch initial market data
+    const fetchMarketData = async () => {
+      const { data, error } = await supabase
+        .from('markets')
+        .select('*')
+        .eq('id', marketId)
+        .single();
+      
+      if (error) {
+        console.error('Error fetching market:', error);
+        return;
+      }
+      
+      setMarket(data);
+    };
+
+    fetchMarketData();
+
+    // Subscribe to market updates
+    const channel = supabase.channel(`market:${marketId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'markets',
+          filter: `id=eq.${marketId}`,
+        },
+        (payload) => {
+          console.log('Market update received:', payload);
+          if (payload.new) {
+            setMarket(payload.new);
+          }
+        }
+      )
+      .subscribe();
+
+    // Cleanup
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [marketId]);
+
   const fetchOrderBook = async () => {
     try {
       // Fetch asks (sell orders)
@@ -305,9 +351,17 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
   };
 
   const validateOrder = () => {
+    const orderAmount = Number(amount);
+
+    // Only validate minimum amount
+    if (orderAmount < 1) {
+      toast.error('Number of shares must be at least 1');
+      return false;
+    }
+
     if (side === 'sell') {
       const availableShares = userPositions[position];
-      const sellingAmount = Number(amount);
+      const sellingAmount = orderAmount;
       
       if (sellingAmount > availableShares) {
         toast.error(`Insufficient shares. You only have ${availableShares} ${position.toUpperCase()} shares available.`);
@@ -345,15 +399,19 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
         .eq('market_id', marketId)
         .eq('status', 'filled')
         .order('created_at', { ascending: false })
-        .limit(1)
-        .single();
+        .limit(1);
 
       if (error) {
         console.error('Error fetching last trade price:', error);
         return null;
       }
 
-      return data?.price || null;
+      // Handle empty result
+      if (!data || data.length === 0) {
+        return null;
+      }
+
+      return data[0].price;
     } catch (error) {
       console.error('Error in fetchLastTradePrice:', error);
       return null;
@@ -439,9 +497,36 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
     }
   };
 
+  const getValidatedProbabilities = () => {
+    const yesProb = market?.probability_yes ?? 0.5;
+    const noProb = market?.probability_no ?? 0.5;
+    
+    // Ensure probabilities are between 0 and 1
+    const validYesProb = Math.max(0, Math.min(1, yesProb));
+    const validNoProb = Math.max(0, Math.min(1, noProb));
+    
+    // Normalize probabilities to sum to 1
+    const total = validYesProb + validNoProb;
+    if (total === 0) {
+      return { yes: 0.5, no: 0.5 };
+    }
+    
+    return {
+      yes: validYesProb / total,
+      no: validNoProb / total
+    };
+  };
+
+  const formatProbability = (probability: number) => {
+    return `${Math.round(probability * 100)}%`;
+  };
+
+  // Get price based on normalized probabilities
   const getSuggestedPrice = () => {
-    if (!market) return null;
-    const probability = position === 'yes' ? market.probability_yes : market.probability_no;
+    if (!market) return 50;
+    
+    const probs = getValidatedProbabilities();
+    const probability = position === 'yes' ? probs.yes : probs.no;
     return calculateSharePrice(probability);
   };
 
@@ -472,28 +557,15 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
         return;
       }
 
+      const probs = getValidatedProbabilities();
       const probability = position === 'yes' 
-        ? (market.probability_yes || 0.5)
-        : (market.probability_no || 0.5);
+        ? probs.yes
+        : probs.no;
       
       const marketPrice = calculateSharePrice(probability);
       setPrice(marketPrice.toString());
     }
   }, [market, position, orderType, lastTradePrice]);
-
-  function generateUUID() {
-    // Generate 16 random bytes
-    const bytes = new Uint8Array(16);
-    crypto.getRandomValues(bytes);
-    
-    // Set version (4) and variant (2) bits
-    bytes[6] = (bytes[6] & 0x0f) | 0x40;  // version 4
-    bytes[8] = (bytes[8] & 0x3f) | 0x80;  // variant 2
-    
-    // Convert to hex string with proper UUID format
-    const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
-    return `${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`;
-  }
 
   const validateProbabilities = (yesProb: number, noProb: number) => {
     return yesProb >= 0 && yesProb <= 1 && noProb >= 0 && noProb <= 1 && yesProb + noProb === 1;
@@ -521,9 +593,10 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
         if (lastTradePrice !== null) {
           setPrice(lastTradePrice.toString());
         } else {
+          const probs = getValidatedProbabilities();
           const probability = position === 'yes' 
-            ? (data.probability_yes || 0.5)
-            : (data.probability_no || 0.5);
+            ? probs.yes
+            : probs.no;
           const marketPrice = calculateSharePrice(probability);
           setPrice(marketPrice.toString());
         }
@@ -603,9 +676,10 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
                   
                   // For market orders, set price to current market price
                   if (newOrderType === 'market' && market) {
+                    const probs = getValidatedProbabilities();
                     const probability = position === 'yes' 
-                      ? (market.probability_yes || 0.5)
-                      : (market.probability_no || 0.5);
+                      ? probs.yes
+                      : probs.no;
                     const marketPrice = calculateSharePrice(probability);
                     setPrice(marketPrice.toString());
                   } else if (newOrderType === 'limit') {
@@ -641,7 +715,7 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
                     {market && (
                       <>
                         <span className="text-sm opacity-80">
-                          {(market.probability_yes || 0.5) * 100}% 
+                          {formatProbability(getValidatedProbabilities().yes)}
                         </span>
                       </>
                     )}
@@ -661,7 +735,7 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
                     {market && (
                       <>
                         <span className="text-sm opacity-80">
-                          {(market.probability_no || 0.5) * 100}% 
+                          {formatProbability(getValidatedProbabilities().no)}
                         </span>
                       </>
                     )}
@@ -698,7 +772,6 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
                   readOnly={orderType === 'market'}
                   step="0.01"
                   min="0"
-                  max="100"
                   required
                   className={`w-full p-3.5 rounded-xl border border-border/50 bg-background/80 hover:bg-background/90 hover:border-primary/30 transition-all focus:outline-none focus:ring-2 focus:ring-primary/20 pr-24 backdrop-blur-sm ${orderType === 'market' ? 'cursor-not-allowed opacity-75' : ''}`}
                   placeholder="0.00"
@@ -710,7 +783,7 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
               {market && (
                 <div className="flex items-center justify-between text-xs text-muted-foreground/80">
                   <span>Market Price: {getSuggestedPrice()?.toFixed(2)} KES</span>
-                  <span>Probability: {((position === 'yes' ? market.probability_yes : market.probability_no) * 100).toFixed(1)}%</span>
+                  <span>Probability: {formatProbability(getValidatedProbabilities()[position])}</span>
                 </div>
               )}
             </div>
@@ -750,8 +823,8 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
                   <span className="text-muted-foreground/80">
                     Total Cost: {(Number(price) * Number(amount)).toLocaleString('en-KE', { style: 'currency', currency: 'KES' })}
                   </span>
-                  <span className={`font-medium ${userBalance! >= Number(price) * Number(amount) ? 'text-green-500' : 'text-red-500'}`}>
-                    {userBalance! >= Number(price) * Number(amount) ? 'Sufficient Balance' : 'Insufficient Balance'}
+                  <span className={`font-medium ${side === 'sell' || userBalance! >= Number(price) * Number(amount) ? 'text-green-500' : 'text-red-500'}`}>
+                    {side === 'sell' || userBalance! >= Number(price) * Number(amount) ? 'Sufficient Balance' : 'Insufficient Balance'}
                   </span>
                 </div>
               )}
