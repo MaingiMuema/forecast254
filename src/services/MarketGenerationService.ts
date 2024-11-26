@@ -14,8 +14,9 @@ if (!process.env.AWAN_API_KEY) {
   throw new Error('Missing AWAN_API_KEY environment variable');
 }
 
+// Market template interface
 interface MarketTemplate {
-  title: string;
+  question: string;
   description: string;
   category: string;
   end_date: string;
@@ -127,7 +128,7 @@ export class MarketGenerationService {
 
         Required JSON format:
         {
-          "title": "Will X happen by Y date?",
+          "question": "Will X happen by Y date?",
           "description": "Detailed context and background",
           "category": "MUST be one of: politics, business, sports, entertainment, lifestyle",
           "end_date": "YYYY-MM-DD (must be at least 3 months in future)",
@@ -200,7 +201,7 @@ export class MarketGenerationService {
     console.log('Validating market:', market);
     
     // Basic validation rules
-    if (!market.title || !market.description || !market.category || !market.end_date || !market.resolution_source) {
+    if (!market.question || !market.description || !market.category || !market.end_date || !market.resolution_source) {
       console.log('Market missing required fields');
       return false;
     }
@@ -238,7 +239,7 @@ export class MarketGenerationService {
       const { data, error } = await supabase
         .from('markets')
         .insert({
-          title: market.title,
+          question: market.question,
           description: market.description,
           category: market.category,
           start_date: now,
