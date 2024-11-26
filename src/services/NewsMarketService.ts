@@ -12,7 +12,7 @@ const supabase = createClient<Database>(
 );
 
 interface MarketTemplate {
-  title: string;
+  question: string;
   description: string;
   category: string;
   end_date: string;
@@ -138,29 +138,28 @@ export class NewsMarketService {
         return null;
       }
 
-      const prompt = `
-        Given this news article, create a prediction market question. Return ONLY a JSON object with no additional text.
-        Article Title: ${article.title}
-        Article Content: ${article.content}
-        Category: ${article.category}
-        
-        Requirements:
-        1. The question must be binary (yes/no)
-        2. Must be clear and unambiguous
-        3. Must have a specific end date within the next 3 months
-        4. Must be based on a verifiable outcome
+      const prompt = `Generate a prediction market based on this news article. 
+        Title: ${article.title}
+        Content: ${article.content}
+
+        Rules:
+        1. The question must be about a specific, verifiable future event
+        2. The end date must be between 3 months and Dec 31, 2024
+        3. The question must be answerable with yes/no
+        4. The description must provide clear context and resolution criteria
         5. Must be relevant to Kenya
         6. The question should focus on significant events or outcomes mentioned in the article
 
         Return format:
         {
-          "title": "Will [specific event] happen by [specific date]?",
+          "question": "Will [specific event] happen by [specific date]?",
           "description": "[detailed context and resolution criteria]",
           "category": "[article category]",
           "end_date": "YYYY-MM-DD",
           "resolution_source": "[specific source for resolution]"
         }
-      `;
+
+        Only return valid JSON, no other text.`;
 
       console.log('Making API request to generate market...');
       const response = await axios.post(
@@ -202,7 +201,7 @@ export class NewsMarketService {
 
       market.source_article_id = article.id;
       this.cache.set(cacheKey, market);
-      console.log('Successfully generated and cached market:', market.title);
+      console.log('Successfully generated and cached market:', market.question);
 
       return market;
     } catch (error: any) {
@@ -221,8 +220,8 @@ export class NewsMarketService {
 
   private validateMarket(market: MarketTemplate): boolean {
     try {
-      if (!market.title || typeof market.title !== 'string' || market.title.length < 10) {
-        console.error('Invalid title:', market.title);
+      if (!market.question || typeof market.question !== 'string' || market.question.length < 10) {
+        console.error('Invalid question:', market.question);
         return false;
       }
       if (!market.description || typeof market.description !== 'string' || market.description.length < 20) {
@@ -282,7 +281,7 @@ export class NewsMarketService {
       const { error: insertError } = await supabase
         .from('markets')
         .insert({
-          title: market.title,
+          question: market.question,
           description: market.description,
           category: market.category,
           start_date: new Date().toISOString(),
