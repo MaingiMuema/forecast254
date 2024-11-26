@@ -8,7 +8,8 @@ DROP FUNCTION IF EXISTS create_order_with_balance_update(p_market_id UUID, p_use
 UPDATE markets
 SET 
   probability_yes = 0.5,
-  probability_no = 0.5
+  probability_no = 0.5,
+  min_amount = 1 -- Set minimum amount to 1 share
 WHERE status = 'open';
 
 -- Create the function with a single, clear signature
@@ -41,12 +42,9 @@ BEGIN
     RAISE EXCEPTION 'Market not found or not open';
   END IF;
 
-  -- Debug: Log initial probabilities
-  RAISE NOTICE 'Initial probabilities - YES: %, NO: %', v_market_record.probability_yes, v_market_record.probability_no;
-
-  -- Validate share amount (not monetary value)
-  IF p_amount < 1 THEN
-    RAISE EXCEPTION 'Number of shares must be at least 1';
+  -- Validate amount limits (now checking for minimum of 1 share)
+  IF p_amount < COALESCE(v_market_record.min_amount, 1) THEN
+    RAISE EXCEPTION 'Amount must be at least %. Minimum is 1 share.', COALESCE(v_market_record.min_amount, 1);
   END IF;
 
   -- Handle buy orders
@@ -128,47 +126,28 @@ BEGIN
     NOW()
   ) RETURNING * INTO v_order_record;
 
-  -- Calculate trade impact based on amount and current volume
-  v_trade_impact := LEAST(0.1, GREATEST(0.01, (p_amount::float / 100.0)));
-  
-  -- Debug: Log trade impact
-  RAISE NOTICE 'Trade impact: % (Amount: %)', v_trade_impact, p_amount;
-
-  -- Update probabilities based on trade
-  IF p_position = 'yes' THEN
-    IF p_side = 'buy' THEN
-      -- Buying YES: Increase YES probability
-      v_new_prob_yes := LEAST(0.99, COALESCE(v_market_record.probability_yes, 0.5) + v_trade_impact);
-    ELSE
-      -- Selling YES: Decrease YES probability
-      v_new_prob_yes := GREATEST(0.01, COALESCE(v_market_record.probability_yes, 0.5) - v_trade_impact);
-    END IF;
-    -- NO probability is complement of YES
-    v_new_prob_no := 1 - v_new_prob_yes;
-  ELSE
-    IF p_side = 'buy' THEN
-      -- Buying NO: Increase NO probability
-      v_new_prob_no := LEAST(0.99, COALESCE(v_market_record.probability_no, 0.5) + v_trade_impact);
-    ELSE
-      -- Selling NO: Decrease NO probability
-      v_new_prob_no := GREATEST(0.01, COALESCE(v_market_record.probability_no, 0.5) - v_trade_impact);
-    END IF;
-    -- YES probability is complement of NO
-    v_new_prob_yes := 1 - v_new_prob_no;
-  END IF;
-
-  -- Debug: Log probability calculations
-  RAISE NOTICE 'New probabilities - YES: %, NO: % (Position: %, Side: %)', 
-    v_new_prob_yes, v_new_prob_no, p_position, p_side;
-
-  -- Update market statistics and probabilities
+  -- Update market statistics and last trade info
   UPDATE markets
   SET 
     trades = trades + 1,
     last_trade_price = p_price,
     last_trade_time = NOW(),
-    probability_yes = v_new_prob_yes,
-    probability_no = v_new_prob_no,
+    probability_yes = CASE 
+      WHEN p_position = 'yes' THEN 
+        CASE p_side
+          WHEN 'buy' THEN LEAST(0.99, v_market_record.probability_yes + 0.01)
+          WHEN 'sell' THEN GREATEST(0.01, v_market_record.probability_yes - 0.01)
+        END
+      ELSE v_market_record.probability_yes
+    END,
+    probability_no = CASE 
+      WHEN p_position = 'no' THEN 
+        CASE p_side
+          WHEN 'buy' THEN LEAST(0.99, v_market_record.probability_no + 0.01)
+          WHEN 'sell' THEN GREATEST(0.01, v_market_record.probability_no - 0.01)
+        END
+      ELSE v_market_record.probability_no
+    END,
     updated_at = NOW()
   WHERE id = p_market_id;
 
@@ -188,15 +167,16 @@ BEGIN
   AND position = p_position
   AND status = 'filled';
 
-  -- Return the updated balance directly at the top level
-  RETURN json_build_object(
+  -- Construct the result JSON
+  v_result := json_build_object(
     'order', row_to_json(v_order_record),
-    'balance', v_profile_record.balance::numeric,
-    'shares', v_available_shares,
-    'probabilities', json_build_object(
-      'yes', v_new_prob_yes,
-      'no', v_new_prob_no
+    'balance', v_profile_record.balance,
+    'position', json_build_object(
+      'shares', v_available_shares,
+      'position', p_position
     )
   );
+
+  RETURN v_result;
 END;
 $$;

@@ -158,9 +158,10 @@ BEGIN
   v_result := json_build_object(
     'order', row_to_json(v_order_record),
     'balance', v_profile_record.balance,
-    'position', json_build_object(
-      'shares', v_available_shares,
-      'position_type', p_position
+    'shares', v_available_shares,
+    'probabilities', json_build_object(
+      'yes', v_market_record.probability_yes,
+      'no', v_market_record.probability_no
     )
   );
 

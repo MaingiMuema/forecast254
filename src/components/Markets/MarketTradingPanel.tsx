@@ -14,7 +14,7 @@ interface MarketTradingPanelProps {
 }
 
 interface UserPosition {
-  position_type: 'yes' | 'no';
+  position: 'yes' | 'no';
   shares: number;
 }
 

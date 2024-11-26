@@ -136,28 +136,32 @@ export type Database = {
         Row: {
           id: string
           creator_id: string | null
-          title: string
+          question: string
           description: string | null
           category: string
           resolution_source: string | null
-          resolved_value: number | null
+          resolved_value: boolean | null
           start_date: string
           end_date: string
           status: string
           created_at: string
           updated_at: string
           source_article_id: string | null
-          total_yes_amount?: number
-          total_no_amount?: number
+          total_yes_amount: number
+          total_no_amount: number
+          total_volume: number
+          trades: number
+          probability_yes: number
+          probability_no: number
         }
         Insert: {
           id?: string
           creator_id?: string | null
-          title: string
+          question: string
           description?: string | null
           category: string
           resolution_source?: string | null
-          resolved_value?: number | null
+          resolved_value?: boolean | null
           start_date: string
           end_date: string
           status?: string
@@ -166,15 +170,19 @@ export type Database = {
           source_article_id?: string | null
           total_yes_amount?: number
           total_no_amount?: number
+          total_volume?: number
+          trades?: number
+          probability_yes?: number
+          probability_no?: number
         }
         Update: {
           id?: string
           creator_id?: string | null
-          title?: string
+          question?: string
           description?: string | null
           category?: string
           resolution_source?: string | null
-          resolved_value?: number | null
+          resolved_value?: boolean | null
           start_date?: string
           end_date?: string
           status?: string
@@ -183,6 +191,10 @@ export type Database = {
           source_article_id?: string | null
           total_yes_amount?: number
           total_no_amount?: number
+          total_volume?: number
+          trades?: number
+          probability_yes?: number
+          probability_no?: number
         }
       }
       orders: {

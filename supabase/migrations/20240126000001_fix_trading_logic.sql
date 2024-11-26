@@ -160,7 +160,7 @@ BEGIN
     'balance', v_profile_record.balance,
     'position', json_build_object(
       'shares', v_available_shares,
-      'position_type', p_position
+      'position', p_position
     )
   );
 

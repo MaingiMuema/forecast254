@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       .single();
 
     if (profileError || !userProfile) {
-      console.error('Error fetching user balance:', profileError);
+      console.error('Error fetching user profile:', profileError);
       return NextResponse.json(
         { error: 'Could not fetch user profile' },
         { status: 500 }
@@ -74,13 +74,36 @@ export async function POST(request: Request) {
       price: body.price,
       required_funds: requiredFunds,
       side: body.side,
-      user_id: session.user.id
+      user_id: session.user.id,
+      sql_params: {
+        p_amount: Number(body.amount),
+        p_market_id: body.market_id,
+        p_position: body.position,
+        p_price: Number(body.price),
+        p_required_funds: requiredFunds,
+        p_side: body.side,
+        p_user_id: session.user.id,
+        p_order_type: 'limit'
+      }
+    });
+
+    // Call the RPC function with all required parameters
+    console.log('Calling RPC function with parameters:', {
+      p_amount: Number(body.amount),
+      p_market_id: body.market_id,
+      p_order_type: 'limit',
+      p_position: body.position,
+      p_price: Number(body.price),
+      p_required_funds: requiredFunds,
+      p_side: body.side,
+      p_user_id: session.user.id
     });
 
     const { data: result, error: transactionError } = await supabase
       .rpc('create_order_with_balance_update', {
         p_amount: Number(body.amount),
         p_market_id: body.market_id,
+        p_order_type: 'limit',
         p_position: body.position,
         p_price: Number(body.price),
         p_required_funds: requiredFunds,
@@ -89,20 +112,45 @@ export async function POST(request: Request) {
       });
 
     if (transactionError) {
-      console.error('Transaction error:', transactionError);
+      console.error('Transaction error details:', {
+        message: transactionError.message,
+        details: transactionError.details,
+        hint: transactionError.hint,
+        code: transactionError.code,
+        requestParams: {
+          p_amount: Number(body.amount),
+          p_market_id: body.market_id,
+          p_order_type: 'limit',
+          p_position: body.position,
+          p_price: Number(body.price),
+          p_required_funds: requiredFunds,
+          p_side: body.side,
+          p_user_id: session.user.id
+        }
+      });
+      console.error('Transaction error:', {
+        message: transactionError.message,
+        details: transactionError.details,
+        hint: transactionError.hint,
+        code: transactionError.code
+      });
       return NextResponse.json(
-        { error: `Transaction error: ${transactionError.message}` },
+        { error: `Transaction error: ${JSON.stringify(transactionError)}` },
         { status: 500 }
       );
     }
 
+    console.log('RPC function call successful with result:', result);
+
+    // The result already has the correct format with position object
     console.log('Order processed successfully:', result);
 
     return NextResponse.json(result);
-  } catch (error: any) {
-    console.error('Unexpected error in order processing:', error);
+
+  } catch (error) {
+    console.error('Error processing order:', error);
     return NextResponse.json(
-      { error: error.message || 'An unexpected error occurred' },
+      { error: 'Failed to process order' },
       { status: 500 }
     );
   }
