@@ -22,18 +22,12 @@ export async function POST(request: Request) {
     const cookieStore = cookies();
     const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
-    // Check authentication
-    const { data: { session }, error: authError } = await supabase.auth.getSession();
-    if (authError) {
-      console.error('Authentication error:', authError);
+    // Get session
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError || !session) {
+      console.error('Authentication error:', sessionError);
       return NextResponse.json(
-        { error: 'Authentication failed' },
-        { status: 401 }
-      );
-    }
-    if (!session) {
-      return NextResponse.json(
-        { error: 'Please login to continue' },
+        { error: 'Unauthorized - Please log in' },
         { status: 401 }
       );
     }
@@ -45,20 +39,16 @@ export async function POST(request: Request) {
       .eq('id', session.user.id)
       .single();
 
-    if (profileError) {
+    if (profileError || !userProfile) {
       console.error('Error fetching user balance:', profileError);
       return NextResponse.json(
-        { error: 'Failed to verify account balance' },
+        { error: 'Could not fetch user profile' },
         { status: 500 }
       );
     }
 
     // Calculate required funds - only for buy orders
-    const orderPrice = body.order_type === 'market' 
-      ? (body.market_price || body.calculated_price)
-      : body.price;
-
-    const requiredFunds = body.side === 'buy' ? Number(orderPrice) * Number(body.amount) : 0;
+    const requiredFunds = body.side === 'buy' ? Number(body.price) * Number(body.amount) : 0;
 
     // Only check balance for buy orders
     if (body.side === 'buy' && userProfile.balance < requiredFunds) {
@@ -68,89 +58,51 @@ export async function POST(request: Request) {
           balance: userProfile.balance,
           required: requiredFunds,
           details: {
-            price: orderPrice,
+            price: body.price,
             amount: body.amount,
-            calculation: `${orderPrice} * ${body.amount} = ${requiredFunds}`
+            calculation: `${body.price} * ${body.amount} = ${requiredFunds}`
           }
         },
         { status: 400 }
       );
     }
 
-    // Start a transaction to ensure atomicity
-    console.log('Processing order with price:', {
-      original_price: body.price,
-      market_price: body.market_price,
-      calculated_price: body.calculated_price,
-      final_price: orderPrice,
-      order_type: body.order_type,
+    console.log('Processing order:', {
+      amount: body.amount,
+      market_id: body.market_id,
+      position: body.position,
+      price: body.price,
+      required_funds: requiredFunds,
       side: body.side,
-      required_funds: requiredFunds
+      user_id: session.user.id
     });
 
     const { data: result, error: transactionError } = await supabase
       .rpc('create_order_with_balance_update', {
-        p_market_id: body.market_id,
-        p_user_id: session.user.id,
-        p_order_type: body.order_type,
-        p_side: body.side,
-        p_position: body.position,
-        p_price: orderPrice, // Convert to number to ensure no null values
         p_amount: Number(body.amount),
-        p_required_funds: requiredFunds
+        p_market_id: body.market_id,
+        p_position: body.position,
+        p_price: Number(body.price),
+        p_required_funds: requiredFunds,
+        p_side: body.side,
+        p_user_id: session.user.id
       });
 
     if (transactionError) {
       console.error('Transaction error:', transactionError);
       return NextResponse.json(
-        { error: transactionError.message || 'Failed to process order' },
+        { error: `Transaction error: ${transactionError.message}` },
         { status: 500 }
       );
     }
 
-    if (!result) {
-      return NextResponse.json(
-        { error: 'Failed to create order' },
-        { status: 500 }
-      );
-    }
+    console.log('Order processed successfully:', result);
 
-    const { order, profile: updatedProfile, market: updatedMarket } = result;
-
-    console.log('Order created successfully:', order);
-    console.log('Balance updated successfully:', updatedProfile);
-    console.log('Market updated successfully:', updatedMarket);
-
-    // Order matching is now handled automatically by database trigger
-    // Get the final order state after matching
-    const { data: finalOrder } = await supabase
-      .from('orders')
-      .select('*')
-      .eq('id', order.id)
-      .single();
-
-    // Get the final market state after matching
-    const { data: finalMarket } = await supabase
-      .from('markets')
-      .select('trades, probability_yes, probability_no, last_trade_price, last_trade_time')
-      .eq('id', order.market_id)
-      .single();
-
-    return NextResponse.json({
-      order: finalOrder || order,
-      balance: updatedProfile.balance,
-      market: finalMarket || {
-        trades: updatedMarket.trades,
-        probability_yes: updatedMarket.probability_yes,
-        probability_no: updatedMarket.probability_no,
-        last_trade_price: updatedMarket.last_trade_price,
-        last_trade_time: updatedMarket.last_trade_time
-      }
-    });
+    return NextResponse.json(result);
   } catch (error: any) {
     console.error('Unexpected error in order processing:', error);
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      { error: error.message || 'An unexpected error occurred' },
       { status: 500 }
     );
   }
