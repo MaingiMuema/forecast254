@@ -148,7 +148,7 @@ const FeaturedMarkets = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-3">
           {markets.map((market, index) => (
             <motion.div
               key={market.id}
