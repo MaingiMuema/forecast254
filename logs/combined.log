@@ -9322,3 +9322,165 @@
 2024-11-26 18:53:29:5329 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
 2024-11-26 18:53:29:5329 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
 2024-11-26 18:53:31:5331 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:16:43:1643 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:16:43:1643 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:16:43:1643 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:16:43:1643 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:16:44:1644 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:16:45:1645 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:16:46:1646 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:16:46:1646 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:16:55:1655 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:16:55:1655 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-27 06:16:57:1657 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:16:58:1658 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:16:58:1658 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:16:59:1659 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:16:59:1659 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:16:59:1659 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-27 06:17:00:170 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:17:00:170 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:17:24:1724 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-27 06:17:24:1724 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:17:24:1724 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:17:25:1725 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-27 06:17:26:1726 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:17:26:1726 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:17:26:1726 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:17:26:1726 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:17:27:1727 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:17:27:1727 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:18:12:1812 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-27 06:18:12:1812 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:18:12:1812 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:18:13:1813 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-27 06:18:13:1813 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:18:13:1813 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:18:14:1814 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:18:14:1814 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:18:14:1814 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:18:15:1815 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:23:07:237 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-27 06:23:07:237 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:23:07:237 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:23:08:238 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:23:08:238 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:23:09:239 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:23:09:239 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:23:10:2310 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-27 06:23:10:2310 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:23:10:2310 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:23:14:2314 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:23:14:2314 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:23:15:2315 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-27 06:23:15:2315 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:23:15:2315 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:23:15:2315 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:23:16:2316 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:23:16:2316 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-27 06:23:16:2316 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:23:17:2317 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:24:51:2451 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-27 06:24:51:2451 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:24:52:2452 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:24:52:2452 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:24:52:2452 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-27 06:24:53:2453 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:24:54:2454 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:24:54:2454 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:24:55:2455 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:24:55:2455 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:24:58:2458 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:24:58:2458 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-27 06:24:59:2459 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:24:59:2459 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:25:00:250 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-27 06:25:00:250 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:25:00:250 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:25:00:250 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:25:00:250 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:25:01:251 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:26:57:2657 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-27 06:26:57:2657 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:26:57:2657 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:27:00:270 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:27:00:270 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-27 06:27:00:270 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:27:01:271 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:27:02:272 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:27:06:276 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-27 06:27:07:277 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:27:07:277 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:27:07:277 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:27:07:277 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-27 06:27:07:277 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:27:08:278 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:27:09:279 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:27:09:279 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:27:09:279 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:27:13:2713 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-27 06:27:13:2713 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:27:13:2713 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:27:14:2714 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:27:14:2714 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-27 06:27:14:2714 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:27:14:2714 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:27:14:2714 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:27:15:2715 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:27:15:2715 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:36:47:3647 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:36:47:3647 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:36:48:3648 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:36:48:3648 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-27 06:36:48:3648 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:36:50:3650 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:36:50:3650 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:36:50:3650 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-27 06:36:50:3650 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:36:51:3651 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:36:59:3659 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-27 06:36:59:3659 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:36:59:3659 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:37:02:372 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:37:03:373 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:37:03:373 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-27 06:37:09:379 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:37:09:379 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:37:09:379 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:37:10:3710 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:40:30:4030 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:40:30:4030 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:40:30:4030 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-27 06:40:30:4030 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:40:33:4033 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:40:33:4033 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:40:33:4033 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-27 06:40:33:4033 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:40:37:4037 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:40:38:4038 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:40:38:4038 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:40:38:4038 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:40:38:4038 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:40:38:4038 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-27 06:40:39:4039 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:40:39:4039 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-27 06:40:39:4039 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:40:39:4039 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:45:52:4552 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:45:52:4552 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:45:52:4552 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:45:53:4553 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-27 06:45:53:4553 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:45:54:4554 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:45:55:4555 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:45:55:4555 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:45:55:4555 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-27 06:45:55:4555 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-27 06:46:00:460 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-27 06:46:01:461 [32minfo[39m: [32mFetching RSS feed: Pulse Live Lifestyle for category: lifestyle[39m
+2024-11-27 06:46:01:461 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-27 06:46:10:4610 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-27 06:46:10:4610 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-27 06:46:22:4622 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Lifestyle[39m
+2024-11-27 06:46:57:4657 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-27 06:46:57:4657 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m

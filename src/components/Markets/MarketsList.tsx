@@ -4,31 +4,97 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/types/supabase';
 
-interface Market {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  volume: string;
-  probability: number;
-  endDate: string;
-  isHot: boolean;
-}
+type Market = Database['public']['Tables']['markets']['Row'] & {
+  total_volume?: number;
+  total_yes_amount?: number;
+  total_no_amount?: number;
+  trades?: number;
+};
 
 export default function MarketsList() {
   const searchParams = useSearchParams();
   const [markets, setMarkets] = useState<Market[]>([]);
   const [loading, setLoading] = useState(true);
+  const supabase = createClientComponentClient<Database>();
 
   useEffect(() => {
     const fetchMarkets = async () => {
       try {
         const category = searchParams.get('category') || 'all';
-        const response = await fetch(`/api/markets?category=${category}&limit=20`);
-        if (!response.ok) throw new Error('Failed to fetch markets');
-        const data = await response.json();
-        setMarkets(data);
+        
+        // Fetch markets based on category
+        const { data: marketData, error: marketError } = await supabase
+          .from('markets')
+          .select('*')
+          .eq('status', 'open')
+          .eq(category !== 'all' ? 'category' : 'status', category !== 'all' ? category : 'open')
+          .order('created_at', { ascending: false })
+          .limit(20);
+
+        if (marketError) throw marketError;
+        if (!marketData) return;
+
+        // For each market, fetch its filled orders
+        const marketsWithVolume = await Promise.all(
+          marketData.map(async (market) => {
+            // Get filled buy orders
+            const { data: buyOrders, error: buyError } = await supabase
+              .from('orders')
+              .select('filled_amount, price, position')
+              .eq('market_id', market.id)
+              .eq('status', 'filled')
+              .eq('side', 'buy');
+
+            if (buyError) throw buyError;
+
+            // Get filled sell orders
+            const { data: sellOrders, error: sellError } = await supabase
+              .from('orders')
+              .select('filled_amount, price, position')
+              .eq('market_id', market.id)
+              .eq('status', 'filled')
+              .eq('side', 'sell');
+
+            if (sellError) throw sellError;
+
+            // Calculate total volumes
+            const totalBuyVolume = (buyOrders || []).reduce(
+              (acc, order) => acc + ((order.filled_amount || 0) * (order.price || 0)),
+              0
+            );
+            const totalSellVolume = (sellOrders || []).reduce(
+              (acc, order) => acc + ((order.filled_amount || 0) * (order.price || 0)),
+              0
+            );
+
+            // Calculate position amounts
+            let totalYesAmount = 0;
+            let totalNoAmount = 0;
+
+            [...(buyOrders || []), ...(sellOrders || [])].forEach((order) => {
+              const orderValue = (order.filled_amount || 0) * (order.price || 0);
+              if (order.position === 'yes') {
+                totalYesAmount += orderValue;
+              } else {
+                totalNoAmount += orderValue;
+              }
+            });
+
+            return {
+              ...market,
+              total_volume: totalBuyVolume + totalSellVolume,
+              total_yes_amount: totalYesAmount,
+              total_no_amount: totalNoAmount,
+              trades: (buyOrders?.length || 0) + (sellOrders?.length || 0)
+            };
+          })
+        );
+
+        setMarkets(marketsWithVolume);
       } catch (error) {
         console.error('Error fetching markets:', error);
       } finally {
@@ -37,7 +103,7 @@ export default function MarketsList() {
     };
 
     fetchMarkets();
-  }, [searchParams]);
+  }, [searchParams, supabase]);
 
   if (loading) {
     return (
@@ -71,7 +137,7 @@ export default function MarketsList() {
                 <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   {market.category}
                 </span>
-                {market.isHot && (
+                {market.trades && market.trades > 10 && (
                   <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-rose-500/10">
                     <span className="w-1 h-1 rounded-full bg-rose-500 animate-pulse"></span>
                     <span className="text-[10px] font-medium text-rose-400 uppercase tracking-wider">
@@ -81,9 +147,9 @@ export default function MarketsList() {
                 )}
               </div>
 
-              {/* Market Title */}
+              {/* Market Question */}
               <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2">
-                {market.title}
+                {market.question}
               </h3>
 
               {/* Market Description */}
@@ -92,18 +158,36 @@ export default function MarketsList() {
               </p>
 
               {/* Market Stats */}
-              <div className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-4">
-                  <span className="text-foreground font-medium">
-                    {market.volume}
-                  </span>
-                  <span className="text-foreground font-medium">
-                    {market.probability}%
-                  </span>
+              <div className="flex items-center justify-between text-sm mb-4">
+                <div className="flex items-center space-x-4">
+                  <div>
+                    <span className="text-muted-foreground">Volume:</span>
+                    <span className="ml-1 font-medium">
+                      {market.total_volume?.toFixed(0) || '0'}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    {market.probability_yes > market.probability_no ? (
+                      <FaArrowUp className="w-4 h-4 text-green-500" />
+                    ) : (
+                      <FaArrowDown className="w-4 h-4 text-red-500" />
+                    )}
+                    <span className={market.probability_yes > market.probability_no ? 'text-green-500' : 'text-red-500'}>
+                      {(Math.max(market.probability_yes, market.probability_no) * 100).toFixed(1)}%
+                    </span>
+                  </div>
                 </div>
                 <span className="text-muted-foreground">
-                  {new Date(market.endDate).toLocaleDateString()}
+                  {new Date(market.end_date).toLocaleDateString()}
                 </span>
+              </div>
+
+              {/* Probability Bar */}
+              <div className="w-full bg-border rounded-full h-2">
+                <div
+                  className="bg-primary rounded-full h-2 transition-all duration-300"
+                  style={{ width: `${market.probability_yes * 100}%` }}
+                />
               </div>
 
               {/* Hover Effect */}
