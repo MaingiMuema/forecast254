@@ -561,7 +561,7 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
         .eq('market_id', marketId)
         .eq('side', 'sell')
         .in('status', ['open', 'filled'])
-        .order('created_at', { ascending: false })
+        .order('price', { ascending: true })  // Sort asks by lowest price first
         .limit(50);
 
       if (asksError) throw asksError;
@@ -573,7 +573,7 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
         .eq('market_id', marketId)
         .eq('side', 'buy')
         .in('status', ['open', 'filled'])
-        .order('created_at', { ascending: false })
+        .order('price', { ascending: false })  // Sort bids by highest price first
         .limit(50);
 
       if (bidsError) throw bidsError;
@@ -711,6 +711,37 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
 
     fetchMarket();
   }, [marketId]);
+
+  useEffect(() => {
+    if (!marketId) return;
+
+    // Fetch initial order book
+    fetchOrderBook();
+
+    // Set up interval for updates
+    const orderBookInterval = setInterval(fetchOrderBook, 1000);
+
+    return () => {
+      clearInterval(orderBookInterval);
+    };
+  }, [marketId]);
+
+  useEffect(() => {
+    if (!user || !marketId) return;
+
+    // Fetch user data
+    fetchUserPositions();
+    fetchUserProfile();
+
+    // Set up intervals for user data updates
+    const positionsInterval = setInterval(fetchUserPositions, 1000);
+    const profileInterval = setInterval(fetchUserProfile, 1000);
+
+    return () => {
+      clearInterval(positionsInterval);
+      clearInterval(profileInterval);
+    };
+  }, [user, marketId]);
 
   return (
     <div className="bg-card rounded-xl border border-border p-6">

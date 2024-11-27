@@ -161,7 +161,7 @@ export default function MarketsList() {
               <div className="flex items-center justify-between text-sm mb-4">
                 <div className="flex items-center space-x-4">
                   <div>
-                    <span className="text-muted-foreground">Volume:</span>
+                    <span className="text-muted-foreground">Volume:Ksh</span>
                     <span className="ml-1 font-medium">
                       {market.total_volume?.toFixed(0) || '0'}
                     </span>
