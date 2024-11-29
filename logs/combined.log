@@ -10214,3 +10214,19 @@
 2024-11-28 12:42:28:4228 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
 2024-11-28 12:42:28:4228 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
 2024-11-28 12:42:28:4228 [33mwarn[39m: [33mAll retry attempts failed for RSS feed Capital FM Business. Returning empty array.[39m
+2024-11-29 15:35:33:3533 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-29 15:35:33:3533 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-29 15:35:33:3533 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-29 15:35:34:3534 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-29 15:35:34:3534 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-29 15:35:35:3535 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-29 15:35:35:3535 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-29 15:35:36:3536 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-11-29 15:36:17:3617 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-11-29 15:36:17:3617 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-11-29 15:36:17:3617 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-11-29 15:36:18:3618 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-11-29 15:36:18:3618 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-11-29 15:36:18:3618 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-11-29 15:36:19:3619 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-11-29 15:36:20:3620 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m

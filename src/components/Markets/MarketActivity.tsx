@@ -45,7 +45,7 @@ interface Order {
 }
 
 export default function MarketActivity({ marketId }: { marketId: string }) {
-  const [selectedTimeline, setSelectedTimeline] = useState<TimelineFilter>('24h');
+  const [selectedTimeline, setSelectedTimeline] = useState<TimelineFilter>('all');
   const [orders, setOrders] = useState<Order[]>([]);
   const [market, setMarket] = useState<Market | null>(null);
   const [loading, setLoading] = useState(true);
