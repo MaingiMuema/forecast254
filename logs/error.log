@@ -1916,3 +1916,141 @@
 2024-11-23 20:14:49:1449 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
 2024-11-23 20:14:51:1451 [31merror[39m: [31mError fetching RSS feed from Pulse Live Lifestyle: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
 2024-11-23 20:14:51:1451 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Lifestyle after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:31:50:3150 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:31:50:3150 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:31:50:3150 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:50:3150 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:50:3150 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:50:3150 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:50:3150 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:50:3150 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:51:3151 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:31:51:3151 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:31:51:3151 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:51:3151 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:51:3151 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:51:3151 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:51:3151 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:51:3151 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:53:3153 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:31:53:3153 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:31:53:3153 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:53:3153 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:53:3153 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:53:3153 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:53:3153 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:31:53:3153 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:11:4111 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:11:4111 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:11:4111 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:11:4111 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:11:4111 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:11:4111 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:15:4115 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: timeout of 15000ms exceeded[39m
+2024-11-28 12:41:15:4115 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: timeout of 15000ms exceeded[39m
+2024-11-28 12:41:27:4127 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: timeout of 15000ms exceeded[39m
+2024-11-28 12:41:27:4127 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: timeout of 15000ms exceeded[39m
+2024-11-28 12:41:27:4127 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: timeout of 15000ms exceeded[39m
+2024-11-28 12:41:27:4127 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: timeout of 15000ms exceeded[39m
+2024-11-28 12:41:27:4127 [31merror[39m: [31mError fetching RSS feed from Capital FM: timeout of 15000ms exceeded[39m
+2024-11-28 12:41:27:4127 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 1 attempts: timeout of 15000ms exceeded[39m
+2024-11-28 12:41:31:4131 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: timeout of 15000ms exceeded[39m
+2024-11-28 12:41:31:4131 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: timeout of 15000ms exceeded[39m
+2024-11-28 12:41:34:4134 [31merror[39m: [31mError fetching RSS feed from Capital FM: timeout of 15000ms exceeded[39m
+2024-11-28 12:41:34:4134 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 0 attempts: timeout of 15000ms exceeded[39m
+2024-11-28 12:41:35:4135 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: timeout of 15000ms exceeded[39m
+2024-11-28 12:41:35:4135 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: timeout of 15000ms exceeded[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:40:4140 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:42:4142 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:42:4142 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:42:4142 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:42:4142 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:42:4142 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:42:4142 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:42:4142 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:41:42:4142 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:41:42:4142 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:42:4142 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:42:4142 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:42:4142 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:44:4144 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:44:4144 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:44:4144 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:44:4144 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:44:4144 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:44:4144 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:41:44:4144 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:41:44:4144 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:42:09:429 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: timeout of 15000ms exceeded[39m
+2024-11-28 12:42:09:429 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: timeout of 15000ms exceeded[39m
+2024-11-28 12:42:09:429 [31merror[39m: [31mError fetching RSS feed from Capital FM: timeout of 15000ms exceeded[39m
+2024-11-28 12:42:09:429 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 0 attempts: timeout of 15000ms exceeded[39m
+2024-11-28 12:42:09:429 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: timeout of 15000ms exceeded[39m
+2024-11-28 12:42:09:429 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: timeout of 15000ms exceeded[39m
+2024-11-28 12:42:15:4215 [31merror[39m: [31mError fetching RSS feed from Capital FM: timeout of 15000ms exceeded[39m
+2024-11-28 12:42:15:4215 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 0 attempts: timeout of 15000ms exceeded[39m
+2024-11-28 12:42:15:4215 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: timeout of 15000ms exceeded[39m
+2024-11-28 12:42:15:4215 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: timeout of 15000ms exceeded[39m
+2024-11-28 12:42:15:4215 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: timeout of 15000ms exceeded[39m
+2024-11-28 12:42:15:4215 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 0 attempts: timeout of 15000ms exceeded[39m
+2024-11-28 12:42:15:4215 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: timeout of 15000ms exceeded[39m
+2024-11-28 12:42:15:4215 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: timeout of 15000ms exceeded[39m
+2024-11-28 12:42:24:4224 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:24:4224 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:24:4224 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:24:4224 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:24:4224 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:24:4224 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:24:4224 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:24:4224 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:24:4224 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:24:4224 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:24:4224 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:24:4224 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:24:4224 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:42:24:4224 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 1 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:42:25:4225 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:25:4225 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:25:4225 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:25:4225 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 0 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 1 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mError fetching RSS feed from Capital FM Sports: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Sports after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:42:26:4226 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 2 attempts: getaddrinfo ENOTFOUND www.pulselive.co.ke[39m
+2024-11-28 12:42:28:4228 [31merror[39m: [31mError fetching RSS feed from Capital FM: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:28:4228 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:28:4228 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-11-28 12:42:28:4228 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
@@ -36,19 +37,9 @@ export default function CreateMarketPage() {
     resolution_date: '',
     end_date: '',
     source_url: '',
-    initial_liquidity: '1000', // Default initial liquidity
     min_trade_amount: '1',    // Minimum trade amount
     max_trade_amount: '100'   // Maximum trade amount
   });
-
-  const validateLiquidity = (liquidity: number) => {
-    if (liquidity < 100) {
-      throw new Error('Initial liquidity must be at least 100');
-    }
-    if (liquidity > 10000) {
-      throw new Error('Initial liquidity cannot exceed 10000');
-    }
-  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -61,13 +52,9 @@ export default function CreateMarketPage() {
     setError('');
 
     try {
-      const initialLiquidity = Number(formData.initial_liquidity);
       const minAmount = Number(formData.min_trade_amount);
       const maxAmount = Number(formData.max_trade_amount);
 
-      // Validate liquidity and trade amounts
-      validateLiquidity(initialLiquidity);
-      
       if (minAmount <= 0 || maxAmount <= minAmount) {
         throw new Error('Invalid trade amount limits');
       }
@@ -84,33 +71,27 @@ export default function CreateMarketPage() {
       }
 
       // Get initial share prices
-      const { yesPrice, noPrice, probability } = getInitialSharePrices();
+      const { probability } = getInitialSharePrices();
 
       // Create the market
       const { data: market, error: insertError } = await supabase
         .from('markets')
         .insert({
+          creator_id: session.user.id,
           title: formData.title,
           question: formData.question,
           description: formData.description,
           category: formData.category,
-          resolution_source: formData.resolution_source,
-          resolution_criteria: formData.resolution_criteria,
           closing_date: new Date(formData.closing_date).toISOString(),
           resolution_date: new Date(formData.resolution_date).toISOString(),
           end_date: new Date(formData.end_date).toISOString(),
-          created_by: session.user.id,
+          resolution_source: formData.resolution_source,
+          resolution_criteria: formData.resolution_criteria,
           status: 'open',
-          total_volume: initialLiquidity,
-          liquidity_pool: initialLiquidity,
           min_amount: minAmount,
           max_amount: maxAmount,
           probability_yes: probability,
           probability_no: 1 - probability,
-          yes_price: yesPrice,
-          no_price: noPrice,
-          total_yes_amount: initialLiquidity / 2,
-          total_no_amount: initialLiquidity / 2,
           views: 0,
           trades: 0,
           source_url: formData.source_url || null
@@ -118,40 +99,13 @@ export default function CreateMarketPage() {
         .select()
         .single();
 
-      if (insertError) throw insertError;
-
-      // Create initial liquidity positions
-      const { error: positionsError } = await supabase
-        .from('market_positions')
-        .insert([
-          {
-            market_id: market.id,
-            user_id: session.user.id,
-            position: 'yes',
-            amount: initialLiquidity / 2,
-            shares: initialLiquidity
-          },
-          {
-            market_id: market.id,
-            user_id: session.user.id,
-            position: 'no',
-            amount: initialLiquidity / 2,
-            shares: initialLiquidity
-          }
-        ]);
-
-      if (positionsError) {
-        // If positions creation fails, attempt to delete the market
-        await supabase
-          .from('markets')
-          .delete()
-          .eq('id', market.id);
-        throw positionsError;
+      if (insertError) {
+        console.error('Error creating market:', insertError);
+        return;
       }
 
-      toast.success('Market created successfully');
+      // Redirect to the markets page
       router.push('/markets');
-      router.refresh();
     } catch (err: any) {
       console.error('Error creating market:', err);
       setError(err.message || 'Failed to create market');
@@ -422,27 +376,6 @@ export default function CreateMarketPage() {
             </div>
             
             <div className="space-y-4">
-              <div className="relative">
-                <label htmlFor="initial_liquidity" className="block text-sm font-medium text-foreground/80">
-                  Initial Liquidity Pool
-                </label>
-                <div className="mt-1 relative rounded-md shadow-sm">
-                  <input
-                    type="number"
-                    id="initial_liquidity"
-                    name="initial_liquidity"
-                    value={formData.initial_liquidity}
-                    onChange={handleChange}
-                    min="100"
-                    max="10000"
-                    className="block w-full rounded-md bg-background border-border focus:border-primary focus:ring-primary sm:text-sm px-4 py-3 transition-colors"
-                  />
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                    <span className="text-sm text-foreground/60">100-10000</span>
-                  </div>
-                </div>
-              </div>
-
               <div className="grid grid-cols-2 gap-6">
                 <div className="relative">
                   <label htmlFor="min_trade_amount" className="block text-sm font-medium text-foreground/80">
