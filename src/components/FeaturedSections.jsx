@@ -159,12 +159,12 @@ const FeaturedSections = () => {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="container mx-auto px-4 py-12 sm:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
-              className="h-[320px] bg-[#0A0F1C] rounded-2xl p-6 animate-pulse"
+              className="h-[280px] sm:h-[300px] bg-[#0A0F1C] rounded-2xl p-6 animate-pulse"
             >
               <div className="space-y-4">
                 <div className="h-2 w-12 bg-gray-800 rounded-full"></div>
@@ -180,8 +180,8 @@ const FeaturedSections = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="container mx-auto px-4 py-12 sm:py-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {markets.map((market, index) => {
           const theme = getTheme(index);
           return (
@@ -194,104 +194,74 @@ const FeaturedSections = () => {
               <Link href={`/market/${market.id}`}>
                 <div
                   className={`
-                    relative h-[320px] rounded-2xl ${theme.bg}
+                    relative h-[280px] sm:h-[300px] rounded-2xl ${theme.bg}
                     ring-1 ring-white/10
                     ${theme.ring}
-                    hover:ring-2
                     group
                     transition-all duration-500
                     hover:-translate-y-2
-                    hover:shadow-xl hover:shadow-black/20
+                    hover:shadow-2xl hover:shadow-black/30
                     overflow-hidden
+                    cursor-pointer
                   `}
                 >
-                  {/* Background gradient */}
-                  <div className="absolute inset-0 opacity-50 mix-blend-overlay">
+                  {/* Background gradient with improved effects */}
+                  <div className="absolute inset-0 opacity-60 mix-blend-overlay transition-opacity duration-500 group-hover:opacity-75">
                     <div
                       className={`absolute inset-0 opacity-25 bg-gradient-to-br ${theme.accent}`}
                     />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_-20%,rgba(255,255,255,0.1),transparent_70%)]" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_-20%,rgba(255,255,255,0.15),transparent_70%)] group-hover:bg-[radial-gradient(circle_at_30%_-20%,rgba(255,255,255,0.2),transparent_70%)] transition-all duration-500" />
                   </div>
 
-                  {/* Content wrapper */}
-                  <div className="relative h-full p-6 flex flex-col">
+                  {/* Content wrapper with improved spacing */}
+                  <div className="relative p-5 sm:p-6 flex flex-col">
                     {/* Top section */}
                     <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-2">
-                        <div className={`h-1 w-1 rounded-full ${theme.dot}`} />
-                        <span className="text-[10px] font-medium tracking-wider text-white/40 uppercase">
+                      <div className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-500">
+                        <div className={`h-1.5 w-1.5 rounded-full ${theme.dot} group-hover:scale-125 transition-transform duration-500`} />
+                        <span className="text-[10px] font-medium tracking-wider text-white/40 uppercase group-hover:text-white/60 transition-colors duration-300">
                           Featured
                         </span>
                       </div>
                       {market.isHot && (
-                        <div className="flex items-center gap-1.5 bg-white/5 backdrop-blur-sm px-2 py-1 rounded-full ring-1 ring-white/10">
-                          <span className={`w-1 h-1 rounded-full ${theme.dot} animate-pulse`} />
-                          <span className="text-[10px] font-medium tracking-wider text-white/70">
+                        <div className="flex items-center gap-1.5 bg-white/5 backdrop-blur-sm px-2.5 py-1.5 rounded-full ring-1 ring-white/10 group-hover:bg-white/10 transition-colors duration-300">
+                          <span className={`w-1.5 h-1.5 rounded-full ${theme.dot} animate-pulse`} />
+                          <span className="text-[10px] font-medium tracking-wider text-white/70 group-hover:text-white/90">
                             LIVE
                           </span>
                         </div>
                       )}
                     </div>
 
-                    {/* Title and description */}
-                    <div className="space-y-3 mb-6">
+                    {/* Title and description with improved typography */}
+                    <div className="space-y-2">
                       <h3
-                        className={`text-lg font-semibold text-white/90 ${theme.text} transition-colors duration-300 line-clamp-2`}
+                        className={`text-lg font-semibold text-white/90 ${theme.text} transition-all duration-300 line-clamp-2 group-hover:translate-x-1`}
                       >
                         {market.title}
                       </h3>
-                      <p className="text-sm text-white/50 leading-relaxed line-clamp-2">
-                        {truncateText(market.description, 100)}
+                      <p className="text-sm text-white/50 leading-relaxed line-clamp-3 group-hover:text-white/60 transition-colors duration-300">
+                        {truncateText(market.description, 240)}
                       </p>
                     </div>
 
-                    {/* Market stats */}
-                    <div className="flex items-center justify-between mb-2">
+                    {/* Market stats with improved layout */}
+                    <div className="flex items-end justify-between mt-10">
                       <CircularProgress probability={market.probability || 0} theme={theme} />
                       <div className="flex flex-col items-end space-y-2">
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5">
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 group-hover:bg-white/10 transition-all duration-300 group-hover:-translate-y-1 hover:ring-1 hover:ring-white/20">
                           <svg className="w-4 h-4 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                           <span className="text-sm font-medium text-white/90">{market.volume || "KES 0"}</span>
                         </div>
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5">
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 group-hover:bg-white/10 transition-all duration-300 group-hover:-translate-y-1 delay-75 hover:ring-1 hover:ring-white/20">
                           <svg className="w-4 h-4 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                           </svg>
                           <span className="text-sm font-medium text-white/90">{market.trades || 0} Trades</span>
                         </div>
                       </div>
-                    </div>
-
-                    {/* Action button */}
-                    <div className="mt-10">
-                      <button
-                        className={`
-                          w-full px-4 py-2.5 rounded-xl text-sm font-medium
-                          bg-gradient-to-r ${theme.accent}
-                          text-white/90
-                          transition-all duration-300
-                          hover:shadow-lg hover:shadow-white/10
-                          flex items-center justify-center gap-2
-                          group-hover:gap-3
-                        `}
-                      >
-                        Trade Now
-                        <svg
-                          className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17 8l4 4m0 0l-4 4m4-4H3"
-                          />
-                        </svg>
-                      </button>
                     </div>
                   </div>
                 </div>
