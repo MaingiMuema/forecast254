@@ -203,7 +203,9 @@ const FeaturedMarkets = () => {
                     <div className="bg-accent/5 rounded-xl p-3">
                       <div className="text-xs text-muted-foreground mb-1">Ends</div>
                       <div className="font-bold text-foreground">
-                        {new Date(market.end_date).toLocaleDateString()}
+                        {market.end_date 
+                          ? new Date(market.end_date).toLocaleDateString()
+                          : 'No end date'}
                       </div>
                     </div>
                   </div>
