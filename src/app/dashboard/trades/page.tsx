@@ -153,7 +153,7 @@ export default function TradesPage() {
                   <tr
                     key={trade.id}
                     className="hover:bg-muted/50 cursor-pointer"
-                    onClick={() => trade.market_id && router.push(`/markets/${trade.market_id}`)}
+                    onClick={() => trade.market_id && router.push(`/market/${trade.market_id}`)}
                   >
                     <td className="px-4 py-3 text-sm">
                       {format(new Date(trade.created_at), 'MMM d, yyyy HH:mm')}
