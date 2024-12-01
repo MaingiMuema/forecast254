@@ -10598,3 +10598,14 @@
 2024-12-01 05:53:40:5340 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
 2024-12-01 05:53:40:5340 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
 2024-12-01 05:53:41:5341 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-12-01 12:05:03:53 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-12-01 12:05:03:53 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-12-01 12:05:03:53 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-12-01 12:05:03:53 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-12-01 12:05:11:511 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: read ECONNRESET[39m
+2024-12-01 12:05:11:511 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: read ECONNRESET[39m
+2024-12-01 12:05:14:514 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-12-01 12:05:15:515 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-12-01 12:05:15:515 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-12-01 12:05:16:516 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-12-01 12:05:17:517 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
