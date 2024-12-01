@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { usePathname, useSearchParams } from 'next/navigation';
 import { FaSearch, FaTimes } from "react-icons/fa";
+import { supabase } from '@/lib/supabase';
 
 const CategoriesNav = () => {
   const pathname = usePathname();
@@ -15,6 +16,8 @@ const CategoriesNav = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [volume24h, setVolume24h] = useState(0);
+  const [loading, setLoading] = useState(true);
   const searchRef = useRef(null);
 
   const categories = [
@@ -89,6 +92,58 @@ const CategoriesNav = () => {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
+  useEffect(() => {
+    fetch24hVolume();
+
+    // Set up real-time subscription for new orders
+    const ordersSubscription = supabase
+      .channel('orders-volume')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'orders'
+        },
+        () => {
+          fetch24hVolume(); // Refetch volume when orders change
+        }
+      )
+      .subscribe();
+
+    // Update volume every second
+    const volumeInterval = setInterval(fetch24hVolume, 1000);
+
+    return () => {
+      ordersSubscription.unsubscribe();
+      clearInterval(volumeInterval);
+    };
+  }, []);
+
+  const fetch24hVolume = async () => {
+    try {
+      const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      
+      const { data: orders, error } = await supabase
+        .from('orders')
+        .select('price, amount, filled_amount, created_at')
+        .gte('created_at', twentyFourHoursAgo)
+        .not('status', 'eq', 'cancelled');
+
+      if (error) throw error;
+
+      const totalVolume = orders?.reduce((sum, order) => {
+        const orderAmount = order.filled_amount || order.amount || 0;
+        return sum + (orderAmount * (order.price || 0));
+      }, 0) || 0;
+
+      setVolume24h(totalVolume);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching 24h volume:', error);
+    }
+  };
+
   const showCounts = pathname === '/markets';
 
   return (
@@ -114,7 +169,14 @@ const CategoriesNav = () => {
             <div className="hidden md:flex items-center gap-6">
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">24h Volume:</span>
-                <span className="text-sm font-medium text-foreground">KES 1.2M</span>
+                <span className="text-sm font-medium text-foreground">
+                  {loading ? '...' : volume24h.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'KES',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}
+                </span>
               </div>
               <div className="h-6 w-px bg-white/5"></div>
               <div className="flex items-center gap-2">

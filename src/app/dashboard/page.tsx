@@ -9,7 +9,7 @@ interface DashboardStats {
   totalMarkets: number;
   activeMarkets: number;
   portfolioValue: number;
-  totalUsers: number;
+  totalOrders: number;
 }
 
 export default function DashboardPage() {
@@ -17,7 +17,7 @@ export default function DashboardPage() {
     totalMarkets: 0,
     activeMarkets: 0,
     portfolioValue: 0,
-    totalUsers: 0,
+    totalOrders: 0,
   });
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function DashboardPage() {
           totalMarkets,
           activeMarkets,
           portfolioValue: 25000, // Demo value
-          totalUsers: 150, // Demo value
+          totalOrders: 150, // Demo value
         });
       } catch (error) {
         console.error('Error fetching dashboard stats:', error);
@@ -86,7 +86,7 @@ export default function DashboardPage() {
         />
         <StatCard
           title="Total Users"
-          value={stats.totalUsers}
+          value={stats.totalOrders}
           description="Platform participants"
           icon={FaUsers}
           trend="+25%"

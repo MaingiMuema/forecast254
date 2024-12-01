@@ -8,6 +8,10 @@ import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { usePathname } from 'next/navigation';
+import { Database } from '@/types/supabase';
+
+type Profile = Database['public']['Tables']['profiles']['Row'];
+type UserRole = Profile['role'];
 
 type AuthResponse = {
   data: {
@@ -21,9 +25,13 @@ type AuthResponse = {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  role: UserRole | null;
   signUp: (email: string, password: string, metadata: Record<string, any>) => Promise<AuthResponse>;
   signIn: (email: string, password: string) => Promise<AuthResponse>;
   signOut: () => Promise<void>;
+  isAdmin: () => boolean;
+  isValidator: () => boolean;
+  isUser: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -34,6 +42,14 @@ const RETRY_DELAY = 2000;
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [role, setRole] = useState<UserRole | null>(() => {
+    // Initialize role from localStorage if available
+    if (typeof window !== 'undefined') {
+      const storedRole = localStorage.getItem('userRole') as UserRole;
+      return storedRole || null;
+    }
+    return null;
+  });
   const [loading, setLoading] = useState(true);
   const [initialized, setInitialized] = useState(false);
   const [pendingRedirect, setPendingRedirect] = useState<string | null>(null);
@@ -74,6 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!mountedRef.current) return;
 
     setUser(null);
+    setRole(null);
     
     if (typeof window === 'undefined') return;
 
@@ -223,6 +240,75 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }
   }, [clearAuthData, debouncedSetLoading, handleSuccessfulLogin, startSessionRefresh]);
+
+  // Fetch user role from profiles table
+  const fetchUserRole = useCallback(async (userId: string) => {
+    try {
+      console.log('Fetching role for user:', userId);
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', userId)
+        .single();
+      
+      if (error) {
+        console.error('Error fetching role:', error);
+        return null;
+      }
+      
+      if (profile && profile.role) {
+        console.log('Fetched role:', profile.role);
+        return profile.role as UserRole;
+      }
+      
+      console.log('No profile found or no role set, using default role: user');
+      return 'user' as UserRole;
+    } catch (error) {
+      console.error('Error in fetchUserRole:', error);
+      return null;
+    }
+  }, []);
+
+  // Handle role updates
+  const updateUserRole = useCallback(async (userId: string) => {
+    const newRole = await fetchUserRole(userId);
+    if (newRole) {
+      setRole(newRole);
+      localStorage.setItem('userRole', newRole);
+    }
+  }, [fetchUserRole]);
+
+  useEffect(() => {
+    const initializeAuth = async () => {
+      if (initialized) return;
+
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          setUser(session.user);
+          await updateUserRole(session.user.id);
+        }
+      } catch (error) {
+        console.error('Error initializing auth:', error);
+      } finally {
+        setInitialized(true);
+        setLoading(false);
+      }
+    };
+
+    initializeAuth();
+  }, [initialized, updateUserRole]);
+
+  useEffect(() => {
+    if (!initialized) return;
+
+    if (user) {
+      updateUserRole(user.id);
+    } else {
+      setRole(null);
+      localStorage.removeItem('userRole');
+    }
+  }, [user, initialized, updateUserRole]);
 
   // Sign in implementation
   const signIn = async (email: string, password: string): Promise<AuthResponse> => {
@@ -399,67 +485,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Initialize auth state
-  useEffect(() => {
-    mountedRef.current = true;
-    
-    const initializeAuth = async () => {
-      if (!mountedRef.current || initialized) return;
-
-      try {
-        startLoadingSafetyTimeout();
-        
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        
-        if (sessionError || !session) {
-          if (mountedRef.current) {
-            setLoading(false);
-            setInitialized(true);
-          }
-          return;
-        }
-
-        const { data: { user: currentUser }, error: userError } = await supabase.auth.getUser();
-        
-        if (userError || !currentUser) {
-          console.warn('Error getting user:', userError);
-          if (mountedRef.current) {
-            await clearAuthData();
-            setLoading(false);
-            setInitialized(true);
-          }
-          return;
-        }
-
-        if (mountedRef.current) {
-          setUser(currentUser);
-          startSessionRefresh();
-          setLoading(false);
-          setInitialized(true);
-        }
-      } catch (error) {
-        console.error('Auth initialization error:', error);
-        if (mountedRef.current) {
-          await clearAuthData();
-          setLoading(false);
-          setInitialized(true);
-        }
-      }
-    };
-
-    initializeAuth();
-
-    return () => {
-      mountedRef.current = false;
-    };
-  }, [initialized, clearAuthData, startLoadingSafetyTimeout, startSessionRefresh]);
+  const isAdmin = useCallback(() => role === 'admin', [role]);
+  const isValidator = useCallback(() => role === 'validator', [role]);
+  const isUser = useCallback(() => role === 'user', [role]);
 
   const value = {
     user,
     loading,
+    role,
     signUp,
     signIn,
     signOut,
+    isAdmin,
+    isValidator,
+    isUser,
   };
 
   return (

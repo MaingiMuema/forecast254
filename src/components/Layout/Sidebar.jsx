@@ -11,6 +11,7 @@ import {
   Cog6ToothIcon,
   QuestionMarkCircleIcon,
   ArrowLeftOnRectangleIcon,
+  ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
 import { FaChartLine } from "react-icons/fa";
 import { cn } from "@/lib/utils";
@@ -33,7 +34,7 @@ export const sidebarLinks = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { user, loading, signOut } = useAuth();
+  const { user, loading, role, signOut } = useAuth();
 
   const handleSignOut = async () => {
     try {
@@ -82,6 +83,56 @@ export default function Sidebar() {
                   </Link>
                 </li>
               ))}
+              {(role === 'admin' || role === 'validator') && (
+                <>
+                  {role === 'admin' && (
+                    <li>
+                      <Link
+                        href="/dashboard/admin"
+                        className={cn(
+                          pathname === '/dashboard/admin'
+                            ? "bg-gray-50 dark:bg-gray-800 text-primary"
+                            : "text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800",
+                          "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
+                        )}
+                      >
+                        <ShieldCheckIcon
+                          className={cn(
+                            pathname === '/dashboard/admin'
+                              ? "text-primary"
+                              : "text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white",
+                            "h-6 w-6 shrink-0"
+                          )}
+                          aria-hidden="true"
+                        />
+                        Admin
+                      </Link>
+                    </li>
+                  )}
+                  <li>
+                    <Link
+                      href="/dashboard/admin/validator"
+                      className={cn(
+                        pathname === '/dashboard/admin/validator'
+                          ? "bg-gray-50 dark:bg-gray-800 text-primary"
+                          : "text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800",
+                        "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6"
+                      )}
+                    >
+                      <ShieldCheckIcon
+                        className={cn(
+                          pathname === '/dashboard/admin/validator'
+                            ? "text-primary"
+                            : "text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white",
+                          "h-6 w-6 shrink-0"
+                        )}
+                        aria-hidden="true"
+                      />
+                      Validator
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </li>
           <li className="mt-auto">

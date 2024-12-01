@@ -420,7 +420,7 @@ export default function OverallActivity() {
                     <div className="text-left sm:text-right pl-11 sm:pl-0 sm:ml-4">
                       {activity.type !== 'new_trade' && (
                         <p className="text-sm font-medium text-foreground">
-                          KES {activity.amount.toLocaleString()}
+                          {activity.amount.toLocaleString()} Shares
                         </p>
                       )}
                       <p className="text-xs text-muted-foreground">

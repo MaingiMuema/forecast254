@@ -72,6 +72,9 @@ export type Database = {
           balance: number
           created_at: string
           updated_at: string
+          username: string | null
+          email: string | null
+          role: 'user' | 'validator' | 'admin'
         }
         Insert: {
           id: string
@@ -82,6 +85,9 @@ export type Database = {
           balance?: number
           created_at?: string
           updated_at?: string
+          username?: string | null
+          email?: string | null
+          role?: 'user' | 'validator' | 'admin'
         }
         Update: {
           id?: string
@@ -92,6 +98,9 @@ export type Database = {
           balance?: number
           created_at?: string
           updated_at?: string
+          username?: string | null
+          email?: string | null
+          role?: 'user' | 'validator' | 'admin'
         }
       }
       news_articles: {
@@ -136,110 +145,155 @@ export type Database = {
         Row: {
           id: string
           creator_id: string | null
-          question: string
+          title: string | null
           description: string | null
           category: string
           resolution_source: string | null
-          resolved_value: boolean | null
-          start_date: string
-          end_date: string
+          closing_date: string | null
+          resolution_date: string | null
           status: string
+          outcome: string | null
+          total_volume: number
+          liquidity_pool: number
           created_at: string
           updated_at: string
           source_article_id: string | null
-          total_yes_amount: number
-          total_no_amount: number
-          total_volume: number
-          trades: number
+          end_date: string | null
+          question: string | null
+          resolution_criteria: string | null
+          resolved_value: boolean | null
           probability_yes: number
           probability_no: number
+          views: number
+          trades: number
+          trending_score: number | null
+          min_amount: number
+          max_amount: number
+          total_yes_amount: number
+          total_no_amount: number
+          source_url: string | null
+          yes_price: number
+          no_price: number
+          last_trade_price: number | null
+          last_trade_time: string | null
+          active: boolean
         }
         Insert: {
           id?: string
           creator_id?: string | null
-          question: string
+          title?: string | null
           description?: string | null
-          category: string
+          category?: string
           resolution_source?: string | null
-          resolved_value?: boolean | null
-          start_date: string
-          end_date: string
+          closing_date?: string | null
+          resolution_date?: string | null
           status?: string
+          outcome?: string | null
+          total_volume?: number
+          liquidity_pool?: number
           created_at?: string
           updated_at?: string
           source_article_id?: string | null
-          total_yes_amount?: number
-          total_no_amount?: number
-          total_volume?: number
-          trades?: number
+          end_date?: string | null
+          question?: string | null
+          resolution_criteria?: string | null
+          resolved_value?: boolean | null
           probability_yes?: number
           probability_no?: number
+          views?: number
+          trades?: number
+          trending_score?: number | null
+          min_amount?: number
+          max_amount?: number
+          total_yes_amount?: number
+          total_no_amount?: number
+          source_url?: string | null
+          yes_price?: number
+          no_price?: number
+          last_trade_price?: number | null
+          last_trade_time?: string | null
+          active?: boolean
         }
         Update: {
           id?: string
           creator_id?: string | null
-          question?: string
+          title?: string | null
           description?: string | null
           category?: string
           resolution_source?: string | null
-          resolved_value?: boolean | null
-          start_date?: string
-          end_date?: string
+          closing_date?: string | null
+          resolution_date?: string | null
           status?: string
+          outcome?: string | null
+          total_volume?: number
+          liquidity_pool?: number
           created_at?: string
           updated_at?: string
           source_article_id?: string | null
-          total_yes_amount?: number
-          total_no_amount?: number
-          total_volume?: number
-          trades?: number
+          end_date?: string | null
+          question?: string | null
+          resolution_criteria?: string | null
+          resolved_value?: boolean | null
           probability_yes?: number
           probability_no?: number
+          views?: number
+          trades?: number
+          trending_score?: number | null
+          min_amount?: number
+          max_amount?: number
+          total_yes_amount?: number
+          total_no_amount?: number
+          source_url?: string | null
+          yes_price?: number
+          no_price?: number
+          last_trade_price?: number | null
+          last_trade_time?: string | null
+          active?: boolean
         }
       }
       orders: {
         Row: {
           id: string
-          market_id: string
-          user_id: string
-          order_type: OrderType
-          side: OrderSide
-          position: OrderPosition
+          market_id: string | null
+          user_id: string | null
+          order_type: string | null
+          side: string | null
+          position: string | null
           price: number | null
-          amount: number
+          amount: number | null
           filled_amount: number
-          remaining_amount: number
-          status: OrderStatus
+          remaining_amount: number | null
+          status: string
           created_at: string
           updated_at: string
         }
         Insert: {
           id?: string
-          market_id: string
-          user_id: string
-          order_type: OrderType
-          side: OrderSide
-          position: OrderPosition
+          market_id?: string | null
+          user_id?: string | null
+          order_type?: string | null
+          side?: string | null
+          position?: string | null
           price?: number | null
-          amount: number
+          amount?: number | null
           filled_amount?: number
-          remaining_amount?: number
-          status?: OrderStatus
+          remaining_amount?: number | null
+          status?: string
           created_at?: string
           updated_at?: string
         }
         Update: {
           id?: string
-          market_id?: string
-          user_id?: string
-          order_type?: OrderType
-          side?: OrderSide
-          position?: OrderPosition
+          market_id?: string | null
+          user_id?: string | null
+          order_type?: string | null
+          side?: string | null
+          position?: string | null
           price?: number | null
-          amount?: number
+          amount?: number | null
           filled_amount?: number
-          remaining_amount?: number
-          status?: OrderStatus
+          remaining_amount?: number | null
+          status?: string
           created_at?: string
           updated_at?: string
         }
@@ -282,37 +336,42 @@ export type Database = {
       }
       transactions: {
         Row: {
-          transaction_type: string
-          market: any
-          mpesa_reference: string
-          status: string
           id: string
-          user_id: string
-          market_id: string
-          type: string
-          shares: number
-          price: number
-          total: number
+          user_id: string | null
+          market_id: string | null
+          transaction_type: string | null
+          amount: number | null
+          shares: number | null
+          price: number | null
+          position_type: string | null
+          mpesa_reference: string | null
+          status: string
           created_at: string
         }
         Insert: {
           id?: string
-          user_id: string
-          market_id: string
-          type: string
-          shares: number
-          price: number
-          total: number
+          user_id?: string | null
+          market_id?: string | null
+          transaction_type?: string | null
+          amount?: number | null
+          shares?: number | null
+          price?: number | null
+          position_type?: string | null
+          mpesa_reference?: string | null
+          status?: string
           created_at?: string
         }
         Update: {
           id?: string
-          user_id?: string
-          market_id?: string
-          type?: string
-          shares?: number
-          price?: number
-          total?: number
+          user_id?: string | null
+          market_id?: string | null
+          transaction_type?: string | null
+          amount?: number | null
+          shares?: number | null
+          price?: number | null
+          position_type?: string | null
+          mpesa_reference?: string | null
+          status?: string
           created_at?: string
         }
       }
@@ -379,7 +438,26 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      update_user_role: {
+        Args: {
+          user_id: string
+          new_role: string
+        }
+        Returns: {
+          id: string
+          role: string
+        }
+      }
+      update_market_active_status: {
+        Args: {
+          market_id: string
+          new_status: boolean
+        }
+        Returns: {
+          id: string
+          active: boolean
+        }
+      }
     }
     Enums: {
       [_ in never]: never
