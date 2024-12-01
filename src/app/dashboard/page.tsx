@@ -1,17 +1,36 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useEffect, useState } from 'react';
-import { FaChartLine, FaWallet, FaUsers } from 'react-icons/fa';
+import { FaChartBar, FaExchangeAlt, FaMoneyBillWave, FaWallet } from 'react-icons/fa';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'react-hot-toast';
+
+interface Trade {
+  id: string;
+  amount: number | null;
+  price: number | null;
+  filled_amount: number | null;
+  side: string | null;
+  status: string;
+  market_id?: string | null;
+  user_id?: string | null;
+  order_type?: string | null;
+  position?: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
 
 interface DashboardStats {
   totalMarkets: number;
   userTrades: number;
   userVolume: number;
   portfolioValue: number;
+  marketsTrend: number;
   tradesTrend: number;
+  volumeTrend: number;
+  portfolioTrend: number;
 }
 
 export default function DashboardPage() {
@@ -20,8 +39,42 @@ export default function DashboardPage() {
     userTrades: 0,
     userVolume: 0,
     portfolioValue: 0,
+    marketsTrend: 0,
     tradesTrend: 0,
+    volumeTrend: 0,
+    portfolioTrend: 0,
   });
+
+  const calculateTrend = (current: number, previous: number): number => {
+    if (previous === 0) return current > 0 ? 100 : 0;
+    const trend = ((current - previous) / previous) * 100;
+    return Math.round(trend);
+  };
+
+  // Helper function to safely calculate volume from trades
+  const calcVolume = (trades: Trade[] | null): number => {
+    if (!trades) return 0;
+    
+    return trades.reduce((sum, order) => {
+      if (order.status === 'pending') return sum;
+      const amount = order.filled_amount || order.amount || 0;
+      const price = order.price || 0;
+      return sum + (amount * price);
+    }, 0);
+  };
+
+  // Helper function to safely calculate portfolio value
+  const calcPortfolioValue = (trades: Trade[] | null, balance: number, includeBalance = true): number => {
+    if (!trades) return includeBalance ? balance : 0;
+    
+    return trades.reduce((sum, order) => {
+      if (order.status === 'pending') return sum;
+      const amount = order.filled_amount || order.amount || 0;
+      const price = order.price || 0;
+      const multiplier = order.side === 'buy' ? 1 : -1;
+      return sum + (amount * price * multiplier);
+    }, includeBalance ? balance : 0);
+  };
 
   const fetchStats = async () => {
     try {
@@ -30,101 +83,102 @@ export default function DashboardPage() {
         console.log('No user found');
         return;
       }
-      console.log('Current user:', user.id);
 
-      // Get user's profile to fetch balance
+      // Time periods for trend calculation
+      const now = new Date();
+      const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+      const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString();
+      const twoMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 2, 1).toISOString();
+
+      // Get user's profile
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('balance')
         .eq('id', user.id)
         .single();
 
-      if (profileError) {
-        console.error('Error fetching profile:', profileError);
-        throw profileError;
-      }
-
+      if (profileError) throw profileError;
       const userBalance = profile?.balance || 0;
-      console.log('User balance:', userBalance);
 
-      // Get markets count
-      const { data: markets, error: marketsError } = await supabase
+      // Get markets counts for trend
+      const { data: currentMarkets } = await supabase
         .from('markets')
-        .select('id', { count: 'exact' });
+        .select('id')
+        .gte('created_at', lastMonth)
+        .lt('created_at', thisMonth);
 
-      if (marketsError) throw marketsError;
-      console.log('Total markets:', markets?.length);
+      const { data: previousMarkets } = await supabase
+        .from('markets')
+        .select('id')
+        .gte('created_at', twoMonthsAgo)
+        .lt('created_at', lastMonth);
 
-      // Get user's trades - include all non-cancelled orders
-      const { data: userTrades, error: tradesError } = await supabase
+      const marketsTrend = calculateTrend(
+        currentMarkets?.length || 0,
+        previousMarkets?.length || 0
+      );
+
+      // Get monthly trades
+      const { data: currentTrades } = await supabase
+        .from('orders')
+        .select('id, amount, price, filled_amount, side, status')
+        .eq('user_id', user.id)
+        .neq('status', 'cancelled')
+        .gte('created_at', lastMonth)
+        .lt('created_at', thisMonth);
+
+      const { data: previousTrades } = await supabase
+        .from('orders')
+        .select('id, amount, price, filled_amount, side, status')
+        .eq('user_id', user.id)
+        .neq('status', 'cancelled')
+        .gte('created_at', twoMonthsAgo)
+        .lt('created_at', lastMonth);
+
+      // Calculate volumes with null-safe helper
+      const currentVolume = calcVolume(currentTrades);
+      const previousVolume = calcVolume(previousTrades);
+      
+      const tradesTrend = calculateTrend(
+        currentTrades?.length || 0,
+        previousTrades?.length || 0
+      );
+
+      const volumeTrend = calculateTrend(currentVolume, previousVolume);
+
+      // Get all user trades for total counts
+      const { data: allTrades } = await supabase
         .from('orders')
         .select('*')
         .eq('user_id', user.id)
         .neq('status', 'cancelled');
 
-      if (tradesError) throw tradesError;
-      console.log('User trades:', userTrades);
+      // Calculate total volume with null-safe helper
+      const userVolume = calcVolume(allTrades);
 
-      // Calculate 24h trends
-      const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-      const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString();
+      // Calculate portfolio values with null-safe helper
+      const currentPortfolioValue = Math.abs(calcPortfolioValue(currentTrades, userBalance));
+      const previousPortfolioValue = Math.abs(calcPortfolioValue(previousTrades, userBalance));
+      const totalPortfolioValue = Math.abs(calcPortfolioValue(allTrades, userBalance));
 
-      // Get today's trades
-      const { data: currentTrades } = await supabase
-        .from('orders')
-        .select('id')
-        .eq('user_id', user.id)
-        .neq('status', 'cancelled')
-        .gte('created_at', oneDayAgo);
+      const portfolioTrend = calculateTrend(currentPortfolioValue, previousPortfolioValue);
 
-      // Get previous day's trades
-      const { data: previousTrades } = await supabase
-        .from('orders')
-        .select('id')
-        .eq('user_id', user.id)
-        .neq('status', 'cancelled')
-        .gte('created_at', twoDaysAgo)
-        .lt('created_at', oneDayAgo);
-
-      console.log('24h trades:', currentTrades?.length);
-      console.log('Previous 24h trades:', previousTrades?.length);
-
-      // Calculate trend percentage
-      const currentCount = currentTrades?.length || 0;
-      const previousCount = previousTrades?.length || 0;
-      const tradesTrend = previousCount === 0 
-        ? 100 
-        : ((currentCount - previousCount) / previousCount) * 100;
-
-      // Calculate user's trading volume from all non-cancelled orders
-      const userVolume = userTrades?.reduce((sum, order) => {
-        const amount = order.filled_amount || order.amount || 0;
-        const price = order.price || 0;
-        return sum + (amount * price);
-      }, 0) || 0;
-
-      console.log('User volume:', userVolume);
-
-      // Calculate portfolio value considering buy/sell positions and user balance
-      const portfolioValue = userTrades?.reduce((sum, order) => {
-        if (order.status === 'pending') return sum; // Skip pending orders
-        
-        const amount = order.filled_amount || order.amount || 0;
-        const price = order.price || 0;
-        const multiplier = order.side === 'buy' ? 1 : -1;
-        
-        return sum + (amount * price * multiplier);
-      }, userBalance) || userBalance; // Start with user's balance
-
-      console.log('Portfolio value (including balance):', portfolioValue);
+      // Get total markets
+      const { data: markets } = await supabase
+        .from('markets')
+        .select('id');
 
       setStats({
         totalMarkets: markets?.length || 0,
-        userTrades: userTrades?.length || 0,
-        userVolume: userVolume, // Include balance in volume
-        portfolioValue: Math.abs(portfolioValue),
-        tradesTrend: Math.round(tradesTrend)
+        userTrades: allTrades?.length || 0,
+        userVolume,
+        portfolioValue: totalPortfolioValue,
+        marketsTrend,
+        tradesTrend,
+        volumeTrend,
+        portfolioTrend
       });
+
     } catch (error) {
       console.error('Error fetching stats:', error);
       toast.error('Failed to fetch dashboard statistics');
@@ -150,34 +204,34 @@ export default function DashboardPage() {
           title="Total Markets"
           value={stats.totalMarkets}
           description="Available prediction markets"
-          icon={FaChartLine}
-          trend="+12%"
-          trendUp={true}
+          icon={FaChartBar}
+          trend={`${stats.marketsTrend > 0 ? '+' : ''}${stats.marketsTrend}%`}
+          trendUp={stats.marketsTrend > 0}
         />
         <StatCard
           title="Your Trades"
           value={stats.userTrades}
           description="Your total completed trades"
-          icon={FaChartLine}
-          trend={stats.tradesTrend > 0 ? `+${stats.tradesTrend}%` : `${stats.tradesTrend}%`}
+          icon={FaExchangeAlt}
+          trend={`${stats.tradesTrend > 0 ? '+' : ''}${stats.tradesTrend}%`}
           trendUp={stats.tradesTrend > 0}
         />
         <StatCard
           title="Your Volume"
           value={stats.userVolume}
           description="Your total trading volume"
-          icon={FaWallet}
-          trend="+15%"
-          trendUp={true}
+          icon={FaMoneyBillWave}
+          trend={`${stats.volumeTrend > 0 ? '+' : ''}${stats.volumeTrend}%`}
+          trendUp={stats.volumeTrend > 0}
           valuePrefix="KES"
         />
         <StatCard
           title="Portfolio Value"
           value={stats.portfolioValue}
           description="Your current portfolio value"
-          icon={FaUsers}
-          trend="+25%"
-          trendUp={true}
+          icon={FaWallet}
+          trend={`${stats.portfolioTrend > 0 ? '+' : ''}${stats.portfolioTrend}%`}
+          trendUp={stats.portfolioTrend > 0}
           valuePrefix="KES"
         />
       </div>

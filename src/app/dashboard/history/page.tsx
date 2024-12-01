@@ -15,17 +15,33 @@ import {
 import { Transaction } from '@/lib/database';
 import { format } from 'date-fns';
 
+interface Market {
+  title: string;
+}
+
+interface TransactionWithMarket extends Transaction {
+  market: Market;
+}
+
+interface ExtendedTransaction extends TransactionWithMarket {
+  total: number;
+}
+
+interface RawTransaction extends Transaction {
+  market: { title: string }[];
+}
+
 export default function History() {
   const { user } = useAuth();
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [transactions, setTransactions] = useState<ExtendedTransaction[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadTransactions() {
-      if (!user?.id) return;
-
+    const fetchTransactions = async () => {
       try {
-        const { data, error } = await supabase
+        if (!user) return;
+
+        const { data: rawData, error } = await supabase
           .from('transactions')
           .select(`
             *,
@@ -35,16 +51,32 @@ export default function History() {
           .order('created_at', { ascending: false });
 
         if (error) throw error;
-        setTransactions(data || []);
+
+        // Transform and validate the data
+        const transformedData = (rawData as RawTransaction[] || []).map(transaction => {
+          const amount = transaction.amount || 0;
+          const price = transaction.price || 0;
+          const marketTitle = transaction.market?.[0]?.title || '-';
+          
+          const extendedTransaction: ExtendedTransaction = {
+            ...transaction,
+            market: { title: marketTitle },
+            total: amount * price
+          };
+
+          return extendedTransaction;
+        });
+
+        setTransactions(transformedData);
       } catch (error) {
-        console.error('Error loading transactions:', error);
+        console.error('Error fetching transactions:', error);
       } finally {
         setLoading(false);
       }
-    }
+    };
 
-    loadTransactions();
-  }, [user?.id]);
+    fetchTransactions();
+  }, [user]);
 
   const getTransactionStatusColor = (status: string) => {
     switch (status) {
@@ -146,7 +178,7 @@ export default function History() {
                     {transaction.transaction_type}
                   </TableCell>
                   <TableCell>
-                    {transaction.market?.title || '-'}
+                    {transaction.market.title}
                   </TableCell>
                   <TableCell>
                     KES {Math.abs(transaction.total).toLocaleString()}
