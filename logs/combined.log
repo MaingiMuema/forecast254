@@ -10566,3 +10566,19 @@
 2024-12-01 04:06:28:628 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
 2024-12-01 04:06:29:629 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
 2024-12-01 04:06:30:630 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-12-01 05:29:15:2915 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-12-01 05:29:15:2915 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-12-01 05:29:15:2915 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-12-01 05:29:15:2915 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-12-01 05:29:16:2916 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-12-01 05:29:17:2917 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-12-01 05:29:18:2918 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-12-01 05:29:18:2918 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-12-01 05:30:50:3050 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-12-01 05:30:50:3050 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-12-01 05:30:50:3050 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-12-01 05:30:50:3050 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-12-01 05:30:51:3051 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-12-01 05:30:52:3052 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-12-01 05:30:52:3052 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-12-01 05:30:53:3053 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m

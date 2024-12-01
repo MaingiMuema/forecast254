@@ -13,8 +13,8 @@ interface MarketData {
   question: string;
   description: string;
   category: string;
-  start_date: string;
-  end_date: string;
+  created_at: string;
+  closing_date: string | null;
   status: string;
   creator_id: string;
   resolved_value?: boolean;
@@ -152,8 +152,8 @@ export default function MarketHeader({ marketId }: { marketId: string }) {
           question: marketData.question || '',
           description: marketData.description || '',
           category: marketData.category || '',
-          start_date: marketData.start_date || new Date().toISOString(),
-          end_date: marketData.end_date || new Date().toISOString(),
+          created_at: marketData.created_at || new Date().toISOString(),
+          closing_date: marketData.closing_date || null,
           status: marketData.status || '',
           creator_id: marketData.creator_id || '',
           resolved_value: marketData.resolved_value || false,
@@ -248,7 +248,9 @@ export default function MarketHeader({ marketId }: { marketId: string }) {
     );
   }
 
-  const timeLeft = new Date(market.end_date).getTime() - new Date().getTime();
+  const timeLeft = market.closing_date 
+    ? new Date(market.closing_date).getTime() - new Date().getTime()
+    : 0;
   const daysLeft = Math.ceil(timeLeft / (1000 * 60 * 60 * 24));
 
   return (
