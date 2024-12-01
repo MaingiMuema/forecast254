@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from '@/types/supabase';
+import { Clock } from 'lucide-react';
 
 type Market = Database['public']['Tables']['markets']['Row'] & {
   total_volume?: number;
@@ -177,9 +178,16 @@ export default function MarketsList() {
                     </span>
                   </div>
                 </div>
-                <span className="text-muted-foreground">
-                  {new Date(market.end_date).toLocaleDateString()}
-                </span>
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-4 h-4" />
+                  </div>
+                  <span className="text-muted-foreground">
+                    {market.closing_date 
+                      ? new Date(market.closing_date).toLocaleDateString()
+                      : 'No end date'}
+                  </span>
+                </div>
               </div>
 
               {/* Probability Bar */}
