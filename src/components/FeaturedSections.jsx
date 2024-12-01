@@ -194,7 +194,7 @@ const FeaturedSections = () => {
               <Link href={`/market/${market.id}`}>
                 <div
                   className={`
-                    relative h-[280px] sm:h-[300px] rounded-2xl ${theme.bg}
+                    relative min-h-[280px] h-full rounded-2xl ${theme.bg}
                     ring-1 ring-white/10
                     ${theme.ring}
                     group
@@ -203,6 +203,7 @@ const FeaturedSections = () => {
                     hover:shadow-2xl hover:shadow-black/30
                     overflow-hidden
                     cursor-pointer
+                    flex flex-col
                   `}
                 >
                   {/* Background gradient with improved effects */}
@@ -214,9 +215,9 @@ const FeaturedSections = () => {
                   </div>
 
                   {/* Content wrapper with improved spacing */}
-                  <div className="relative p-5 sm:p-6 flex flex-col">
+                  <div className="relative p-4 sm:p-6 flex flex-col h-full">
                     {/* Top section */}
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center justify-between mb-3 sm:mb-4">
                       <div className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-500">
                         <div className={`h-1.5 w-1.5 rounded-full ${theme.dot} group-hover:scale-125 transition-transform duration-500`} />
                         <span className="text-[10px] font-medium tracking-wider text-white/40 uppercase group-hover:text-white/60 transition-colors duration-300">
@@ -234,32 +235,32 @@ const FeaturedSections = () => {
                     </div>
 
                     {/* Title and description with improved typography */}
-                    <div className="space-y-2">
+                    <div className="flex-grow space-y-2">
                       <h3
-                        className={`text-lg font-semibold text-white/90 ${theme.text} transition-all duration-300 line-clamp-2 group-hover:translate-x-1`}
+                        className={`text-base sm:text-lg font-semibold text-white/90 ${theme.text} transition-all duration-300 line-clamp-2 group-hover:translate-x-1`}
                       >
                         {market.title}
                       </h3>
-                      <p className="text-sm text-white/50 leading-relaxed line-clamp-3 group-hover:text-white/60 transition-colors duration-300">
-                        {truncateText(market.description, 240)}
+                      <p className="text-xs sm:text-sm text-white/50 leading-relaxed line-clamp-3 group-hover:text-white/60 transition-colors duration-300">
+                        {truncateText(market.description, 120)}
                       </p>
                     </div>
 
                     {/* Market stats with improved layout */}
-                    <div className="flex items-end justify-between mt-10">
+                    <div className="flex items-end justify-between mt-4 sm:mt-6">
                       <CircularProgress probability={market.probability || 0} theme={theme} />
                       <div className="flex flex-col items-end space-y-2">
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 group-hover:bg-white/10 transition-all duration-300 group-hover:-translate-y-1 hover:ring-1 hover:ring-white/20">
-                          <svg className="w-4 h-4 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 rounded-lg bg-white/5 group-hover:bg-white/10 transition-all duration-300 group-hover:-translate-y-1 hover:ring-1 hover:ring-white/20">
+                          <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
-                          <span className="text-sm font-medium text-white/90">{market.volume || "KES 0"}</span>
+                          <span className="text-xs sm:text-sm font-medium text-white/90">{market.volume || "KES 0"}</span>
                         </div>
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 group-hover:bg-white/10 transition-all duration-300 group-hover:-translate-y-1 delay-75 hover:ring-1 hover:ring-white/20">
-                          <svg className="w-4 h-4 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 rounded-lg bg-white/5 group-hover:bg-white/10 transition-all duration-300 group-hover:-translate-y-1 delay-75 hover:ring-1 hover:ring-white/20">
+                          <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                           </svg>
-                          <span className="text-sm font-medium text-white/90">{market.trades || 0} Trades</span>
+                          <span className="text-xs sm:text-sm font-medium text-white/90">{market.trades || 0} Trades</span>
                         </div>
                       </div>
                     </div>

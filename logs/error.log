@@ -2054,3 +2054,5 @@
 2024-11-28 12:42:28:4228 [31merror[39m: [31mFailed to fetch RSS feed Capital FM after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
 2024-11-28 12:42:28:4228 [31merror[39m: [31mError fetching RSS feed from Capital FM Business: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
 2024-11-28 12:42:28:4228 [31merror[39m: [31mFailed to fetch RSS feed Capital FM Business after 2 attempts: getaddrinfo ENOTFOUND www.capitalfm.co.ke[39m
+2024-12-01 12:05:11:511 [31merror[39m: [31mError fetching RSS feed from Pulse Live Entertainment: read ECONNRESET[39m
+2024-12-01 12:05:11:511 [31merror[39m: [31mFailed to fetch RSS feed Pulse Live Entertainment after 0 attempts: read ECONNRESET[39m
