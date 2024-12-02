@@ -112,6 +112,9 @@ export default function CreateMarketPage() {
       // Clear form data from localStorage after successful submission
       localStorage.removeItem(MARKET_FORM_STORAGE_KEY);
 
+      // Show success toast
+      toast.success('Market created successfully!');
+
       // Redirect to the markets page
       router.push('/markets');
     } catch (err: any) {

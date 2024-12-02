@@ -21,6 +21,7 @@ export async function middleware(req: NextRequest) {
 
     const protectedPaths = [
       '/dashboard',
+      '/markets/create',
       '/api/markets/trade',
       '/api/markets/positions',
       '/dashboard/portfolio',
