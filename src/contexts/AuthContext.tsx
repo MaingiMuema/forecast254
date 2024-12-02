@@ -94,10 +94,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     
     if (typeof window === 'undefined') return;
 
+    // Clear all auth-related items from localStorage
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('sb-auth-token');
+    
     // Clear Supabase specific items
     const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID;
     if (projectId) {
-      window.localStorage.removeItem(`sb-${projectId}-auth-token`);
+      localStorage.removeItem(`sb-${projectId}-auth-token`);
     }
 
     // Clear refresh timer
@@ -464,12 +468,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Set loading to false before navigation
       setLoading(false);
       
-      // Force clear any Supabase session data
+      // Force clear any remaining auth data
       if (typeof window !== 'undefined') {
-        const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID;
-        if (projectId) {
-          window.localStorage.removeItem(`sb-${projectId}-auth-token`);
-        }
+        localStorage.removeItem('sb-auth-token');
+        localStorage.removeItem('userRole');
         // Use window.location for a full page reload
         window.location.href = '/login';
       }

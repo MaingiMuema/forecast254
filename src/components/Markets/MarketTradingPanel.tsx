@@ -55,6 +55,21 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
   }
 
   const validateOrder = (): ValidationResult => {
+    if (!market) {
+      return {
+        isValid: false,
+        error: 'Market data is not available'
+      };
+    }
+
+    // Check if market is resolved
+    if (market.resolved_value !== null) {
+      return {
+        isValid: false,
+        error: `This market has been resolved. The outcome was ${market.resolved_value ? 'YES' : 'NO'}.`
+      };
+    }
+
     const orderAmount = Number(amount);
 
     // Validate share amount (not monetary value)
@@ -745,6 +760,13 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
 
   return (
     <div className="bg-card rounded-xl border border-border p-6">
+      {market && market.resolved_value !== null && (
+        <div className="mb-4 p-3 bg-blue-100 dark:bg-blue-900 rounded-md text-blue-800 dark:text-blue-200">
+          <p className="font-semibold">Market Resolved</p>
+          <p>The outcome of this market was: {market.resolved_value ? 'YES' : 'NO'}</p>
+          {market.outcome && <p>Resolution Details: {market.outcome}</p>}
+        </div>
+      )}
       {/* Trading Form Section */}
       <div className="mb-8 relative">
         {/* Background decorative elements */}
