@@ -2,12 +2,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { FaPlus, FaSpinner } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
 import { getInitialSharePrices } from '@/lib/priceCalculation';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 const categories = [
   'Politics',
@@ -20,26 +21,30 @@ const categories = [
   'Other'
 ];
 
+const MARKET_FORM_STORAGE_KEY = 'market_form_draft';
+
+const initialFormData = {
+  title: '',
+  question: '',
+  description: '',
+  category: '',
+  resolution_source: '',
+  resolution_criteria: '',
+  closing_date: '',
+  resolution_date: '',
+  end_date: '',
+  source_url: '',
+  min_trade_amount: '1',
+  max_trade_amount: '100'
+};
+
 export default function CreateMarketPage() {
   const router = useRouter();
   const supabase = createClientComponentClient();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
-  const [formData, setFormData] = useState({
-    title: '',
-    question: '',
-    description: '',
-    category: '',
-    resolution_source: '',
-    resolution_criteria: '',
-    closing_date: '',
-    resolution_date: '',
-    end_date: '',
-    source_url: '',
-    min_trade_amount: '1',    // Minimum trade amount
-    max_trade_amount: '100'   // Maximum trade amount
-  });
+  const [formData, setFormData] = useLocalStorage(MARKET_FORM_STORAGE_KEY, initialFormData);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -103,6 +108,9 @@ export default function CreateMarketPage() {
         console.error('Error creating market:', insertError);
         return;
       }
+
+      // Clear form data from localStorage after successful submission
+      localStorage.removeItem(MARKET_FORM_STORAGE_KEY);
 
       // Redirect to the markets page
       router.push('/markets');
