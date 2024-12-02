@@ -11,14 +11,14 @@ import { getInitialSharePrices } from '@/lib/priceCalculation';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 const categories = [
-  'Politics',
-  'Economics',
-  'Technology',
-  'Sports',
-  'Entertainment',
-  'Science',
-  'Health',
-  'Other'
+  'all',
+  'trending',
+  'sports',
+  'politics',
+  'entertainment',
+  'business',
+  'tech',
+  'education'
 ];
 
 const MARKET_FORM_STORAGE_KEY = 'market_form_draft';
@@ -203,8 +203,8 @@ export default function CreateMarketPage() {
             >
               <option value="">Select a category</option>
               {categories.map(category => (
-                <option key={category} value={category.toLowerCase()}>
-                  {category}
+                <option key={category} value={category}>
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
                 </option>
               ))}
             </select>
