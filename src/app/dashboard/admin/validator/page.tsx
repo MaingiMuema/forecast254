@@ -9,6 +9,7 @@ import { Database } from '@/types/supabase';
 import { useState, useEffect } from 'react';
 import { FiCheck, FiX, FiEye, FiAlertTriangle, FiDollarSign, FiActivity } from 'react-icons/fi';
 import toast from 'react-hot-toast';
+import MarketResolutionPanel from '@/components/Markets/MarketResolutionPanel';
 
 type Market = Database['public']['Tables']['markets']['Row'];
 
@@ -306,26 +307,35 @@ function ValidatorDashboard() {
                       {market.closing_date ? new Date(market.closing_date).toLocaleDateString() : 'Not set'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      <button
-                        onClick={() => updateMarketStatus(market.id, !market.active)}
-                        disabled={updatingMarkets[market.id]}
-                        className={`inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white ${
-                          market.active
-                            ? 'bg-red-600 hover:bg-red-700'
-                            : 'bg-emerald-600 hover:bg-emerald-700'
-                        } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 ${
-                          updatingMarkets[market.id] ? 'opacity-50 cursor-not-allowed' : ''
-                        }`}
-                      >
-                        {updatingMarkets[market.id] ? (
-                          <div className="w-4 h-4 border-t-2 border-white rounded-full animate-spin mr-2"></div>
-                        ) : market.active ? (
-                          <FiX className="w-4 h-4 mr-2" />
-                        ) : (
-                          <FiCheck className="w-4 h-4 mr-2" />
+                      <div className="flex space-x-2">
+                        {market.active && market.status === 'open' && (
+                          <MarketResolutionPanel
+                            marketId={market.id}
+                            marketTitle={market.title || ''}
+                            onResolutionComplete={fetchMarkets}
+                          />
                         )}
-                        {market.active ? 'Deactivate' : 'Activate'}
-                      </button>
+                        <button
+                          onClick={() => updateMarketStatus(market.id, !market.active)}
+                          disabled={updatingMarkets[market.id]}
+                          className={`inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white ${
+                            market.active
+                              ? 'bg-red-600 hover:bg-red-700'
+                              : 'bg-emerald-600 hover:bg-emerald-700'
+                          } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 ${
+                            updatingMarkets[market.id] ? 'opacity-50 cursor-not-allowed' : ''
+                          }`}
+                        >
+                          {updatingMarkets[market.id] ? (
+                            <div className="w-4 h-4 border-t-2 border-white rounded-full animate-spin mr-2"></div>
+                          ) : market.active ? (
+                            <FiX className="w-4 h-4 mr-2" />
+                          ) : (
+                            <FiCheck className="w-4 h-4 mr-2" />
+                          )}
+                          {market.active ? 'Deactivate' : 'Activate'}
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
