@@ -433,6 +433,38 @@ export type Database = {
           updated_at?: string
         }
       }
+      analytics_page_views: {
+        Row: {
+          id: string;
+          path: string;
+          timestamp: string;
+          user_id: string | null;
+          session_id: string;
+          referrer: string | null;
+          user_agent: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          path: string;
+          timestamp?: string;
+          user_id?: string | null;
+          session_id: string;
+          referrer?: string | null;
+          user_agent?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          path?: string;
+          timestamp?: string;
+          user_id?: string | null;
+          session_id?: string;
+          referrer?: string | null;
+          user_agent?: string | null;
+          created_at?: string;
+        };
+      }
     }
     Views: {
       [_ in never]: never

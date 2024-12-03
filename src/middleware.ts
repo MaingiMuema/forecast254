@@ -3,6 +3,7 @@ import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
+import { analyticsService } from '@/lib/analytics';
 
 // Function to check if the path should be tracked
 const shouldTrackPath = (pathname: string): boolean => {
@@ -45,13 +46,13 @@ export async function middleware(req: NextRequest) {
         sameSite: 'lax',
       });
 
-      // Record page view in Supabase
-      await supabase.from('analytics_page_views').insert({
+      // Record page view using analytics service
+      await analyticsService.trackPageView({
         path: req.nextUrl.pathname,
         session_id: sessionId,
         user_id: session?.user?.id,
-        referrer: req.headers.get('referer') || null,
-        user_agent: req.headers.get('user-agent') || null,
+        referrer: req.headers.get('referer') || undefined,
+        user_agent: req.headers.get('user-agent') || undefined,
       });
     }
 
@@ -85,45 +86,15 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL('/dashboard', req.url));
     }
 
-    // If accessing protected routes without auth, handle appropriately
+    // Redirect unauthenticated users away from protected routes
     if (!session && isProtectedPath) {
-      // For API routes, return 401 JSON response
-      if (req.nextUrl.pathname.startsWith('/api/')) {
-        return new NextResponse(
-          JSON.stringify({ 
-            error: 'Authentication required',
-            code: 'AUTH_REQUIRED'
-          }),
-          { 
-            status: 401,
-            headers: { 
-              'Content-Type': 'application/json',
-              'WWW-Authenticate': 'Bearer'
-            }
-          }
-        );
-      }
-      
-      // For page routes, redirect to login with return URL
-      const returnTo = encodeURIComponent(req.nextUrl.pathname);
-      return NextResponse.redirect(new URL(`/login?returnTo=${returnTo}`, req.url));
+      return NextResponse.redirect(new URL('/login', req.url));
     }
 
     return res;
   } catch (error) {
     console.error('Middleware error:', error);
-    return new NextResponse(
-      JSON.stringify({ 
-        error: 'Internal server error',
-        code: 'INTERNAL_ERROR'
-      }),
-      { 
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    );
+    return res;
   }
 }
 
