@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { FaCrown, FaMedal } from 'react-icons/fa';
 import type { LeaderboardUser } from './LeaderboardPage';
+import UserAvatar from '@/components/UserAvatar';
 
 type Props = {
   user: LeaderboardUser;
@@ -58,14 +58,13 @@ export default function UserRankCard({ user, rank, isPodium = false }: Props) {
             <div className={`absolute -top-2 -right-2 z-10 ${rank <= 3 ? 'block' : 'hidden'}`}>
               {getRankIcon(rank)}
             </div>
-            <div className="relative h-16 w-16">
-              <Image
-                src={user.avatar_url || '/default-avatar.png'}
-                alt={`${user.username}'s profile picture`}
-                fill
-                className="rounded-full object-cover border-4 border-background shadow-md"
-              />
-            </div>
+            <UserAvatar 
+              username={user.username}
+              first_name={user.first_name}
+              last_name={user.last_name}
+              avatarUrl={user.avatar_url}
+              size="md"
+            />
           </div>
           <div className="space-y-1">
             <div className="flex items-center gap-2">

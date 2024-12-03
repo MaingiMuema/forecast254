@@ -8,8 +8,10 @@ import LeaderboardStats from './LeaderboardStats';
 
 export type LeaderboardUser = {
   id: string;
-  username: string;
-  avatar_url: string;
+  username: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  avatar_url: string | null;
   points: number;
   total_predictions: number;
   correct_predictions: number;
