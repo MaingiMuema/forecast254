@@ -5,6 +5,7 @@ import MarketActivity from '@/components/Markets/MarketActivity';
 import MarketTradingPanel from '@/components/Markets/MarketTradingPanel';
 import MarketStats from '@/components/Markets/MarketStats';
 import MarketSkeleton from '@/components/Markets/MarketSkeleton';
+import MarketViewTracker from '@/components/Markets/MarketViewTracker';
 
 interface PageProps {
   params: Promise<{
@@ -18,6 +19,9 @@ export default async function MarketPage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen bg-background">
+      {/* View Tracker */}
+      <MarketViewTracker marketId={marketId} />
+      
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Trading Panel - Shows first on mobile */}
