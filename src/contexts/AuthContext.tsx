@@ -174,24 +174,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID;
     if (!projectId) return;
 
-    // Check cookie existence
-    const hasCookie = document.cookie.includes('sb-auth-token');
-    const hasLocalStorage = !!localStorage.getItem(`sb-${projectId}-auth-token`);
+    // Check for required auth data in both localStorage and cookies
+    const requiredCookies = ['sb-access-token', 'sb-refresh-token'];
+    const requiredLocalStorage = [`sb-${projectId}-auth-token`];
+    
+    const hasCookies = requiredCookies.every(name => 
+      document.cookie.includes(`${name}=`)
+    );
+    const hasLocalStorage = requiredLocalStorage.every(name => 
+      localStorage.getItem(name)
+    );
 
-    // If cookie is missing but localStorage exists, clear localStorage
-    if (!hasCookie && hasLocalStorage) {
-      console.log('Cookie missing, clearing localStorage');
+    // If either storage is missing auth data, clear both and force re-auth
+    if (!hasCookies || !hasLocalStorage) {
+      console.log('Missing auth data, clearing all auth state');
       await clearAuthData();
       return;
     }
 
-    // If localStorage is missing but cookie exists, verify with server
-    if (hasCookie && !hasLocalStorage) {
-      const isValid = await refreshSession();
-      if (!isValid) {
-        console.log('Invalid session, clearing all auth data');
-        await clearAuthData();
-      }
+    // Verify session with server
+    const isValid = await refreshSession();
+    if (!isValid) {
+      console.log('Invalid session, clearing all auth data');
+      await clearAuthData();
     }
   }, [clearAuthData, refreshSession]);
 

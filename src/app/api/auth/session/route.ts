@@ -156,9 +156,24 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
+    const cookieStore = cookies();
     const supabase = createRouteHandlerClient<Database>({ 
-      cookies: () => cookies()
+      cookies: () => cookieStore
     });
+
+    // Check for required auth cookies
+    const requiredCookies = ['sb-access-token', 'sb-refresh-token'];
+    const hasCookies = requiredCookies.every(name => cookieStore.get(name));
+
+    if (!hasCookies) {
+      console.log('Missing required auth cookies');
+      return createCorsResponse(
+        NextResponse.json(
+          { session: null },
+          { status: 401 }
+        )
+      );
+    }
 
     const { data: { session }, error } = await supabase.auth.getSession();
 
@@ -168,6 +183,15 @@ export async function GET() {
         NextResponse.json(
           { error: 'Failed to get session', details: error },
           { status: 500 }
+        )
+      );
+    }
+
+    if (!session) {
+      return createCorsResponse(
+        NextResponse.json(
+          { session: null },
+          { status: 401 }
         )
       );
     }
