@@ -39,7 +39,39 @@ interface DashboardStats {
 
 interface Market {
   id: string;
-  title: string | null;
+  creator_id: string;
+  title: string;
+  description: string;
+  category: string;
+  resolution_source: string;
+  closing_date: string;
+  resolution_date: string | null;
+  status: 'open' | 'closed' | 'resolved';
+  outcome: string | null;
+  total_volume: number;
+  liquidity_pool: number;
+  created_at: string;
+  updated_at: string;
+  source_article_id: string | null;
+  end_date: string | null;
+  question: string | null;
+  resolution_criteria: string | null;
+  resolved_value: boolean | null;
+  probability_yes: number;
+  probability_no: number;
+  views: number;
+  trades: number;
+  trending_score: number | null;
+  min_amount: number;
+  max_amount: number;
+  total_yes_amount: number;
+  total_no_amount: number;
+  source_url: string | null;
+  yes_price: number;
+  no_price: number;
+  last_trade_price: number | null;
+  last_trade_time: string | null;
+  active: boolean;
 }
 
 interface TradeActivity {
@@ -60,6 +92,43 @@ interface Activity {
   created_at: string;
   market_id: string;
   user_id: string;
+}
+
+interface Order {
+  id: string;
+  user_id: string;
+  market_id: string;
+  filled_amount: number;
+  price: number;
+  position: 'yes' | 'no';
+  status: 'pending' | 'filled' | 'cancelled';
+  created_at: string;
+  market: Market | null;
+}
+
+interface OrderWithMarket extends Order {
+  market: Market;
+}
+
+interface Stats {
+  userVolume: number;
+  volumeTrend: number;
+  portfolioValue: number;
+  portfolioTrend: number;
+}
+
+interface PortfolioStats {
+  currentValue: number;
+  trend: number;
+  previousValue: number;
+  positions: {
+    marketId: string;
+    marketTitle: string;
+    position: 'yes' | 'no';
+    amount: number;
+    value: number;
+    profitLoss: number;
+  }[];
 }
 
 export default function DashboardPage() {
@@ -107,6 +176,224 @@ export default function DashboardPage() {
       const multiplier = order.side === 'buy' ? 1 : -1;
       return sum + (amount * price * multiplier);
     }, includeBalance ? balance : 0);
+  };
+
+  // Calculate portfolio value and trend
+  const calculatePortfolioStats = async (
+    supabase: any,
+    userId: string,
+    includeBalance: boolean = true
+  ): Promise<PortfolioStats> => {
+    try {
+      // Get user's balance
+      const { data: balanceData } = await supabase
+        .from('profiles')
+        .select('balance')
+        .eq('id', userId)
+        .single();
+
+      const balance = balanceData?.balance || 0;
+
+      // Get all orders with market data for the last 30 days
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+      const { data: orders, error: ordersError } = await supabase
+        .from('orders')
+        .select(`
+          *,
+          market:markets(
+            id,
+            title,
+            status,
+            yes_price,
+            no_price,
+            resolved_value
+          )
+        `)
+        .eq('user_id', userId)
+        .eq('status', 'filled')
+        .gte('created_at', thirtyDaysAgo.toISOString());
+
+      if (ordersError) throw ordersError;
+
+      // Group orders by market
+      const marketPositions = new Map<string, {
+        marketId: string;
+        marketTitle: string;
+        yesAmount: number;
+        noAmount: number;
+        totalCost: number;
+      }>();
+
+      (orders as Order[]).forEach((order: Order) => {
+        if (!order.market || order.market.status === 'resolved') return;
+
+        const position = marketPositions.get(order.market_id) || {
+          marketId: order.market_id,
+          marketTitle: order.market.title,
+          yesAmount: 0,
+          noAmount: 0,
+          totalCost: 0
+        };
+
+        if (order.position === 'yes') {
+          position.yesAmount += order.filled_amount;
+        } else {
+          position.noAmount += order.filled_amount;
+        }
+        position.totalCost += order.filled_amount * order.price;
+
+        marketPositions.set(order.market_id, position);
+      });
+
+      // Calculate current portfolio value
+      let currentValue = includeBalance ? balance : 0;
+      const positions: PortfolioStats['positions'] = [];
+
+      for (const position of marketPositions.values()) {
+        const market = (orders as Order[]).find((o: Order) => o.market_id === position.marketId)?.market;
+        if (!market) continue;
+
+        // Calculate net position value
+        const yesValue = position.yesAmount * market.yes_price;
+        const noValue = position.noAmount * market.no_price;
+        const positionValue = yesValue + noValue;
+        const profitLoss = positionValue - position.totalCost;
+
+        currentValue += positionValue;
+
+        if (position.yesAmount > 0) {
+          positions.push({
+            marketId: position.marketId,
+            marketTitle: position.marketTitle,
+            position: 'yes',
+            amount: position.yesAmount,
+            value: yesValue,
+            profitLoss: yesValue - (position.totalCost * (position.yesAmount / (position.yesAmount + position.noAmount)))
+          });
+        }
+
+        if (position.noAmount > 0) {
+          positions.push({
+            marketId: position.marketId,
+            marketTitle: position.marketTitle,
+            position: 'no',
+            amount: position.noAmount,
+            value: noValue,
+            profitLoss: noValue - (position.totalCost * (position.noAmount / (position.yesAmount + position.noAmount)))
+          });
+        }
+      }
+
+      // Calculate portfolio value from 24 hours ago
+      const twentyFourHoursAgo = new Date();
+      twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+
+      const { data: oldOrders } = await supabase
+        .from('orders')
+        .select(`
+          *,
+          market:markets(
+            id,
+            yes_price,
+            no_price,
+            status
+          )
+        `)
+        .eq('user_id', userId)
+        .eq('status', 'filled')
+        .lt('created_at', twentyFourHoursAgo.toISOString());
+
+      let previousValue = includeBalance ? balance : 0;
+
+      if (oldOrders) {
+        const oldPositions = new Map<string, { yesAmount: number; noAmount: number }>();
+
+        (oldOrders as Order[]).forEach((order: Order) => {
+          if (!order.market || order.market.status === 'resolved') return;
+
+          const position = oldPositions.get(order.market_id) || { yesAmount: 0, noAmount: 0 };
+          if (order.position === 'yes') {
+            position.yesAmount += order.filled_amount;
+          } else {
+            position.noAmount += order.filled_amount;
+          }
+          oldPositions.set(order.market_id, position);
+        });
+
+        for (const [marketId, position] of oldPositions.entries()) {
+          const market = (oldOrders as Order[]).find((o: Order) => o.market_id === marketId)?.market;
+          if (!market) continue;
+
+          previousValue += (position.yesAmount * market.yes_price) + (position.noAmount * market.no_price);
+        }
+      }
+
+      // Calculate trend percentage
+      const trend = previousValue > 0 
+        ? ((currentValue - previousValue) / previousValue) * 100 
+        : 0;
+
+      return {
+        currentValue: Math.round(currentValue * 100) / 100,
+        previousValue: Math.round(previousValue * 100) / 100,
+        trend: Math.round(trend * 100) / 100,
+        positions: positions.sort((a, b) => b.value - a.value) // Sort by highest value first
+      };
+    } catch (error) {
+      console.error('Error calculating portfolio stats:', error);
+      return {
+        currentValue: 0,
+        previousValue: 0,
+        trend: 0,
+        positions: []
+      };
+    }
+  };
+
+  // Helper function to calculate stats excluding resolved markets
+  const calculateStats = async (supabase: any, userId: string): Promise<Stats> => {
+    try {
+      const portfolioStats = await calculatePortfolioStats(supabase, userId, true);
+      
+      // Get all orders for volume calculation
+      const { data: orders, error: ordersError } = await supabase
+        .from('orders')
+        .select(`
+          *,
+          market:markets(
+            id,
+            status
+          )
+        `)
+        .eq('user_id', userId)
+        .eq('status', 'filled');
+
+      if (ordersError) throw ordersError;
+
+      // Calculate volume excluding resolved markets
+      const volume = (orders as Order[])
+        .filter((order: Order) => order.market && order.market.status !== 'resolved')
+        .reduce((total: number, order: Order) => {
+          return total + (order.filled_amount * order.price);
+        }, 0);
+
+      return {
+        userVolume: Math.round(volume * 100) / 100,
+        volumeTrend: 0, // You might want to implement volume trend calculation
+        portfolioValue: portfolioStats.currentValue,
+        portfolioTrend: portfolioStats.trend
+      };
+    } catch (error) {
+      console.error('Error calculating stats:', error);
+      return {
+        userVolume: 0,
+        volumeTrend: 0,
+        portfolioValue: 0,
+        portfolioTrend: 0
+      };
+    }
   };
 
   const fetchStats = async () => {
@@ -201,15 +488,17 @@ export default function DashboardPage() {
         .from('markets')
         .select('id');
 
+      const stats = await calculateStats(supabase, user.id);
+
       setStats({
         totalMarkets: markets?.length || 0,
         userTrades: allTrades?.length || 0,
-        userVolume,
-        portfolioValue: totalPortfolioValue,
+        userVolume: stats.userVolume,
+        portfolioValue: stats.portfolioValue,
         marketsTrend,
         tradesTrend,
-        volumeTrend,
-        portfolioTrend
+        volumeTrend: stats.volumeTrend,
+        portfolioTrend: stats.portfolioTrend
       });
 
     } catch (error) {

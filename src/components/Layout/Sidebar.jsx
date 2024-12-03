@@ -26,8 +26,6 @@ export const sidebarLinks = [
     href: "/dashboard/transactions",
     icon: ArrowsRightLeftIcon,
   },
-  { name: "History", href: "/dashboard/history", icon: ClockIcon },
-  { name: "Leaderboard", href: "/dashboard/leaderboard", icon: TrophyIcon },
   { name: "Settings", href: "/dashboard/settings", icon: Cog6ToothIcon },
   { name: "Help", href: "/dashboard/help", icon: QuestionMarkCircleIcon },
 ];
