@@ -94,8 +94,8 @@ export default function FeaturedMarketsPage() {
                   <span className="text-sm text-muted-foreground">
                     Volume: {market.volume}
                   </span>
-                  <span className="text-sm font-medium text-primary">
-                    {Math.round(market.probability * 100)}%
+                  <span className={`text-sm font-medium ${market.probability >= 10 ? 'text-green-500' : 'text-primary'}`}>
+                    {market.probability}%
                   </span>
                 </div>
               </div>

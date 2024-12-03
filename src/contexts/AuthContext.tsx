@@ -85,6 +85,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, 100); // 100ms debounce
   }, []);
 
+  // Refresh session
+  const refreshSession = useCallback(async (): Promise<boolean> => {
+    if (!mountedRef.current) return false;
+
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      if (error || !session) {
+        console.warn('Session refresh failed:', error);
+        return false;
+      }
+
+      // Verify session with server
+      const response = await fetch('/api/auth/session', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        console.warn('Server session verification failed');
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error refreshing session:', error);
+      return false;
+    }
+  }, []);
+
   // Clear auth data without automatic redirect
   const clearAuthData = useCallback(async () => {
     if (!mountedRef.current) return;
@@ -103,6 +133,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (projectId) {
       localStorage.removeItem(`sb-${projectId}-auth-token`);
     }
+
+    // Clear cookies
+    document.cookie = 'sb-auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = `sb-${projectId}-auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 
     // Clear refresh timer
     if (refreshTimerRef.current) {
@@ -133,6 +167,61 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  // Check and sync storage
+  const checkAndSyncStorage = useCallback(async () => {
+    if (typeof window === 'undefined') return;
+
+    const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID;
+    if (!projectId) return;
+
+    // Check cookie existence
+    const hasCookie = document.cookie.includes('sb-auth-token');
+    const hasLocalStorage = !!localStorage.getItem(`sb-${projectId}-auth-token`);
+
+    // If cookie is missing but localStorage exists, clear localStorage
+    if (!hasCookie && hasLocalStorage) {
+      console.log('Cookie missing, clearing localStorage');
+      await clearAuthData();
+      return;
+    }
+
+    // If localStorage is missing but cookie exists, verify with server
+    if (hasCookie && !hasLocalStorage) {
+      const isValid = await refreshSession();
+      if (!isValid) {
+        console.log('Invalid session, clearing all auth data');
+        await clearAuthData();
+      }
+    }
+  }, [clearAuthData, refreshSession]);
+
+  // Add storage event listener
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      const projectId = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID;
+      if (!projectId) return;
+
+      // Check if the change is related to auth
+      if (e.key === `sb-${projectId}-auth-token` || e.key === 'userRole') {
+        checkAndSyncStorage();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [checkAndSyncStorage]);
+
+  // Periodically check storage sync
+  useEffect(() => {
+    const syncInterval = setInterval(checkAndSyncStorage, 60000); // Check every minute
+    return () => clearInterval(syncInterval);
+  }, [checkAndSyncStorage]);
+
+  // Initial storage check
+  useEffect(() => {
+    checkAndSyncStorage();
+  }, [checkAndSyncStorage]);
+
   // Handle navigation
   useEffect(() => {
     if (!router || !pendingRedirect) return;
@@ -159,36 +248,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log('Setting redirect path to:', targetPath);
     setPendingRedirect(targetPath);
   }, [searchParams]);
-
-  // Refresh session
-  const refreshSession = useCallback(async () => {
-    if (!mountedRef.current) return false;
-
-    try {
-      const { data: { session }, error } = await supabase.auth.getSession();
-      
-      if (error || !session) {
-        console.warn('Session refresh failed:', error);
-        return false;
-      }
-
-      // Verify session with server
-      const response = await fetch('/api/auth/session', {
-        method: 'GET',
-        credentials: 'include',
-      });
-
-      if (!response.ok) {
-        console.warn('Server session verification failed');
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      console.error('Error refreshing session:', error);
-      return false;
-    }
-  }, []);
 
   // Start session refresh timer
   const startSessionRefresh = useCallback(() => {

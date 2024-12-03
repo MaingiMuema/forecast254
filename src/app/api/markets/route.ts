@@ -51,12 +51,31 @@ export async function GET(request: Request) {
       throw error;
     }
 
+    // Get all filled orders for the markets
+    const marketIds = markets.map(m => m.id);
+    const { data: orders, error: ordersError } = await supabase
+      .from('orders')
+      .select('market_id, filled_amount, price')
+      .in('market_id', marketIds)
+      .eq('status', 'filled');
+
+    if (ordersError) {
+      throw ordersError;
+    }
+
+    // Calculate volumes for each market
+    const marketVolumes = orders.reduce((acc: { [key: string]: number }, order) => {
+      const volume = (order.filled_amount || 0) * (order.price || 0);
+      acc[order.market_id] = (acc[order.market_id] || 0) + volume;
+      return acc;
+    }, {});
+
     // Transform the data to match the component expectations
     const transformedMarkets = markets.map(market => ({
       id: market.id,
       title: market.title,
       category: market.category,
-      volume: market.total_volume ? `KES ${market.total_volume.toLocaleString()}` : "KES 0",
+      volume: marketVolumes[market.id] ? `KES ${Math.round(marketVolumes[market.id]).toLocaleString()}` : "KES 0",
       probability: Math.round(market.probability_yes * 100),
       endDate: market.end_date,
       isHot: market.trending_score > 100 || market.total_volume > 10000,
