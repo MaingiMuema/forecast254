@@ -15,18 +15,6 @@ interface SessionRequest {
   session: Session;
 }
 
-// Helper function to create response with CORS headers
-function createCorsResponse(response: NextResponse) {
-  response.headers.set('Access-Control-Allow-Origin', process.env.NEXT_PUBLIC_SITE_URL || '*');
-  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
-  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  response.headers.set('Access-Control-Allow-Credentials', 'true');
-  response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-  response.headers.set('Pragma', 'no-cache');
-  response.headers.set('Expires', '0');
-  return response;
-}
-
 // Helper function to copy auth cookies to response
 async function copyAuthCookiesToResponse(response: NextResponse) {
   const cookieStore = await cookies();
@@ -42,6 +30,18 @@ async function copyAuthCookiesToResponse(response: NextResponse) {
       response.headers.append('Set-Cookie', cookie.value);
     }
   }
+  return response;
+}
+
+// Helper function to create response with CORS headers
+function createCorsResponse(response: NextResponse) {
+  response.headers.set('Access-Control-Allow-Origin', process.env.NEXT_PUBLIC_SITE_URL || '*');
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  response.headers.set('Access-Control-Allow-Credentials', 'true');
+  response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  response.headers.set('Pragma', 'no-cache');
+  response.headers.set('Expires', '0');
   return response;
 }
 
@@ -156,9 +156,9 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const supabase = createRouteHandlerClient<Database>({ 
-      cookies: () => cookieStore
+      cookies: () => cookies()
     });
 
     // Check for required auth cookies
