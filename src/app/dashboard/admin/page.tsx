@@ -6,9 +6,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { Database } from '@/types/supabase';
 import { useState, useEffect } from 'react';
-import { FiUsers, FiCheckCircle, FiShield, FiActivity, FiDollarSign, FiTrendingUp } from 'react-icons/fi';
+import { FiUsers, FiCheckCircle, FiShield, FiActivity, FiDollarSign, FiTrendingUp, FiEye, FiClock } from 'react-icons/fi';
+import { analyticsService, AnalyticsData } from '@/lib/analytics';
 
-type Profile = Database['public']['Tables']['profiles']['Row'];
+type Profile = Database['public']['Tables']['profiles']['Row'] & {
+  last_sign_in_at?: string | null;
+};
 
 interface AdminStats {
   totalUsers: number;
@@ -17,6 +20,7 @@ interface AdminStats {
   totalMarketValue: number;
   validatorsCount: number;
   adminsCount: number;
+  analytics?: AnalyticsData;
 }
 
 function AdminDashboard() {
@@ -41,7 +45,7 @@ function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      const { data: profiles } = await supabase.from('profiles').select('role');
+      const { data: profiles } = await supabase.from('profiles').select('*');
       const { data: orders } = await supabase
         .from('orders')
         .select('price, amount, filled_amount')
@@ -49,24 +53,42 @@ function AdminDashboard() {
       
       const validatorsCount = profiles?.filter(p => p.role === 'validator').length || 0;
       const adminsCount = profiles?.filter(p => p.role === 'admin').length || 0;
-      
-      // Calculate total market value from orders
+
+      // Fetch analytics data
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - 30); // Last 30 days
+      const analytics = await analyticsService.getAnalytics(startDate, endDate);
+
+      // Calculate total market value safely handling null values
       const totalMarketValue = orders?.reduce((sum, order) => {
-        // Use filled_amount for executed orders, otherwise use the original amount
-        const orderAmount = order.filled_amount || order.amount || 0;
-        return sum + (orderAmount * (order.price || 0));
+        const price = order.price || 0;
+        const filledAmount = order.filled_amount || 0;
+        return sum + (price * filledAmount);
       }, 0) || 0;
+
+      // Consider users active if they've updated their profile in the last 30 days
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      const activeUsers = profiles?.filter(p => {
+        const lastUpdate = new Date(p.updated_at);
+        return lastUpdate >= thirtyDaysAgo;
+      }).length || 0;
 
       setStats({
         totalUsers: profiles?.length || 0,
-        activeUsers: Math.floor((profiles?.length || 0) * 0.8), // Demo: assuming 80% active
+        activeUsers,
         totalTransactions: orders?.length || 0,
         totalMarketValue,
         validatorsCount,
         adminsCount,
+        analytics,
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
+      setError('Failed to fetch statistics');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -237,6 +259,82 @@ function AdminDashboard() {
           icon={FiShield}
           description="Platform administrators"
         />
+      </div>
+
+      {/* Analytics Section */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Website Analytics</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg">
+            <div className="flex items-center">
+              <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
+                <FiEye className="text-blue-500 dark:text-blue-400 text-2xl" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Page Views</p>
+                <p className="text-2xl font-bold text-gray-800 dark:text-white">
+                  {new Intl.NumberFormat().format(stats.analytics?.pageViews || 0)}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg">
+            <div className="flex items-center">
+              <div className="p-3 bg-green-100 dark:bg-green-900 rounded-lg">
+                <FiUsers className="text-green-500 dark:text-green-400 text-2xl" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Unique Visitors</p>
+                <p className="text-2xl font-bold text-gray-800 dark:text-white">
+                  {new Intl.NumberFormat().format(stats.analytics?.uniqueVisitors || 0)}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg">
+            <div className="flex items-center">
+              <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-lg">
+                <FiClock className="text-purple-500 dark:text-purple-400 text-2xl" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Avg. Session Duration</p>
+                <p className="text-2xl font-bold text-gray-800 dark:text-white">
+                  {Math.round(stats.analytics?.averageSessionDuration || 0)}m
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Top Pages */}
+        <div className="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+          <div className="p-6">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Top Pages</h3>
+            <div className="overflow-x-auto">
+              <table className="min-w-full">
+                <thead>
+                  <tr className="border-b border-gray-200 dark:border-gray-700">
+                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Page</th>
+                    <th className="text-right py-3 px-4 text-sm font-medium text-gray-500 dark:text-gray-400">Views</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stats.analytics?.topPages.map((page, index) => (
+                    <tr 
+                      key={index} 
+                      className="border-b border-gray-200 dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      <td className="py-3 px-4 text-sm text-gray-800 dark:text-gray-200">{page.path}</td>
+                      <td className="py-3 px-4 text-sm text-right text-gray-800 dark:text-gray-200">
+                        {new Intl.NumberFormat().format(page.views)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Users Table */}

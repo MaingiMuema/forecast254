@@ -11155,3 +11155,15 @@
 2024-12-03 04:29:21:2921 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
 2024-12-03 04:29:21:2921 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
 2024-12-03 04:29:21:2921 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-12-03 04:29:22:2922 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-12-03 04:29:22:2922 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m
+2024-12-03 04:29:22:2922 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-12-03 04:29:22:2922 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-12-03 04:34:05:345 [32minfo[39m: [32mFetching RSS feed: Capital FM Sports for category: sports[39m
+2024-12-03 04:34:06:346 [32minfo[39m: [32mFetching RSS feed: Pulse Live Entertainment for category: entertainment[39m
+2024-12-03 04:34:06:346 [32minfo[39m: [32mFetching RSS feed: Capital FM for category: politics[39m
+2024-12-03 04:34:06:346 [32minfo[39m: [32mFetching RSS feed: Capital FM Business for category: business[39m
+2024-12-03 04:34:07:347 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM[39m
+2024-12-03 04:34:07:347 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Sports[39m
+2024-12-03 04:34:08:348 [32minfo[39m: [32mSuccessfully fetched 25 articles from RSS feed Pulse Live Entertainment[39m
+2024-12-03 04:34:08:348 [32minfo[39m: [32mSuccessfully fetched 10 articles from RSS feed Capital FM Business[39m

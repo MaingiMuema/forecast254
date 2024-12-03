@@ -2,6 +2,20 @@
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { v4 as uuidv4 } from 'uuid';
+
+// Function to check if the path should be tracked
+const shouldTrackPath = (pathname: string): boolean => {
+  // Skip tracking for API routes, static files, and other non-page routes
+  const excludedPatterns = [
+    /^\/api\//,
+    /\.(ico|png|jpg|jpeg|css|js|svg)$/,
+    /^\/favicon/,
+    /^\/\_next\//,
+  ];
+  
+  return !excludedPatterns.some(pattern => pattern.test(pathname));
+};
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
@@ -17,6 +31,28 @@ export async function middleware(req: NextRequest) {
     if (sessionError) {
       console.error('Session error in middleware:', sessionError);
       // Don't throw, continue with null session
+    }
+
+    // Track analytics if it's a trackable path
+    if (shouldTrackPath(req.nextUrl.pathname)) {
+      const sessionId = req.cookies.get('session_id')?.value || uuidv4();
+      
+      // Set or refresh session cookie
+      res.cookies.set('session_id', sessionId, {
+        maxAge: 60 * 60 * 24, // 24 hours
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+      });
+
+      // Record page view in Supabase
+      await supabase.from('analytics_page_views').insert({
+        path: req.nextUrl.pathname,
+        session_id: sessionId,
+        user_id: session?.user?.id,
+        referrer: req.headers.get('referer') || null,
+        user_agent: req.headers.get('user-agent') || null,
+      });
     }
 
     const protectedPaths = [
@@ -93,8 +129,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    '/dashboard/:path*',
-    '/api/markets/:path*',
-    '/api/user/:path*'
-  ]
+    '/((?!_next/static|_next/image|favicon.ico).*)',
+  ],
 };
