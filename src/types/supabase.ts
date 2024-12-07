@@ -387,6 +387,8 @@ export type Database = {
           likes_count: number
           is_edited: boolean
           profiles: {
+            first_name: string | null
+            last_name: string | null
             username: string | null
             avatar_url: string | null
           }

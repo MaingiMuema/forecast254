@@ -11,17 +11,19 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { toast } from 'react-hot-toast';
 import { formatDistanceToNow } from 'date-fns';
 
-interface Comment {
-  id: string;
-  content: string;
-  created_at: string;
-  updated_at: string;
-  user_id: string;
-  market_id: string;
-  parent_id: string | null;
-  likes_count: number;
-  is_edited: boolean;
+type CommentWithProfile = Database['public']['Tables']['market_comments']['Row'] & {
   profiles: {
+    first_name: string | null;
+    last_name: string | null;
+    username: string | null;
+    avatar_url: string | null;
+  };
+};
+
+interface Comment extends Omit<CommentWithProfile, 'profiles'> {
+  profiles: {
+    first_name: string | null;
+    last_name: string | null;
     username: string | null;
     avatar_url: string | null;
   };
@@ -39,12 +41,23 @@ export default function MarketComments({ marketId }: MarketCommentsProps) {
   const [editingComment, setEditingComment] = useState<string | null>(null);
   const [editContent, setEditContent] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
   const { user } = useAuth();
   const supabase = createClientComponentClient<Database>();
 
   useEffect(() => {
     fetchComments();
     subscribeToComments();
+
+    // Set up polling interval
+    const interval = setInterval(() => {
+      fetchComments();
+    }, 1000); // Poll every second
+
+    // Cleanup function
+    return () => {
+      clearInterval(interval);
+    };
   }, [marketId]);
 
   const subscribeToComments = () => {
@@ -70,12 +83,18 @@ export default function MarketComments({ marketId }: MarketCommentsProps) {
   };
 
   const fetchComments = async () => {
+    // Prevent multiple simultaneous fetches
+    if (isFetching) return;
+
     try {
+      setIsFetching(true);
       const { data: commentsData, error } = await supabase
         .from('market_comments')
         .select(`
           *,
-          profiles (
+          profiles!inner (
+            first_name,
+            last_name,
             username,
             avatar_url
           )
@@ -97,8 +116,10 @@ export default function MarketComments({ marketId }: MarketCommentsProps) {
         likes_count: comment.likes_count,
         is_edited: comment.is_edited,
         profiles: {
-          username: comment.profiles?.username || null,
-          avatar_url: comment.profiles?.avatar_url || null
+          first_name: comment.profiles.first_name,
+          last_name: comment.profiles.last_name,
+          username: comment.profiles.username,
+          avatar_url: comment.profiles.avatar_url
         },
         isLiked: false
       }));
@@ -122,6 +143,7 @@ export default function MarketComments({ marketId }: MarketCommentsProps) {
       toast.error('Failed to load comments');
     } finally {
       setIsLoading(false);
+      setIsFetching(false);
     }
   };
 
@@ -287,13 +309,19 @@ export default function MarketComments({ marketId }: MarketCommentsProps) {
               <Avatar>
                 <AvatarImage src={comment.profiles.avatar_url || undefined} />
                 <AvatarFallback>
-                  {comment.profiles.username?.charAt(0).toUpperCase()}
+                  {comment.profiles.first_name || comment.profiles.last_name
+                    ? `${(comment.profiles.first_name?.[0] || '').toUpperCase()}${(comment.profiles.last_name?.[0] || '').toUpperCase()}`
+                    : comment.profiles.username?.[0].toUpperCase() || '??'}
                 </AvatarFallback>
               </Avatar>
 
               <div className="flex-1 space-y-2">
                 <div className="flex items-center space-x-2">
-                  <span className="font-medium">{comment.profiles.username}</span>
+                  <span className="font-medium">
+                    {comment.profiles.first_name && comment.profiles.last_name
+                      ? `${comment.profiles.first_name} ${comment.profiles.last_name}`
+                      : comment.profiles.username || 'Anonymous'}
+                  </span>
                   <span className="text-sm text-muted-foreground">
                     {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
                   </span>
