@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowTrendingUpIcon, ClockIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from '@/types/supabase';
+import ProbabilityGraph from './ProbabilityGraph';
 
 interface MarketData {
   id: string;
@@ -51,6 +53,12 @@ export default function MarketHeader({ marketId }: { marketId: string }) {
     totalYesAmount: 0,
     totalNoAmount: 0
   });
+  const [probabilityHistory, setProbabilityHistory] = useState<Array<{
+    timestamp: string;
+    probabilityYes: number;
+    probabilityNo: number;
+    volume?: number;
+  }>>([]);
 
   const fetchOrderSummary = async (supabase: any) => {
     try {
@@ -121,6 +129,48 @@ export default function MarketHeader({ marketId }: { marketId: string }) {
     }
   };
 
+  const fetchProbabilityHistory = useCallback(async () => {
+    try {
+      const { data: ordersData, error: ordersError } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('market_id', marketId)
+        .eq('status', 'filled')
+        .order('created_at', { ascending: true });
+
+      if (ordersError) throw ordersError;
+
+      if (ordersData) {
+        const history = ordersData.reduce((acc: any[], order) => {
+          const lastEntry = acc[acc.length - 1];
+          const volume = (order.filled_amount || 0) * (order.price || 0);
+          
+          if (lastEntry && new Date(order.created_at).getTime() - new Date(lastEntry.timestamp).getTime() < 300000) {
+            // If less than 5 minutes apart, update the last entry
+            lastEntry.probabilityYes = order.position === 'yes' ? 
+              Math.min(0.99, lastEntry.probabilityYes + 0.01) : 
+              Math.max(0.01, lastEntry.probabilityYes - 0.01);
+            lastEntry.probabilityNo = 1 - lastEntry.probabilityYes;
+            lastEntry.volume = (lastEntry.volume || 0) + volume;
+          } else {
+            // Create a new entry
+            acc.push({
+              timestamp: order.created_at,
+              probabilityYes: order.position === 'yes' ? 0.55 : 0.45,
+              probabilityNo: order.position === 'yes' ? 0.45 : 0.55,
+              volume
+            });
+          }
+          return acc;
+        }, []);
+
+        setProbabilityHistory(history);
+      }
+    } catch (error) {
+      console.error('Error fetching probability history:', error);
+    }
+  }, [marketId, supabase]);
+
   useEffect(() => {
     const fetchMarket = async () => {
       try {
@@ -145,6 +195,7 @@ export default function MarketHeader({ marketId }: { marketId: string }) {
         // Fetch order summary
         await fetchOrderSummary(supabase);
         await fetchTotalAmounts(supabase);
+        await fetchProbabilityHistory();
 
         // Transform and set the market data
         setMarket({
@@ -191,6 +242,7 @@ export default function MarketHeader({ marketId }: { marketId: string }) {
           // Recalculate order summary when orders change
           await fetchOrderSummary(supabase);
           await fetchTotalAmounts(supabase);
+          await fetchProbabilityHistory();
         }
       )
       .subscribe();
@@ -232,7 +284,7 @@ export default function MarketHeader({ marketId }: { marketId: string }) {
       supabase.removeChannel(ordersChannel);
       supabase.removeChannel(marketChannel);
     };
-  }, [marketId, orderSummary]);
+  }, [marketId, orderSummary, fetchProbabilityHistory]);
 
   if (loading) {
     return <div className="h-48 animate-pulse bg-gray-800 rounded-lg" />;
@@ -254,85 +306,92 @@ export default function MarketHeader({ marketId }: { marketId: string }) {
   const daysLeft = Math.ceil(timeLeft / (1000 * 60 * 60 * 24));
 
   return (
-    <div className="bg-gray-900 rounded-xl p-6 space-y-4">
-      {/* Category and Stats */}
-      <div className="flex items-center justify-between">
-        <Link
-          href={`/markets?category=${market.category ? market.category.toLowerCase() : 'all'}`}
-          className="text-primary hover:text-primary/80 text-sm font-medium transition-colors"
-        >
-          {market.category || 'Uncategorized'}
-        </Link>
-        <div className="flex items-center space-x-4 text-sm text-gray-400">
-          <div className="flex items-center space-x-1">
-            <UserGroupIcon className="h-4 w-4" />
-            <span>{market.trades || 0} trades</span>
-          </div>
-          <div className="flex items-center space-x-1">
-            <ClockIcon className="h-4 w-4" />
-            <span>{daysLeft} days left</span>
+    <>
+      <div className="bg-gray-900 rounded-xl p-6 space-y-4">
+        {/* Category and Stats */}
+        <div className="flex items-center justify-between">
+          <Link
+            href={`/markets?category=${market.category ? market.category.toLowerCase() : 'all'}`}
+            className="text-primary hover:text-primary/80 text-sm font-medium transition-colors"
+          >
+            {market.category || 'Uncategorized'}
+          </Link>
+          <div className="flex items-center space-x-4 text-sm text-gray-400">
+            <div className="flex items-center space-x-1">
+              <UserGroupIcon className="h-4 w-4" />
+              <span>{market.trades || 0} trades</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <ClockIcon className="h-4 w-4" />
+              <span>{daysLeft} days left</span>
+            </div>
           </div>
         </div>
+
+        {/* Title */}
+        <h1 className="text-2xl font-bold text-white">{market.question}</h1>
+
+        {/* Market Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gray-800/50 rounded-lg p-4 flex items-center justify-between"
+          >
+            <div>
+              <p className="text-gray-400 text-sm">Total Volume</p>
+              <p className="text-xl font-bold text-white">
+                {new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'KES',
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                }).format(market.total_volume || 0)}
+              </p>
+            </div>
+            <ArrowTrendingUpIcon className="h-8 w-8 text-primary" />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-gray-800/50 rounded-lg p-4"
+          >
+            <div className="flex flex-col">
+              <span className="text-sm text-gray-400">YES Shares</span>
+              <span className="text-xl font-bold text-white">
+                {totalAmounts.totalYesAmount.toLocaleString()}
+              </span>
+              <span className="text-sm text-gray-400 mt-2">
+                {(market.probability_yes * 100).toFixed(1)}% Probability
+              </span>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-gray-800/50 rounded-lg p-4"
+          >
+            <div className="flex flex-col">
+              <span className="text-sm text-gray-400">NO Shares</span>
+              <span className="text-xl font-bold text-white">
+                {totalAmounts.totalNoAmount.toLocaleString()}
+              </span>
+              <span className="text-sm text-gray-400 mt-2">
+                {(market.probability_no * 100).toFixed(1)}% Probability
+              </span>
+            </div>
+          </motion.div>
+        </div>
       </div>
-
-      {/* Title */}
-      <h1 className="text-2xl font-bold text-white">{market.question}</h1>
-
-      {/* Market Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-gray-800/50 rounded-lg p-4 flex items-center justify-between"
-        >
-          <div>
-            <p className="text-gray-400 text-sm">Total Volume</p>
-            <p className="text-xl font-bold text-white">
-              {new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'KES',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-              }).format(market.total_volume || 0)}
-            </p>
-          </div>
-          <ArrowTrendingUpIcon className="h-8 w-8 text-primary" />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-gray-800/50 rounded-lg p-4"
-        >
-          <div className="flex flex-col">
-            <span className="text-sm text-gray-400">YES Shares</span>
-            <span className="text-xl font-bold text-white">
-              {totalAmounts.totalYesAmount.toLocaleString()}
-            </span>
-            <span className="text-sm text-gray-400 mt-2">
-              {(market.probability_yes * 100).toFixed(1)}% Probability
-            </span>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-gray-800/50 rounded-lg p-4"
-        >
-          <div className="flex flex-col">
-            <span className="text-sm text-gray-400">NO Shares</span>
-            <span className="text-xl font-bold text-white">
-              {totalAmounts.totalNoAmount.toLocaleString()}
-            </span>
-            <span className="text-sm text-gray-400 mt-2">
-              {(market.probability_no * 100).toFixed(1)}% Probability
-            </span>
-          </div>
-        </motion.div>
-      </div>
-    </div>
+      <ProbabilityGraph
+        data={probabilityHistory}
+        currentProbabilityYes={market?.probability_yes || 0.5}
+        currentProbabilityNo={market?.probability_no || 0.5}
+      />
+    </>
   );
 }

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Order, OrderBook, CreateOrderRequest, OrderType, OrderSide, Position } from '@/types/order';
 import { toast } from 'react-hot-toast';
@@ -47,6 +47,12 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
     yes: [],
     no: []
   });
+  const [probabilityHistory, setProbabilityHistory] = useState<Array<{
+    timestamp: string;
+    probabilityYes: number;
+    probabilityNo: number;
+    volume?: number;
+  }>>([]);
 
   interface ValidationResult {
     isValid: boolean;
@@ -758,8 +764,54 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
     };
   }, [user, marketId]);
 
+  const fetchProbabilityHistory = useCallback(async () => {
+    try {
+      const { data: ordersData, error: ordersError } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('market_id', marketId)
+        .eq('status', 'filled')
+        .order('created_at', { ascending: true });
+
+      if (ordersError) throw ordersError;
+
+      if (ordersData) {
+        const history = ordersData.reduce((acc: any[], order) => {
+          const lastEntry = acc[acc.length - 1];
+          const volume = order.filled_amount * order.price;
+          
+          if (lastEntry && new Date(order.created_at).getTime() - new Date(lastEntry.timestamp).getTime() < 300000) {
+            // If less than 5 minutes apart, update the last entry
+            lastEntry.probabilityYes = order.position === 'yes' ? 
+              Math.min(0.99, lastEntry.probabilityYes + 0.01) : 
+              Math.max(0.01, lastEntry.probabilityYes - 0.01);
+            lastEntry.probabilityNo = 1 - lastEntry.probabilityYes;
+            lastEntry.volume = (lastEntry.volume || 0) + volume;
+          } else {
+            // Create a new entry
+            acc.push({
+              timestamp: order.created_at,
+              probabilityYes: order.position === 'yes' ? 0.55 : 0.45,
+              probabilityNo: order.position === 'yes' ? 0.45 : 0.55,
+              volume
+            });
+          }
+          return acc;
+        }, []);
+
+        setProbabilityHistory(history);
+      }
+    } catch (error) {
+      console.error('Error fetching probability history:', error);
+    }
+  }, [marketId, supabase]);
+
+  useEffect(() => {
+    fetchProbabilityHistory();
+  }, [fetchProbabilityHistory]);
+
   return (
-    <div className="bg-card rounded-xl border border-border p-6">
+    <div className="space-y-6">
       {market && market.resolved_value !== null && (
         <div className="mb-4 p-3 bg-blue-100 dark:bg-blue-900 rounded-md text-blue-800 dark:text-blue-200">
           <p className="font-semibold">Market Resolved</p>
@@ -768,7 +820,7 @@ export default function MarketTradingPanel({ marketId }: MarketTradingPanelProps
         </div>
       )}
       {/* Trading Form Section */}
-      <div className="mb-8 relative">
+      <div className="mb-8 relative bg-background/80 p-4 rounded-xl border border-border/50 backdrop-blur-sm">
         {/* Background decorative elements */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent rounded-xl pointer-events-none" />
         <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/10 to-transparent opacity-50 blur-2xl pointer-events-none" />
