@@ -382,6 +382,14 @@ export type Database = {
           market_id: string
           content: string
           created_at: string
+          updated_at: string
+          parent_id: string | null
+          likes_count: number
+          is_edited: boolean
+          profiles: {
+            username: string | null
+            avatar_url: string | null
+          }
         }
         Insert: {
           id?: string
@@ -389,12 +397,40 @@ export type Database = {
           market_id: string
           content: string
           created_at?: string
+          updated_at?: string
+          parent_id?: string | null
+          likes_count?: number
+          is_edited?: boolean
         }
         Update: {
           id?: string
           user_id?: string
           market_id?: string
           content?: string
+          created_at?: string
+          updated_at?: string
+          parent_id?: string | null
+          likes_count?: number
+          is_edited?: boolean
+        }
+      }
+      market_comment_likes: {
+        Row: {
+          id: string
+          comment_id: string
+          user_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          comment_id: string
+          user_id: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          comment_id?: string
+          user_id?: string
           created_at?: string
         }
       }

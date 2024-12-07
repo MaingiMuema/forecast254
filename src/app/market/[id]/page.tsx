@@ -6,6 +6,7 @@ import MarketTradingPanel from '@/components/Markets/MarketTradingPanel';
 import MarketStats from '@/components/Markets/MarketStats';
 import MarketSkeleton from '@/components/Markets/MarketSkeleton';
 import MarketViewTracker from '@/components/Markets/MarketViewTracker';
+import MarketComments from '@/components/Markets/MarketComments';
 
 interface PageProps {
   params: Promise<{
@@ -38,6 +39,9 @@ export default async function MarketPage({ params }: PageProps) {
               <MarketHeader marketId={marketId} />
               <MarketDescription marketId={marketId} />
               <MarketActivity marketId={marketId} />
+              <div className="bg-card rounded-lg p-6">
+                <MarketComments marketId={marketId} />
+              </div>
             </Suspense>
           </div>
         </div>
